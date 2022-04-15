@@ -1,4 +1,4 @@
-package mk.ukim.finki.wpproject.model;
+package mk.ukim.finki.wpproject.model.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

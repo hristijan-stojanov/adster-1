@@ -1,6 +1,7 @@
 package mk.ukim.finki.wpproject.model;
 
 import lombok.Data;
+import mk.ukim.finki.wpproject.model.enums.Role;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ import java.util.*;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
@@ -27,15 +28,20 @@ public class User {
 
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany (mappedBy = "user")
     private List<Comment> comments;
 
     @ManyToMany
+    @JoinTable(
+            name = "user_likes_ad",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "ad_id"))
     private List<Ad> savedAds;
 
-    @OneToMany(mappedBy = "advertisedByUser")
+    @OneToMany
     private List<Ad> advertisedAds;
 
     public User() {

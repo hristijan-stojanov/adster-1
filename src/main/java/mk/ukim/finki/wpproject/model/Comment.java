@@ -25,8 +25,8 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(LocalDateTime timeCreated, Ad adCommented) {
-        this.timeCreated = timeCreated;
+    public Comment(Ad adCommented) {
         this.adCommented = adCommented;
+        this.timeCreated = LocalDateTime.now();
     }
 }

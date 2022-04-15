@@ -28,19 +28,4 @@ public class Category {
         this.subCategories = subCategories;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<String> getSubCategories() {
-        return subCategories;
-    }
-
-    public void setSubCategories(List<String> subCategories) {
-        this.subCategories = subCategories;
-    }
 }

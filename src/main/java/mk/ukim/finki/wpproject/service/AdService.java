@@ -1,23 +1,27 @@
 package mk.ukim.finki.wpproject.service;
 
 import mk.ukim.finki.wpproject.model.Ad;
+import mk.ukim.finki.wpproject.model.enums.AdType;
+import mk.ukim.finki.wpproject.model.enums.Condition;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 public interface AdService {
 
-    List<Ad> findAll ();
+    List<Ad> findAll();
 
     Optional<Ad> findById(Long id);
 
    // Optional<Ad> findByName(String name);
 
-    Optional<Ad> edit (Long id, String title, boolean isExchangePossible, Long price, String city, Long categoryId);
+    Optional<Ad> save(Ad ad);
 
-    Optional<Ad> save (String title, boolean isExchangePossible, Long price, String city, LocalDateTime time, Long categoryId, String advertisedByUserUsername);
+    Optional<Ad> save(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
+                      Double price, String city, AdType type, Condition condition, Long categoryId, Long userId);
 
-    void deleteById (Long id);
+    Optional<Ad> edit(Long adId, String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
+                      Double price, String city, AdType type, Condition condition, Long categoryId);
 
+    void deleteById(Long adId);
 
 }

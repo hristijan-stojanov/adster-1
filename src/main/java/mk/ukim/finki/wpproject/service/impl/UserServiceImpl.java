@@ -1,6 +1,6 @@
 package mk.ukim.finki.wpproject.service.impl;
 
-import mk.ukim.finki.wpproject.model.Role;
+import mk.ukim.finki.wpproject.model.enums.Role;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.exceptions.InvalidUsernameOrPasswordException;
 import mk.ukim.finki.wpproject.model.exceptions.PasswordsDoNotMatchException;

@@ -1,6 +1,7 @@
 package mk.ukim.finki.wpproject.service;
 
 import mk.ukim.finki.wpproject.model.Ad;
+import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 
@@ -17,10 +18,10 @@ public interface AdService {
     Optional<Ad> save(Ad ad);
 
     Optional<Ad> save(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                      Double price, String city, AdType type, Condition condition, Long categoryId, Long userId);
+                      Double price, City city, AdType type, Condition condition, Long categoryId, Long userId);
 
     Optional<Ad> edit(Long adId, String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                      Double price, String city, AdType type, Condition condition, Long categoryId);
+                      Double price, City city, AdType type, Condition condition, Long categoryId);
 
     void deleteById(Long adId);
 

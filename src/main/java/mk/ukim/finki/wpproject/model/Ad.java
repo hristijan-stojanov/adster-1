@@ -12,11 +12,10 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "ads")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Ad {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -30,7 +29,8 @@ public class Ad {
 
     private Double price;
 
-    private String city;
+    @Column(nullable = true)
+    private LocalDateTime dateCreated;
 
     @Enumerated(EnumType.STRING)
     private AdType type;
@@ -41,16 +41,14 @@ public class Ad {
     @OneToMany
     private List<adImage> images;
 
-    private LocalDateTime dateCreated;
-
-    @OneToOne
+    @ManyToOne
     private Category category;
 
-    @OneToMany(mappedBy = "adCommented")
-    private List<Comment> comments;
+    @ManyToOne
+    private City city;
 
-    @ManyToMany(mappedBy = "savedAds")
-    private List<User> savedByUsers;
+    @OneToMany
+    private List<Comment> comments;
 
     @ManyToOne
     private User advertisedByUser;
@@ -59,20 +57,19 @@ public class Ad {
     }
 
     public Ad(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-              Double price, String city, AdType type, Condition condition, Category category, User advertisedByUser) {
+              Double price, City city, AdType type, Condition condition, Category category, User advertisedByUser) {
         this.title = title;
         this.description = description;
         this.isExchangePossible = isExchangePossible;
         this.isDeliveryPossible = isDeliveryPossible;
         this.price = price;
         this.city = city;
+        this.dateCreated = LocalDateTime.now();
         this.type = type;
         this.condition = condition;
         this.category = category;
-        this.advertisedByUser = advertisedByUser;
         this.images = new ArrayList<>();
-        this.dateCreated = LocalDateTime.now();
         this.comments = new ArrayList<>();
-        this.savedByUsers = new ArrayList<>();
+        this.advertisedByUser = advertisedByUser;
     }
 }

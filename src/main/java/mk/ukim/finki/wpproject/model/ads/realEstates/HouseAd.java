@@ -2,6 +2,7 @@ package mk.ukim.finki.wpproject.model.ads.realEstates;
 
 import lombok.Data;
 import mk.ukim.finki.wpproject.model.Category;
+import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
@@ -16,10 +17,9 @@ import javax.persistence.Table;
 @Data
 @Table(name = "house_ads")
 public class HouseAd extends RealEstateAd {
-
     private int yearMade;
 
-    private int yardArea;
+    private int yardArea;//m^2
 
     private int numRooms;
 
@@ -34,7 +34,7 @@ public class HouseAd extends RealEstateAd {
     }
 
     public HouseAd(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                   Double price, String city, AdType type, Condition condition, Category category, User advertisedByUser,
+                   Double price, City city, AdType type, Condition condition, Category category, User advertisedByUser,
                    int quadrature, int yearMade, int yardArea, int numRooms, int numFloors, boolean hasBasement, Heating heating) {
         super(title, description, isExchangePossible, isDeliveryPossible,
                 price, city, type, condition, category, advertisedByUser, quadrature);

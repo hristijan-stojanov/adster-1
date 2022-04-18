@@ -26,7 +26,7 @@
                             <td th:text="${ad.getDescription()}"></td>
                             <td th:text="${ad.getPrice()}"></td>
                             <td th:text="${ad.getCity() != null}
-                            ? ${ad.getCity()} : 'No City'"></td>
+                            ? ${ad.getCity().getName()} : 'No City'"></td>
                             <td th:text="${ad.getCategory() != null}
                             ? ${ad.getCategory().getName()} : 'No Category'"></td>
                         </tr>

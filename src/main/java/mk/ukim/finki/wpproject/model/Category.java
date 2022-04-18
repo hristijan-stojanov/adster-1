@@ -10,22 +10,28 @@ import java.util.*;
 @Entity
 @Table(name = "categories")
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    @ElementCollection
-    private List<String> subCategories;
+    @OneToMany(mappedBy = "category")
+    private List<Ad> ads;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category parentCategory;
+
+    @OneToMany(mappedBy = "parentCategory")
+    private List<Category> subCategories;
 
     public Category() {
     }
 
-    public Category(String name, List<String> subCategories) {
+    public Category(String name) {
         this.name = name;
-        this.subCategories = subCategories;
+        ads = new ArrayList<>();
+        parentCategory = new Category();
+        this.subCategories = new ArrayList<>();
     }
-
 }

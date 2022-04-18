@@ -11,7 +11,6 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,17 +30,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany (mappedBy = "user")
-    private List<Comment> comments;
-
     @ManyToMany
-    @JoinTable(
-            name = "user_likes_ad",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "ad_id"))
     private List<Ad> savedAds;
 
-    @OneToMany
+    @OneToMany(mappedBy = "advertisedByUser")
     private List<Ad> advertisedAds;
 
     public User() {
@@ -55,7 +47,6 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.role = role;
-        this.comments = new ArrayList<>();
         this.savedAds = new ArrayList<>();
         this.advertisedAds = new ArrayList<>();
     }

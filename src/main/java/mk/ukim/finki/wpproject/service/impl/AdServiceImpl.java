@@ -2,6 +2,7 @@ package mk.ukim.finki.wpproject.service.impl;
 
 import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
+import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
@@ -52,7 +53,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Optional<Ad> save(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                             Double price, String city, AdType type, Condition condition, Long categoryId, Long userId) {
+                             Double price, City city, AdType type, Condition condition, Long categoryId, Long userId) {
 
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
         User user = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
@@ -64,7 +65,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Optional<Ad> edit(Long adId, String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                             Double price, String city, AdType type, Condition condition, Long categoryId) {
+                             Double price, City city, AdType type, Condition condition, Long categoryId) {
 
         Ad ad = this.findById(adId).orElseThrow(() -> new AdNotFoundException(adId));
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));

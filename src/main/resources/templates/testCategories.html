@@ -21,7 +21,7 @@
                         <tr th:each="category : ${categories}" class="product">
                             <td th:text="${category.getName()}"></td>
                             <td th:text="${category.getSubCategories() != null && !category.getSubCategories().isEmpty()}
-                            ? ${category.getSubCategories()} : 'No Category'"></td>
+                            ? ${category.getSubCategories().get(0).getName()} : 'No Category'"></td>
                         </tr>
                         </tbody>
                     </table>

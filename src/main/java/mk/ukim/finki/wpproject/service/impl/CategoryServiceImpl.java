@@ -23,17 +23,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category create(String name, List<String> subCategories) {
-        Category category = new Category(name, subCategories);
+    public Category create(String name) {
+        Category category = new Category(name);
 
         return this.categoryRepository.save(category);
     }
 
     @Override
-    public Category edit(Long id, String name, List<String> subCategories) {
+    public Category edit(Long id, String name) {
         Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
         category.setName(name);
-        category.setSubCategories(subCategories);
 
         return this.categoryRepository.save(category);
     }

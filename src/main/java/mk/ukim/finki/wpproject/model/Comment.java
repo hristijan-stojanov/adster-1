@@ -9,24 +9,24 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "comments")
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDateTime timeCreated;
 
-    @ManyToOne
-    private User user;
+    @Column(length = 2000)
+    private String content;
 
     @ManyToOne
-    private Ad adCommented;
+    private User user;
 
     public Comment() {
     }
 
-    public Comment(Ad adCommented) {
-        this.adCommented = adCommented;
-        this.timeCreated = LocalDateTime.now();
+    public Comment(String content, User user) {
+        timeCreated = LocalDateTime.now();
+        this.content = content;
+        this.user = user;
     }
 }

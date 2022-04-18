@@ -3,6 +3,7 @@ package mk.ukim.finki.wpproject.model.ads;
 import lombok.Data;
 import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
+import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.*;
 
@@ -12,19 +13,19 @@ import javax.persistence.*;
 @Data
 @Table(name = "vehicle_ads")
 public class VehicleAd extends Ad {
-
-    private String brand;
+    private CarBrand brand;
 
     private int yearMade;
 
-    private String color;
+    private int enginePower;//KW
 
     private double milesTraveled;
 
     @Enumerated(EnumType.STRING)
     private Fuel fuel;
 
-    private int enginePowerKW;
+    @Enumerated(EnumType.STRING)
+    private Color color;
 
     @Enumerated(EnumType.STRING)
     private Gearbox gearbox;
@@ -36,8 +37,8 @@ public class VehicleAd extends Ad {
     }
 
     public VehicleAd(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                     Double price, String city, AdType type, Condition condition, Category category, User advertisedByUser,
-                     String brand, int yearMade, String color, double milesTraveled, Fuel fuel, int enginePowerKW,
+                     Double price, City city, AdType type, Condition condition, Category category, User advertisedByUser,
+                     CarBrand brand, int yearMade, Color color, double milesTraveled, Fuel fuel, int enginePower,
                      Gearbox gearbox, Registration registration) {
         super(title, description, isExchangePossible, isDeliveryPossible, price, city, type, condition, category, advertisedByUser);
         this.brand = brand;
@@ -45,7 +46,7 @@ public class VehicleAd extends Ad {
         this.color = color;
         this.milesTraveled = milesTraveled;
         this.fuel = fuel;
-        this.enginePowerKW = enginePowerKW;
+        this.enginePower = enginePower;
         this.gearbox = gearbox;
         this.registration = registration;
     }

@@ -4,20 +4,28 @@ import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
+import mk.ukim.finki.wpproject.model.ads.BookAd;
+import mk.ukim.finki.wpproject.model.ads.ClothesAd;
+import mk.ukim.finki.wpproject.model.ads.ITEquipmentAd;
+import mk.ukim.finki.wpproject.model.ads.VehicleAd;
+import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
-import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
-import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
-import mk.ukim.finki.wpproject.model.exceptions.CityNotFoundException;
-import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.*;
 import mk.ukim.finki.wpproject.repository.AdRepository;
 import mk.ukim.finki.wpproject.repository.CategoryRepository;
 import mk.ukim.finki.wpproject.repository.CityRepository;
 import mk.ukim.finki.wpproject.repository.UserRepository;
 import mk.ukim.finki.wpproject.service.AdService;
+import org.hibernate.engine.internal.Collections;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
-import java.util.List;
+import java.util.*;
 import java.util.Optional;
 
 @Service
@@ -80,6 +88,54 @@ public class AdServiceImpl implements AdService {
         AdSetterClass.adEditing(ad, title, description, isExchangePossible, isDeliveryPossible, price, city, type, condition, category);
 
         return this.save(ad);
+    }
+
+    @Override
+    public Page<Ad> findPaginated(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<Ad> adsSubList;
+        List<Ad> ads = this.adRepository.findAll();
+
+        if (ads.size() < startItem) {
+            adsSubList = new ArrayList<>();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, ads.size());
+            adsSubList = ads.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<Ad>(adsSubList, PageRequest.of(currentPage, pageSize), ads.size());
+    }
+
+    @Override
+    public String renderAdBasedOnCategory(Ad ad, Long id, Model model) {
+        if (ad.getCategory().getName().equals("Vehicle")) {
+            VehicleAd vehicleAd = (VehicleAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
+            model.addAttribute("vehicleAd", vehicleAd);
+            return "VehicleAd";
+        }
+        else if (ad.getCategory().getName().equals("IT Equipment")) {
+            ITEquipmentAd itEquipmentAd = (ITEquipmentAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
+            model.addAttribute("itEquipmentAd", itEquipmentAd);
+            return "ITEquipmentAd";
+        }
+        else if (ad.getCategory().getName().equals("Book")) {
+            BookAd bookAd = (BookAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
+            model.addAttribute("bookAd", bookAd);
+            return "BookAd";
+        }
+        else if (ad.getCategory().getName().equals("Clothes")) {
+            ClothesAd clothesAd = (ClothesAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
+            model.addAttribute("clothesAd", clothesAd);
+            return "ClothesAd";
+        }
+        else if (ad.getCategory().getName().equals("Real Estate")) {
+            RealEstateAd realEstateAd = (RealEstateAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
+            model.addAttribute("realEstateAd", realEstateAd);
+            return "RealEstateAd";
+        }
+        return "showAd";
     }
 
     @Override

@@ -15,22 +15,22 @@ import mk.ukim.finki.wpproject.repository.ApartmentAdRepository;
 import mk.ukim.finki.wpproject.repository.CategoryRepository;
 import mk.ukim.finki.wpproject.repository.CityRepository;
 import mk.ukim.finki.wpproject.repository.UserRepository;
-import mk.ukim.finki.wpproject.service.ApartmentService;
+import mk.ukim.finki.wpproject.service.ApartmentAdService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ApartmentServiceImpl implements ApartmentService {
+public class ApartmentAdServiceImpl implements ApartmentAdService {
 
     private final ApartmentAdRepository apartmentAdRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
 
-    public ApartmentServiceImpl(ApartmentAdRepository apartmentAdRepository, CategoryRepository categoryRepository,
-                                UserRepository userRepository, CityRepository cityRepository) {
+    public ApartmentAdServiceImpl(ApartmentAdRepository apartmentAdRepository, CategoryRepository categoryRepository,
+                                  UserRepository userRepository, CityRepository cityRepository) {
         this.apartmentAdRepository = apartmentAdRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;

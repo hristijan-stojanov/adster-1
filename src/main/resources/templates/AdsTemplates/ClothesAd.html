@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Select category</title>
+    <meta charset="utf-8"/>
+</head>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">ВЕ МОЛИМЕ ВНЕСЕТИ ГИ СООДВЕТНИТЕ ИНФОРМАЦИИ ЗА ИЗБРАНАТА КАТЕГОРИЈА</h1>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+
+            <form action="/ClothesAd/add" method="POST">
+
+                <div>
+                    <h3 th:text="${category.getName()}"></h3>
+                    <h3>Е ИЗБРАНАТА КАТЕГОРИЈА</h3>
+                </div>
+
+                <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+
+
+                <button id="submit" type="submit" class="btn btn-primary">ОДИ НА СЛЕДЕН ЧЕКОР</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</html>

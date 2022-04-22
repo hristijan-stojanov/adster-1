@@ -7,6 +7,7 @@ import mk.ukim.finki.wpproject.service.CategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -20,6 +21,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAll() {
         return this.categoryRepository.findAll();
+    }
+
+    @Override
+    public Optional<Category> findById(Long id) {
+        Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
+        return Optional.of(category);
     }
 
     @Override

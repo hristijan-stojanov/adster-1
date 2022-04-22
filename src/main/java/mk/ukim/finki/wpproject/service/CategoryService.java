@@ -8,6 +8,8 @@ public interface CategoryService {
 
     List<Category> findAll();
 
+    Optional <Category> findById(Long id);
+
     Category create (String name);
 
     Category edit (Long id, String name);

@@ -32,7 +32,7 @@ public class HouseAdController {
         if (this.categoryService.findById(categoryId).isPresent()) {
             Category category = this.categoryService.findById(categoryId).get();
             model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "HouseAd");
+            model.addAttribute("bodyContent", "adsTemplates/HouseAd");
             return "master";
         }
         return "redirect:/add?error=YouHaveNotSelectedCategory";
@@ -83,7 +83,7 @@ public class HouseAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("houseAd", houseAd);
-            model.addAttribute("bodyContent", "HouseAd");
+            model.addAttribute("bodyContent", "adsTemplates/HouseAd");
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

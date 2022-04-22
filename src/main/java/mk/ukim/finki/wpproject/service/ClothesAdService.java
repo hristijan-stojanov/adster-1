@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface ClothesAdService {
 
-
     List<ClothesAd> findAll();
 
 
@@ -33,6 +32,5 @@ public interface ClothesAdService {
 
 
     void deleteById(Long id);
-
 
 }

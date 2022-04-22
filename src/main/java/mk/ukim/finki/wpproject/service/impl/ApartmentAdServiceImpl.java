@@ -94,7 +94,6 @@ public class ApartmentAdServiceImpl implements ApartmentAdService {
         apartmentAd.setHeating(heating);
 
         return this.save(apartmentAd);
-
     }
 
     @Override

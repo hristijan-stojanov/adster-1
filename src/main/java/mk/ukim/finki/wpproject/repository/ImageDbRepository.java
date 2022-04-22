@@ -8,5 +8,4 @@ import java.awt.*;
 
 @Repository
 public interface ImageDbRepository extends JpaRepository<adImage, Long> {
-
 }

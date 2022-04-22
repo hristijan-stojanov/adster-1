@@ -30,7 +30,7 @@ public class ITEquipmentsAdController {
         if (this.categoryService.findById(categoryId).isPresent()) {
             Category category = this.categoryService.findById(categoryId).get();
             model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "ITEquipmentsAd");
+            model.addAttribute("bodyContent", "adsTemplates/ITEquipmentsAd");
             return "master";
         }
         return "redirect:/add?error=YouHaveNotSelectedCategory";
@@ -81,7 +81,7 @@ public class ITEquipmentsAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("itEquipmentAd", itEquipmentAd);
-            model.addAttribute("bodyContent", "ITEquipmentsAd");
+            model.addAttribute("bodyContent", "adsTemplates/ITEquipmentsAd");
             return "master";
 
         }

@@ -30,7 +30,7 @@ public class VehicleAdController {
 
             Category category = this.categoryService.findById(categoryId).get();
             model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "VehicleAd");
+            model.addAttribute("bodyContent", "adsTemplates/VehicleAd");
             return "master";
         }
         return "redirect:/add?error=YouHaveNotSelectedCategory";
@@ -83,7 +83,7 @@ public class VehicleAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("vehicleAd", vehicleAd);
-            model.addAttribute("bodyContent", "VehicleAd");
+            model.addAttribute("bodyContent", "adsTemplates/VehicleAd");
             return "master";
 
         }

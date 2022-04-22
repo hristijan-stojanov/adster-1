@@ -33,7 +33,7 @@ public class BookAdController {
         if (this.categoryService.findById(categoryId).isPresent()) {
             Category category = this.categoryService.findById(categoryId).get();
             model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "BookAd");
+            model.addAttribute("bodyContent", "adsTemplates/BookAd");
             return "master";
         }
         return "redirect:/add?error=YouHaveNotSelectedCategory";
@@ -80,7 +80,7 @@ public class BookAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("bookAd", bookAd);
-            model.addAttribute("bodyContent", "BookAd");
+            model.addAttribute("bodyContent", "adsTemplates/BookAd");
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

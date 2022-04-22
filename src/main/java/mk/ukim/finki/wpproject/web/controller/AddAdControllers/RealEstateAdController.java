@@ -31,7 +31,7 @@ public class RealEstateAdController {
         if (this.categoryService.findById(categoryId).isPresent()) {
             Category category = this.categoryService.findById(categoryId).get();
             model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "RealEstateAd");
+            model.addAttribute("bodyContent", "adsTemplates/RealEstateAd");
             return "master";
         }
         return "redirect:/add?error=YouHaveNotSelectedCategory";
@@ -75,7 +75,7 @@ public class RealEstateAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("realEstateAd", realEstateAd);
-            model.addAttribute("bodyContent", "RealEstateAd");
+            model.addAttribute("bodyContent", "adsTemplates/RealEstateAd");
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

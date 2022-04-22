@@ -23,4 +23,5 @@ public interface VehicleAdService {
                              Gearbox gearbox, Registration registration);
 
     void deleteById(Long adId);
+
 }

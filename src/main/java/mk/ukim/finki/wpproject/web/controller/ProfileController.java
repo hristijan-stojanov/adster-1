@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/Profile")
+@RequestMapping("/profile")
 public class ProfileController {
 
     @GetMapping
     public String getProfile(Model model){
-        return "showProfile";
+        model.addAttribute("bodyContent", "showProfile");
+        return "master";
     }
 }

@@ -23,4 +23,5 @@ public interface RealEstateAdService {
                            int quadrature);
 
     void deleteById(Long adId);
+
 }

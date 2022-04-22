@@ -22,9 +22,8 @@ public class LoginController {
 
     @GetMapping
     public String getLoginPage(Model model) {
-//        model.addAttribute("bodyContent","login");
-//        return "master-template";
-        return "login";
+        model.addAttribute("bodyContent", "login");
+        return "master";
     }
 
     @PostMapping
@@ -34,12 +33,13 @@ public class LoginController {
             user = this.authService.login(request.getParameter("username"),
                     request.getParameter("password"));
             request.getSession().setAttribute("user", user);
-            return "redirect:/home";
+            return "redirect:/ads";
         }
         catch (InvalidUserCredentialsException exception) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", exception.getMessage());
-            return "login";
+            model.addAttribute("bodyContent", "login");
+            return "master";
         }
     }
 }

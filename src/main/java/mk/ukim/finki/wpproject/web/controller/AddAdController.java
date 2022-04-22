@@ -11,7 +11,6 @@ import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.*;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +54,7 @@ public class AddAdController {
         List<Category> categories = this.categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("bodyContent", "select-category");
-        return "master-template";
+        return "master";
     }
 
     // ------------------------APARTMENT--------------------------------------------------------------------------------
@@ -66,8 +65,8 @@ public class AddAdController {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "ApartmentAd");
-        return "master-template";
+        model.addAttribute("bodyContent", "adsTemplates/ApartmentAd");
+        return "master";
     }
 
     @PostMapping("/ApartmentAd")
@@ -118,8 +117,8 @@ public class AddAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("apartmentAd", apartmentAd);
-            model.addAttribute("bodyContent", "ApartmentAd");
-            return "master-template";
+            model.addAttribute("bodyContent", "adsTemplates/ApartmentAd");
+            return "master";
         }
         return "redirect:/ads?error=AdNotFound";
     }
@@ -133,8 +132,8 @@ public class AddAdController {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "HouseAd");
-        return "master-template";
+        model.addAttribute("bodyContent", "adsTemplates/HouseAd");
+        return "master";
     }
 
     @PostMapping("/HouseAd")
@@ -182,8 +181,8 @@ public class AddAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("houseAd", houseAd);
-            model.addAttribute("bodyContent", "HouseAd");
-            return "master-template";
+            model.addAttribute("bodyContent", "adsTemplates/HouseAd");
+            return "master";
         }
         return "redirect:/ads?error=AdNotFound";
     }
@@ -197,8 +196,8 @@ public class AddAdController {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "BookAd");
-        return "master-template";
+        model.addAttribute("bodyContent", "adsTemplates/BookAd");
+        return "master";
     }
 
 
@@ -243,8 +242,8 @@ public class AddAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("bookAd", bookAd);
-            model.addAttribute("bodyContent", "BookAd");
-            return "master-template";
+            model.addAttribute("bodyContent", "adsTemplates/BookAd");
+            return "master";
         }
         return "redirect:/ads?error=AdNotFound";
     }
@@ -258,8 +257,8 @@ public class AddAdController {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "RealEstateAd");
-        return "master-template";
+        model.addAttribute("bodyContent", "adsTemplates/RealEstateAd");
+        return "master";
     }
 
     @PostMapping("/RealEstateAd")
@@ -300,8 +299,8 @@ public class AddAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("realEstateAd", realEstateAd);
-            model.addAttribute("bodyContent", "RealEstateAd");
-            return "master-template";
+            model.addAttribute("bodyContent", "adsTemplates/RealEstateAd");
+            return "master";
         }
         return "redirect:/ads?error=AdNotFound";
     }
@@ -314,8 +313,8 @@ public class AddAdController {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "ClothesAd");
-        return "master-template";
+        model.addAttribute("bodyContent", "adsTemplates/ClothesAd");
+        return "master";
     }
 
     @PostMapping("/ClothesAd")
@@ -359,8 +358,8 @@ public class AddAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("clothesAd", clothesAd);
-            model.addAttribute("bodyContent", "ClothesAd");
-            return "master-template";
+            model.addAttribute("bodyContent", "adsTemplates/ClothesAd");
+            return "master";
         }
         return "redirect:/ads?error=AdNotFound";
     }
@@ -373,8 +372,8 @@ public class AddAdController {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "ITEquipmentsAd");
-        return "master-template";
+        model.addAttribute("bodyContent", "adsTemplates/ITEquipmentsAd");
+        return "master";
     }
 
     @PostMapping("/ITEquipmentsAd")
@@ -422,8 +421,8 @@ public class AddAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("itEquipmentAd", itEquipmentAd);
-            model.addAttribute("bodyContent", "ITEquipmentsAd");
-            return "master-template";
+            model.addAttribute("bodyContent", "adsTemplates/ITEquipmentsAd");
+            return "master";
 
         }
         return "redirect:/ads?error=AdNotFound";
@@ -438,8 +437,8 @@ public class AddAdController {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "VehicleAd");
-        return "master-template";
+        model.addAttribute("bodyContent", "adsTemplates/VehicleAd");
+        return "master";
     }
 
     @PostMapping("/VehicleAd")
@@ -489,13 +488,10 @@ public class AddAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("vehicleAd", vehicleAd);
-            model.addAttribute("bodyContent", "VehicleAd");
-            return "master-template";
+            model.addAttribute("bodyContent", "adsTemplates/VehicleAd");
+            return "master";
 
         }
         return "redirect:/ads?error=AdNotFound";
     }
 }
-
-
-

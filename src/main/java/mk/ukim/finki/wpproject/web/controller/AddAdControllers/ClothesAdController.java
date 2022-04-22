@@ -31,7 +31,7 @@ public class ClothesAdController {
         if (this.categoryService.findById(categoryId).isPresent()) {
             Category category = this.categoryService.findById(categoryId).get();
             model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "ClothesAd");
+            model.addAttribute("bodyContent", "adsTemplates/ClothesAd");
             return "master";
         }
         return "redirect:/add?error=YouHaveNotSelectedCategory";
@@ -78,7 +78,7 @@ public class ClothesAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("clothesAd", clothesAd);
-            model.addAttribute("bodyContent", "ClothesAd");
+            model.addAttribute("bodyContent", "adsTemplates/ClothesAd");
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

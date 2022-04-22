@@ -24,4 +24,5 @@ public interface ITEquipmentAdService {
                                  int memorySize, int ramMemorySize);
 
     void deleteById(Long adId);
+
 }

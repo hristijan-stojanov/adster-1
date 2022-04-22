@@ -64,7 +64,8 @@ public class AdController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "testAds";
+        model.addAttribute("bodyContent", "testAds");
+        return "master";
     }
 
     @GetMapping("/{id}")
@@ -93,7 +94,8 @@ public class AdController {
         List<String> imagePaths = fileLocationService.findAllPaths(ad);
         model.addAttribute("images", imageDbRepository.findAll());
 
-        return "showImages";
+        model.addAttribute("bodyContent", "showImages");
+        return "master";
     }
 
 }

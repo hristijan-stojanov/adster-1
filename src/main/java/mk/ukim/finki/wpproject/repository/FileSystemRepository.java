@@ -30,9 +30,9 @@ public class FileSystemRepository {
         adImage adImage = new adImage(imgPathName, location);
         imageDbRepository.save(adImage);
 
-        Path newFile = Paths.get(location + imgPathName);
         //creating images with unique "keys"(names)
         //adds current date in milliseconds format to the image name
+        Path newFile = Paths.get(location + imgPathName);
 
         Files.createDirectories(newFile.getParent());
         Files.write(newFile, content);
@@ -44,7 +44,6 @@ public class FileSystemRepository {
         try {
             return new FileSystemResource(Paths.get(location));
         } catch (Exception e) {
-            // Handle access or file not found problems.
             throw new RuntimeException();
         }
     }

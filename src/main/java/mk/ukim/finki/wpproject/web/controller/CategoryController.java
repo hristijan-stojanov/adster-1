@@ -28,7 +28,9 @@ public class CategoryController {
         }
         List<Category> categories = this.categoryService.findAll();
         model.addAttribute("categories", categories);
-        return "testCategories";
+
+        model.addAttribute("bodyContent", "testCategories");
+        return "master";
     }
 
 }

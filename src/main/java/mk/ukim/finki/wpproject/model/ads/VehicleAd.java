@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Data
 @Table(name = "vehicle_ads")
 public class VehicleAd extends Ad {
+    @Enumerated(EnumType.STRING)
     private CarBrand brand;
 
     private int yearMade;

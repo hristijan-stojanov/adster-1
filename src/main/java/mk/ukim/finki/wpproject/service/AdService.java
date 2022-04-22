@@ -4,6 +4,9 @@ import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -13,15 +16,22 @@ public interface AdService {
 
     Optional<Ad> findById(Long id);
 
-   // Optional<Ad> findByName(String name);
+    // Optional<Ad> findByName(String name);
+    // Optional<Ad> findByTitle (String title);
 
     Optional<Ad> save(Ad ad);
 
+
     Optional<Ad> save(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                      Double price, City city, AdType type, Condition condition, Long categoryId, Long userId);
+                      Double price, String cityId, AdType type, Condition condition, Long categoryId, Long userId);
+
 
     Optional<Ad> edit(Long adId, String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                      Double price, City city, AdType type, Condition condition, Long categoryId);
+                      Double price, String cityId, AdType type, Condition condition, Long categoryId);
+
+    public Page<Ad> findPaginated(Pageable pageable);
+
+    public String renderAdBasedOnCategory(Ad ad, Long id, Model model);
 
     void deleteById(Long adId);
 

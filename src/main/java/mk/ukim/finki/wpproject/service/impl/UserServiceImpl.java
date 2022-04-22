@@ -4,18 +4,28 @@ import mk.ukim.finki.wpproject.model.enums.Role;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.exceptions.InvalidUsernameOrPasswordException;
 import mk.ukim.finki.wpproject.model.exceptions.PasswordsDoNotMatchException;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UsernameAlreadyExistsException;
 import mk.ukim.finki.wpproject.repository.UserRepository;
 import mk.ukim.finki.wpproject.service.UserService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     }
 
     @Override
@@ -29,9 +39,9 @@ public class UserServiceImpl implements UserService {
         else if (this.userRepository.findByUsername(username).isPresent()){
             throw new UsernameAlreadyExistsException(username);
         }
-        User user = new User(username, password, name, surname, email, phoneNumber, role);
+
+        User user = new User(username, passwordEncoder.encode(password), name, surname, email, phoneNumber, role);
 
         return this.userRepository.save(user);
     }
-
 }

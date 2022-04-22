@@ -1,4 +1,5 @@
-<div xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<div xmlns:th="http://www.thymeleaf.org">
+
     <section class="jumbotron text-center">
         <div class="container">
             <h1 class="jumbotron-heading">WEB PROGRAMMING SHOP</h1>
@@ -8,7 +9,7 @@
 
     <div class="container mb-4">
         <div class="row">
-            <div class="col-12" th:if="${ads.size() > 0}">
+            <div class="col-12" th:if="${adsSize > 0}">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -21,7 +22,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="ad : ${ads}" class="product">
+
+                        <tr th:each="ad : ${adPage}" class="product">
                             <td th:text="${ad.getTitle()}"></td>
                             <td th:text="${ad.getDescription()}"></td>
                             <td th:text="${ad.getPrice()}"></td>
@@ -35,6 +37,13 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div th:if="${adPage.totalPages > 0}" class="pagination"
+         th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{/ads(size=${adPage.size}, page=${pageNumber})}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber==adPage.number + 1} ? active"></a>
     </div>
 
     <div class="container mb-4">

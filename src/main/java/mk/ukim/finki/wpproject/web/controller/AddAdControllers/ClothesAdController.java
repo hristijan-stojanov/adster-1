@@ -25,16 +25,14 @@ public class ClothesAdController {
     }
 
 
-    @GetMapping("/add-form/{categoryId}")
-    public String AddClothesAdPage(@PathVariable Long categoryId, Model model) {
+    @GetMapping("/add-form")
+    public String AddClothesAdPage(Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()) {
-            Category category = this.categoryService.findById(categoryId).get();
-            model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "adsTemplates/ClothesAd");
-            return "master";
-        }
-        return "redirect:/add?error=YouHaveNotSelectedCategory";
+        Category category = this.categoryService.findCategoryByName("Clothes");
+        model.addAttribute("category", category);
+        model.addAttribute("bodyContent", "showAdsTemplates/showClothesAd");
+        return "master";
+
     }
 
     @PostMapping("/add")

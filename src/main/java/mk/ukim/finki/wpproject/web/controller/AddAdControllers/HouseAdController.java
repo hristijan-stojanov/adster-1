@@ -26,16 +26,13 @@ public class HouseAdController {
         this.houseAdService = houseAdService;
     }
 
-    @GetMapping("/add-form/{categoryId}")
-    public String AddHousePage(@PathVariable Long categoryId, Model model) {
+    @GetMapping("/add-form")
+    public String AddHousePage(Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()) {
-            Category category = this.categoryService.findById(categoryId).get();
-            model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "adsTemplates/HouseAd");
-            return "master";
-        }
-        return "redirect:/add?error=YouHaveNotSelectedCategory";
+        Category category = this.categoryService.findCategoryByName("House");
+        model.addAttribute("category", category);
+        model.addAttribute("bodyContent", "showAdsTemplates/showHouseAd");
+        return "master";
     }
 
     @PostMapping("/add")

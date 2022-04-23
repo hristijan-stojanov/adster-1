@@ -24,16 +24,14 @@ public class VehicleAdController {
         this.vehicleAdService = vehicleAdService;
     }
 
-    @GetMapping("/add-form/{categoryId}")
-    public String AddVehicleAdPage(@PathVariable Long categoryId, Model model) {
-        if (this.categoryService.findById(categoryId).isPresent()) {
+    @GetMapping("/add-form")
+    public String AddVehicleAdPage(Model model) {
 
-            Category category = this.categoryService.findById(categoryId).get();
+            Category category = this.categoryService.findCategoryByName("Vehicle");
             model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "adsTemplates/VehicleAd");
+            model.addAttribute("bodyContent", "showAdsTemplates/showVehicleAd");
             return "master";
-        }
-        return "redirect:/add?error=YouHaveNotSelectedCategory";
+
     }
 
     @PostMapping("/add")

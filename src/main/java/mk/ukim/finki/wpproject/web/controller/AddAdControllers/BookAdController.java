@@ -27,16 +27,14 @@ public class BookAdController {
         this.bookAdService = bookAdService;
     }
 
-    @GetMapping("/add-form/{categoryId}")
+    @GetMapping("/add-form")
     public String AddBookAdPage(@PathVariable Long categoryId, Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()) {
-            Category category = this.categoryService.findById(categoryId).get();
-            model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "adsTemplates/BookAd");
-            return "master";
-        }
-        return "redirect:/add?error=YouHaveNotSelectedCategory";
+        Category category = this.categoryService.findCategoryByName("Book");
+        model.addAttribute("category", category);
+        model.addAttribute("bodyContent", "showAdsTemplates/showBookAd");
+        return "master";
+
     }
 
     @PostMapping("/add")

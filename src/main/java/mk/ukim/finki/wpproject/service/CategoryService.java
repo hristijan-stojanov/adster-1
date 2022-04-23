@@ -10,6 +10,8 @@ public interface CategoryService {
 
     Optional <Category> findById(Long id);
 
+    Category findCategoryByName(String name);
+
     Category create (String name);
 
     Category edit (Long id, String name);

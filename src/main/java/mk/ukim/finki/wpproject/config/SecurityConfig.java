@@ -24,30 +24,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity security) throws Exception {
-        security.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/", "/register", "/ads/**", "/categories","/add*").permitAll()
-                .antMatchers("/profile/**").hasRole("USER")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .failureUrl("/login?error=BadCredentials")
-                .defaultSuccessUrl("/ads", true)
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login")
-                .and()
-                .exceptionHandling().accessDeniedPage("/login");
+//        security.csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/", "/register", "/ads/**", "/categories","/add*").permitAll()
+//                .antMatchers("/profile/**").hasRole("USER")
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login").permitAll()
+//                .failureUrl("/login?error=BadCredentials")
+//                .defaultSuccessUrl("/ads", true)
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .clearAuthentication(true)
+//                .invalidateHttpSession(true)
+//                .deleteCookies("JSESSIONID")
+//                .logoutSuccessUrl("/login")
+//                .and()
+//                .exceptionHandling().accessDeniedPage("/login");
+
+        security.httpBasic().disable();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider);
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(authenticationProvider);
+//    }
 }

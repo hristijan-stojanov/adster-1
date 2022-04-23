@@ -25,16 +25,14 @@ public class RealEstateAdController {
         this.realEstateAdService = realEstateAdService;
     }
 
-    @GetMapping("/add-form/{categoryId}")
-    public String AddRealEstateAdPage(@PathVariable Long categoryId, Model model) {
+    @GetMapping("/add-form")
+    public String AddRealEstateAdPage(Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()) {
-            Category category = this.categoryService.findById(categoryId).get();
-            model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "adsTemplates/RealEstateAd");
-            return "master";
-        }
-        return "redirect:/add?error=YouHaveNotSelectedCategory";
+        Category category = this.categoryService.findCategoryByName("Real Estate");
+        model.addAttribute("category", category);
+        model.addAttribute("bodyContent", "showAdsTemplates/showRealEstateAd");
+        return "master";
+
     }
 
     @PostMapping("/add")

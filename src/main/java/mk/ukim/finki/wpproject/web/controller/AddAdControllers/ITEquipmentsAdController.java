@@ -24,16 +24,14 @@ public class ITEquipmentsAdController {
         this.itEquipmentAdService = itEquipmentAdService;
     }
 
-    @GetMapping("/add-form/{categoryId}")
-    public String AddITEquipmentsAdPage(@PathVariable Long categoryId, Model model) {
+    @GetMapping("/add-form")
+    public String AddITEquipmentsAdPage(Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()) {
-            Category category = this.categoryService.findById(categoryId).get();
-            model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "adsTemplates/ITEquipmentsAd");
-            return "master";
-        }
-        return "redirect:/add?error=YouHaveNotSelectedCategory";
+        Category category = this.categoryService.findCategoryByName("ITEquipment");
+        model.addAttribute("category", category);
+        model.addAttribute("bodyContent", "showAdsTemplates/showITEquipmentAd");
+        return "master";
+
     }
 
     @PostMapping("/add")

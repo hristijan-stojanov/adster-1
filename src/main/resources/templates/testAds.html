@@ -21,6 +21,7 @@
                             <th scope="col">Price</th>
                             <th scope="col">City</th>
                             <th scope="col">Category</th>
+                            <th scope="col">SelectTest</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -33,6 +34,10 @@
                             ? ${ad.getCity().getName()} : 'No City'"></td>
                             <td th:text="${ad.getCategory() != null}
                             ? ${ad.getCategory().getName()} : 'No Category'"></td>
+                            <td>
+                                <a th:href="@{'/ads/{id}' (id = ${ad.getId()})}" > Click to view more
+                                </a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

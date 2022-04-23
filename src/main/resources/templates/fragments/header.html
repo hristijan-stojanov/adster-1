@@ -15,6 +15,9 @@
                     <li class="nav-item m-auto">
                         <a class="nav-link active" href="/categories">Categories</a>
                     </li>
+                    <li class="nav-item m-auto">
+                        <a class="btn btn-primary btn-sm ml-5" href="/add">Add new ad</a>
+                    </li>
                 </ul>
 
 
@@ -31,18 +34,18 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="nav-link" href="#">
                             <th:block th:if="${#request.getRemoteUser() != null}"
                                       th:text="${#request.getRemoteUser()}"></th:block>
                         </a>
                     </li>
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="btn btn-success btn-sm ml-3" href="/profile">
                             <i class="fa fa-shopping-cart"></i> Profile
                         </a>
                     </li>
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="btn btn-light btn-sm ml-3" href="/logout">
                             <i class="fa fa-shopping-cart"></i> Logout
                         </a>

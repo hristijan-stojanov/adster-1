@@ -6,27 +6,48 @@
         </div>
     </section>
 
-    <div class="container">
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-5">-->
+
+<!--                <form action="" method="POST">-->
+
+<!--                    <select name="category" class="form-control">-->
+
+<!--                        <option th:each="cat : ${categories}"-->
+<!--                                th:value="${cat.getId()}"-->
+<!--                                th:text="${cat.getName()}">-->
+<!--                        </option>-->
+<!--                    </select>-->
+<!--                    <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>-->
+
+
+<!--                    <button id="submit" type="submit" class="btn btn-primary">ОДИ НА СЛЕДЕН ЧЕКОР</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+    <div class="container mb-4">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-12" th:if="${categories.size() > 0}">
+                <div class="">
 
-                <form action="" method="POST">
+                        <div th:each="category : ${categories}" class="product">
+                            <div th:text="${category.getName()}"></div>
+                            <li class="nav-item m-auto">
+                                <a class="btn btn-primary btn-sm ml-5" href="/add">th:text="${category.getName()}</a>
+                            </li>
+                        </div>
 
-                    <select name="category" class="form-control">
-
-                        <option th:each="cat : ${categories}"
-                                th:value="${cat.getId()}"
-                                th:text="${cat.getName()}">
-                        </option>
-                    </select>
-                    <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
-
-
-                    <button id="submit" type="submit" class="btn btn-primary">ОДИ НА СЛЕДЕН ЧЕКОР</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+<!--PROBUVAM TUKA NESTO , NE E TAJ FINALEN KOD-->
 
 </div>
 

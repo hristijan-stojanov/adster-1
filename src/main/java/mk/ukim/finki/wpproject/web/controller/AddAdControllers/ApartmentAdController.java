@@ -5,6 +5,7 @@ import mk.ukim.finki.wpproject.model.ads.realEstates.ApartmentAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Heating;
+import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.*;
 import org.springframework.stereotype.Controller;
@@ -25,12 +26,21 @@ public class ApartmentAdController {
         this.apartmentAdService = apartmentAdService;
     }
 
+    @GetMapping("/{id}")
+    public String showApartmentAd(@PathVariable Long id, Model model){
+
+        ApartmentAd apartmentAd = this.apartmentAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        model.addAttribute("ad", apartmentAd);
+        model.addAttribute("bodyContent", "showAdsTemplates/showApartmentAd");
+        return "master";
+    }
+
     @GetMapping("/add-form")
     public String AddApartmentAdPage(Model model) {
 
         Category category = this.categoryService.findCategoryByName("Apartment");
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "showAdsTemplates/showApartmentAd");
+        model.addAttribute("bodyContent", "adAdsTemplates/ApartmentAd");
         return "master";
 
     }

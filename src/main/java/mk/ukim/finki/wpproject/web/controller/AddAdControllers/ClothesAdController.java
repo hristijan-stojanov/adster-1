@@ -3,6 +3,7 @@ package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.ads.ClothesAd;
 import mk.ukim.finki.wpproject.model.enums.*;
+import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.ClothesAdService;
@@ -24,13 +25,21 @@ public class ClothesAdController {
         this.clothesAdService = clothesAdService;
     }
 
+    @GetMapping("/{id}")
+    public String showClothesAd(@PathVariable Long id, Model model){
+
+        ClothesAd clothesAd = this.clothesAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        model.addAttribute("ad", clothesAd);
+        model.addAttribute("bodyContent", "showAdsTemplates/showClothesAd");
+        return "master";
+    }
 
     @GetMapping("/add-form")
     public String AddClothesAdPage(Model model) {
 
         Category category = this.categoryService.findCategoryByName("Clothes");
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "showAdsTemplates/showClothesAd");
+        model.addAttribute("bodyContent", "adAdsTemplates/ClothesAd");
         return "master";
 
     }

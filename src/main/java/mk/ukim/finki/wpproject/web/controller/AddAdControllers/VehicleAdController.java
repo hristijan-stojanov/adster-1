@@ -3,6 +3,7 @@ package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.ads.VehicleAd;
 import mk.ukim.finki.wpproject.model.enums.*;
+import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.VehicleAdService;
@@ -24,13 +25,22 @@ public class VehicleAdController {
         this.vehicleAdService = vehicleAdService;
     }
 
+    @GetMapping("/{id}")
+    public String showVehicleAd(@PathVariable Long id, Model model){
+
+        VehicleAd vehicleAd = this.vehicleAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        model.addAttribute("ad", vehicleAd);
+        model.addAttribute("bodyContent", "showAdsTemplates/showVehicleAd");
+        return "master";
+    }
+
     @GetMapping("/add-form")
     public String AddVehicleAdPage(Model model) {
 
-            Category category = this.categoryService.findCategoryByName("Vehicle");
-            model.addAttribute("category", category);
-            model.addAttribute("bodyContent", "showAdsTemplates/showVehicleAd");
-            return "master";
+        Category category = this.categoryService.findCategoryByName("Vehicle");
+        model.addAttribute("category", category);
+        model.addAttribute("bodyContent", "adAdsTemplates/VehicleAd");
+        return "master";
 
     }
 

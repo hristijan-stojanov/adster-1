@@ -70,7 +70,7 @@ public class AdController {
                         @PathVariable Long id){
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
-        return "redirect:/"+this.adService.renderAdBasedOnCategory(ad, id, model)+"/add-form";
+        return "redirect:/"+this.adService.renderAdBasedOnCategory(ad, id, model)+"/"+ad.getId().toString();
     }
 
     @CrossOrigin(origins = "http://localhost:9091")

@@ -5,6 +5,7 @@ import mk.ukim.finki.wpproject.model.ads.BookAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Genre;
+import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.BookAdService;
 import mk.ukim.finki.wpproject.service.CategoryService;
@@ -27,12 +28,21 @@ public class BookAdController {
         this.bookAdService = bookAdService;
     }
 
+    @GetMapping("/{id}")
+    public String showBookAd(@PathVariable Long id, Model model){
+
+        BookAd bookAd = this.bookAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        model.addAttribute("ad", bookAd);
+        model.addAttribute("bodyContent", "showAdsTemplates/showBookAd");
+        return "master";
+    }
+
     @GetMapping("/add-form")
-    public String AddBookAdPage(@PathVariable Long categoryId, Model model) {
+    public String AddBookAdPage(Model model) {
 
         Category category = this.categoryService.findCategoryByName("Book");
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "showAdsTemplates/showBookAd");
+        model.addAttribute("bodyContent", "adAdsTemplates/BookAd");
         return "master";
 
     }

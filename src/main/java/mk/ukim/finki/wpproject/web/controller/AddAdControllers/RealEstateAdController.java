@@ -4,6 +4,7 @@ import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
+import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.RealEstateAdService;
@@ -25,12 +26,21 @@ public class RealEstateAdController {
         this.realEstateAdService = realEstateAdService;
     }
 
+    @GetMapping("/{id}")
+    public String showRealEstateAd(@PathVariable Long id, Model model){
+
+        RealEstateAd realEstateAd = this.realEstateAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        model.addAttribute("ad", realEstateAd);
+        model.addAttribute("bodyContent", "showAdsTemplates/showRealEstateAd");
+        return "master";
+    }
+
     @GetMapping("/add-form")
     public String AddRealEstateAdPage(Model model) {
 
         Category category = this.categoryService.findCategoryByName("Real Estate");
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "showAdsTemplates/showRealEstateAd");
+        model.addAttribute("bodyContent", "adAdsTemplates/RealEstateAd");
         return "master";
 
     }

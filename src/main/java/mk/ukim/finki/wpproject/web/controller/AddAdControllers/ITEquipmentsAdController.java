@@ -2,7 +2,9 @@ package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.ads.ITEquipmentAd;
+import mk.ukim.finki.wpproject.model.ads.realEstates.ApartmentAd;
 import mk.ukim.finki.wpproject.model.enums.*;
+import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.ITEquipmentAdService;
@@ -24,12 +26,21 @@ public class ITEquipmentsAdController {
         this.itEquipmentAdService = itEquipmentAdService;
     }
 
+    @GetMapping("/{id}")
+    public String showITEquipmentAd(@PathVariable Long id, Model model){
+
+        ITEquipmentAd itEquipmentAd = this.itEquipmentAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        model.addAttribute("ad", itEquipmentAd);
+        model.addAttribute("bodyContent", "showAdsTemplates/showITEquipmentAd");
+        return "master";
+    }
+
     @GetMapping("/add-form")
     public String AddITEquipmentsAdPage(Model model) {
 
         Category category = this.categoryService.findCategoryByName("ITEquipment");
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "showAdsTemplates/showITEquipmentAd");
+        model.addAttribute("bodyContent", "adAdsTemplates/ITEquipmentAd");
         return "master";
 
     }

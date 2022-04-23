@@ -5,6 +5,7 @@ import mk.ukim.finki.wpproject.model.ads.realEstates.HouseAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Heating;
+import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.HouseAdService;
@@ -26,12 +27,21 @@ public class HouseAdController {
         this.houseAdService = houseAdService;
     }
 
+    @GetMapping("/{id}")
+    public String showHouseAd(@PathVariable Long id, Model model){
+
+        HouseAd houseAd = this.houseAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        model.addAttribute("ad", houseAd);
+        model.addAttribute("bodyContent", "showAdsTemplates/showHouseAd");
+        return "master";
+    }
+
     @GetMapping("/add-form")
     public String AddHousePage(Model model) {
 
         Category category = this.categoryService.findCategoryByName("House");
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "showAdsTemplates/showHouseAd");
+        model.addAttribute("bodyContent", "adAdsTemplates/HouseAd");
         return "master";
     }
 

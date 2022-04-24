@@ -79,7 +79,6 @@ public class AdController {
         return "imgTest";
     }
 
-    @CrossOrigin(origins = "http://localhost:9091")
     @PostMapping("/image")
     public String uploadingImageTest(@RequestParam("file") MultipartFile image, Model model) throws Exception {
         adImage adImage = fileLocationService.save(image.getBytes(), image.getOriginalFilename());

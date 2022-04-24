@@ -22,8 +22,7 @@ public class LoginController {
 
     @GetMapping
     public String getLoginPage(Model model) {
-        model.addAttribute("bodyContent", "login");
-        return "master";
+        return "login";
     }
 
     @PostMapping
@@ -39,8 +38,7 @@ public class LoginController {
             model.addAttribute("hasError", true);
             model.addAttribute("error", exception.getMessage());
 
-            model.addAttribute("bodyContent", "login");
-            return "master";
+            return "login";
         }
     }
 }

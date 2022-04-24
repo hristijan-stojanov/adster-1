@@ -26,7 +26,7 @@ public class FileSystemRepository {
         Path currentPath = Paths.get(".").toAbsolutePath();
         String location = currentPath + "/src/main/resources/static/images/";
 
-        String imgPathName = (new Date().getTime()) + "-" + imageName;
+        String imgPathName = (new Date().getTime()) + imageName;
         adImage adImage = new adImage(imgPathName, location);
         imageDbRepository.save(adImage);
 

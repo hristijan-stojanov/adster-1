@@ -33,10 +33,10 @@ public class UserServiceImpl implements UserService {
         if (username == null || username.isEmpty() || password == null || password.isEmpty()){
             throw new InvalidUsernameOrPasswordException();
         }
-        else if (!password.equals(repeatPassword)){
+        if (!password.equals(repeatPassword)){
             throw new PasswordsDoNotMatchException();
         }
-        else if (this.userRepository.findByUsername(username).isPresent()){
+        if (this.userRepository.findByUsername(username).isPresent()){
             throw new UsernameAlreadyExistsException(username);
         }
 

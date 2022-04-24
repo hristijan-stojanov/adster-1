@@ -14,7 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         .login_form_wrapper {
             float: left;
@@ -187,29 +187,41 @@
     <div class="container h-100 d-flex justify-content-center align-items-center">
         <div class="login_wrapper">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6"><a href="#" class="btn btn-primary facebook">
-                    <span>Login with Facebook</span>
-                    <i class="fa fa-facebook"></i> </a>
+                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                    <a href="#" class="btn btn-primary facebook">
+                    Login with Facebook<i class="fa-brands fa-facebook-f"></i>
+                    </a>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                    <a href="#" class="btn btn-primary google-plus"> Login with Google <i class="fa fa-google-plus"></i>
+                    <a href="#" class="btn btn-primary google-plus">
+                        Login with Google <i class="fa-brands fa-google-plus-g"></i>
                     </a>
                 </div>
             </div>
+
             <h2>or</h2>
-            <div class="formsix-pos">
-                <div class="form-group i-email">
-                    <input type="email" class="form-control" required="" id="email2" placeholder="Email Address *">
+
+            <form method="post" th:action="@{/login}">
+                <div class="formsix-pos">
+                    <div class="form-group i-email">
+                        <input type="text" class="form-control" required="" id="username" name="username" placeholder="Username *">
+                    </div>
                 </div>
-            </div>
-            <div class="formsix-e">
-                <div class="form-group i-password">
-                    <input type="password" class="form-control" required="" id="password2" placeholder="Password *">
+                <div class="formsix-e">
+                    <div class="form-group i-password">
+                        <input type="password" class="form-control" required="" id="password" name="password" placeholder="Password *">
+                    </div>
+                    <div class="container text-center">
+                        <p class="text-danger" th:if="${hasError}" th:text="${error}"></p>
+                    </div>
                 </div>
-            </div>
-            <div class="login_btn_wrapper"><a href="#" class="btn btn-primary login_btn"> Login </a></div>
+                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                </div>
+            </form>
+
             <div class="login_message">
-                <p>Don’t have an account ? <a href="#"> Sign up </a></p>
+                <p>Don’t have an account ? <a th:href="@{/register}"> Sign up </a></p>
             </div>
         </div>
     </div>

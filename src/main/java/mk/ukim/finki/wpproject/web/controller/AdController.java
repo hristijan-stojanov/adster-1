@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.*;
 
 @Controller
-@RequestMapping("/ads")
+@RequestMapping(value = {"/", "/ads"})
 public class AdController {
 
     private final AdService adService;

@@ -21,7 +21,7 @@
                             <th scope="col">Price</th>
                             <th scope="col">City</th>
                             <th scope="col">Category</th>
-                            <th scope="col">SelectTest</th>
+                            <th scope="col">Select Ad</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -43,14 +43,13 @@
                     </table>
                 </div>
             </div>
+            <div th:if="${adPage.totalPages > 0}" class="pagination"
+                 th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/ads(size=${adPage.size}, page=${pageNumber})}"
+                   th:text="${pageNumber}"
+                   th:class="${pageNumber==adPage.number + 1} ? active"></a>
+            </div>
         </div>
-    </div>
-
-    <div th:if="${adPage.totalPages > 0}" class="pagination"
-         th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{/ads(size=${adPage.size}, page=${pageNumber})}"
-           th:text="${pageNumber}"
-           th:class="${pageNumber==adPage.number + 1} ? active"></a>
     </div>
 
     <div class="container mb-4">

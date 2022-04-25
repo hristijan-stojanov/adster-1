@@ -1,0 +1,36 @@
+server:
+    port: 9090
+    servlet:
+        session:
+            cookie:
+                name: wp-project
+            timeout: 60m
+spring:
+    mvc:
+        hiddenmethod:
+            filter:
+                enabled: true
+    profiles:
+        active: prod
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        clientId:
+                        clientSecret:
+                        scope:
+                            - email
+                            - profile
+
+                    facebook:
+                        clientId:
+                        clientSecret:
+                        scope:
+                            - email
+                            - public_profile
+
+    servlet:
+        multipart:
+            enabled: true
+            location: ${java.io.tmpdir}

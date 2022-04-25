@@ -27,12 +27,13 @@ public class LoginController {
     }
 
     @PostMapping
-    public String login(@RequestParam String username,
-                        @RequestParam String password,
+    public String login(HttpServletRequest request,
                         Model model) {
         User user = null;
         try{
-            user = this.authService.login(username, password);
+            user = this.authService.login(request.getParameter("username"), request.getParameter("password"));
+            request.getSession().setAttribute("user", user);
+
             return "redirect:/ads";
         }
         catch (InvalidUserCredentialsException exception) {

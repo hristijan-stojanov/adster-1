@@ -29,12 +29,12 @@ public interface AdService {
     Optional<Ad> edit(Long adId, String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
                       Double price, String cityId, AdType type, Condition condition, Long categoryId);
 
+    void deleteById(Long adId);
+
     public Page<Ad> findPaginated(Pageable pageable);
 
     public String renderAdBasedOnCategory(Ad ad, Long id, Model model);
 
     public String redirectAdBasedOnCategory(Long id);
-
-    void deleteById(Long adId);
 
 }

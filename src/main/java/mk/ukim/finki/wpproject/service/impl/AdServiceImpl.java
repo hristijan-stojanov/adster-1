@@ -86,6 +86,13 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
+    public void deleteById(Long id) {
+        Ad ad = this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        this.adRepository.delete(ad);
+    }
+
+
+    @Override
     public Page<Ad> findPaginated(Pageable pageable) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
@@ -109,36 +116,34 @@ public class AdServiceImpl implements AdService {
             VehicleAd vehicleAd = (VehicleAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
             model.addAttribute("vehicleAd", vehicleAd);
             return "VehicleAd";
-        }
-        else if (ad.getCategory().getName().equals("IT Equipment")) {
+        } else if (ad.getCategory().getName().equals("IT Equipment")) {
             ITEquipmentAd itEquipmentAd = (ITEquipmentAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
             model.addAttribute("itEquipmentAd", itEquipmentAd);
             return "ITEquipmentAd";
-        }
-        else if (ad.getCategory().getName().equals("Book")) {
+        } else if (ad.getCategory().getName().equals("Book")) {
             BookAd bookAd = (BookAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
             model.addAttribute("bookAd", bookAd);
             return "BookAd";
-        }
-        else if (ad.getCategory().getName().equals("Clothes")) {
+        } else if (ad.getCategory().getName().equals("Clothes")) {
             ClothesAd clothesAd = (ClothesAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
             model.addAttribute("clothesAd", clothesAd);
             return "ClothesAd";
-        }
-        else if (ad.getCategory().getName().equals("Real Estate")) {
+        } else if (ad.getCategory().getName().equals("Real Estate")) {
             RealEstateAd realEstateAd = (RealEstateAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
             model.addAttribute("realEstateAd", realEstateAd);
             return "RealEstateAd";
-        }
-        else if (ad.getCategory().getName().equals("Apartment")) {
+        } else if (ad.getCategory().getName().equals("Apartment")) {
             ApartmentAd apartmentAd = (ApartmentAd) this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
             model.addAttribute("apartmentAd", apartmentAd);
             return "ApartmentAd";
-        }
-        else if (ad.getCategory().getName().equals("House")) {
+        } else if (ad.getCategory().getName().equals("House")) {
             HouseAd houseAd = (HouseAd) this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
             model.addAttribute("houseAd", houseAd);
             return "HouseAd";
+        } else if (ad.getCategory().getName().equals("Other")){
+            Ad otherAd =  this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+            model.addAttribute("otherAd",otherAd);
+            return "OtherAd";
         }
         return "showAd";
     }
@@ -147,29 +152,23 @@ public class AdServiceImpl implements AdService {
     public String redirectAdBasedOnCategory(Long id) {
         Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
 
-        if (category.getName().equals("Apartment")){
+        if (category.getName().equals("Apartment")) {
             return "ApartmentAd";
-        } else if (category.getName().equals("House")){
+        } else if (category.getName().equals("House")) {
             return "HouseAd";
-        } else if (category.getName().equals("Real Estate")){
+        } else if (category.getName().equals("Real Estate")) {
             return "RealEstateAd";
-        }else if (category.getName().equals("Book")){
+        } else if (category.getName().equals("Book")) {
             return "BookAd";
-        }else if (category.getName().equals("Clothes")){
+        } else if (category.getName().equals("Clothes")) {
             return "ClothesAd";
-        } else if (category.getName().equals("IT Equipment")){
+        } else if (category.getName().equals("IT Equipment")) {
             return "ITEquipmentAd";
-        } else if (category.getName().equals("Vehicle")){
+        } else if (category.getName().equals("Vehicle")) {
             return "VehicleAd";
+        } else if (category.getName().equals("Other")) {
+            return "OtherAd";
         }
         return "";
     }
-
-
-    @Override
-    public void deleteById(Long id) {
-        Ad ad = this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
-        this.adRepository.delete(ad);
-    }
-
 }

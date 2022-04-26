@@ -14,9 +14,11 @@ public class AddAdController {
 
 
     private final CategoryService categoryService;
+    private final AdService adService;
 
-    public AddAdController(CategoryService categoryService) {
+    public AddAdController(CategoryService categoryService, AdService adService) {
         this.categoryService = categoryService;
+        this.adService = adService;
     }
 
     @GetMapping
@@ -27,7 +29,9 @@ public class AddAdController {
         return "master";
     }
 
-    // TUKA NA POST IZGLEDA KE TREBA DA SE PRAVA NESTO
-    // ZA SO KATEGORIJATA DA SE ODE NA KONKRETNA STRANA
+    @GetMapping("/{id}")
+    public String SelectCategory(@PathVariable Long id){
+        return "redirect:/"+this.adService.redirectAdBasedOnCategory(id)+"/add-form/"+id.toString();
+    }
 
 }

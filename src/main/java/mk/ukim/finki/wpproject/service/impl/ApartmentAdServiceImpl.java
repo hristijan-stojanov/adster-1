@@ -59,8 +59,8 @@ public class ApartmentAdServiceImpl implements ApartmentAdService {
                                       int quadrature, int yearMade, int numRooms, int numFloors, int floor,
                                       boolean hasBasement, boolean hasElevator, boolean hasParkingSpot, Heating heating) {
 
-        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
         User user = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
         City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
 
         ApartmentAd apartmentAd = new ApartmentAd(title, description, isExchangePossible, isDeliveryPossible,

@@ -1,0 +1,179 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">ВЕ МОЛИМЕ ВНЕСЕТИ ГИ СООДВЕТНИТЕ ИНФОРМАЦИИ ЗА ИЗБРАНАТА КАТЕГОРИЈА</h1>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="categoryId" class="form-control" disabled>
+                        <option th:selected="${category_1.getName()}"
+                                th:value="${category_1.getId()}"
+                                th:text="${category_1.getName()}">
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <a type="button" class="btn btn-primary" href="/add">Избери друга категорија</a>
+                    <br><br><br><br>
+                </div>
+
+                <form action="ClothesAd/add" method="POST">
+                    <input id="id" type="hidden" name="id" th:value="(${clothesAd} != null ? ${clothesAd.getId()} : '')">
+
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text"
+                               class="form-control"
+                               id="title"
+                               name="title"
+                               th:value="(${clothesAd} != null ? ${clothesAd.getTitle()} : '')"
+                               required
+                               placeholder="Enter title to ad">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text"
+                               class="form-control"
+                               id="description"
+                               name="description"
+                               th:value="(${clothesAd} != null ? ${clothesAd.getDescription()} : '')"
+                               placeholder="Description">
+                    </div>
+
+                    <div class="form-group">
+                        <label>City</label>
+                        <select name="cityId" class="form-control">
+                            <option th:if="${cityList} != null"
+                                    th:each="City : ${cityList}"
+                                    th:value="${City.getName()}"
+                                    th:text="${City.getName()}">
+                            </option>
+                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ad Type</label>
+                        <select name="type" class="form-control">
+                            <option th:if="${adTypeList} != null"
+                                    th:each="Type : ${adTypeList}"
+                                    th:value="${Type.name()}"
+                                    th:text="${Type.name()}">
+                            </option>
+                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Condition</label>
+                        <select name="condition" class="form-control">
+                            <option th:if="${conditionList} != null"
+                                    th:each="condition : ${conditionList}"
+                                    th:value="${condition.name()}"
+                                    th:text="${condition.name()}">
+                            </option>
+                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Is Exchange Possible</label>
+                        <select name="isExchangePossible" class="form-control">
+                            <option th:text="Yes"
+                                    th:value="True">
+                            </option>
+                            <option th:text="No"
+                                    th:value="False">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Is Delivery Possible</label>
+                        <select name="isDeliveryPossible" class="form-control">
+                            <option th:text="Yes"
+                                    th:value="True">
+                            </option>
+                            <option th:text="No"
+                                    th:value="False">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type of Clothing</label>
+                        <select name="typeClothing" class="form-control">
+                            <option th:if="${typeClothingList} != null"
+                                    th:each="Type : ${typeClothingList}"
+                                    th:value="${Type.name()}"
+                                    th:text="${Type.name()}">
+                            </option>
+                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Size</label>
+                        <select name="size" class="form-control">
+                            <option th:if="${sizeList} != null"
+                                    th:each="Size : ${sizeList}"
+                                    th:value="${Size.name()}"
+                                    th:text="${Size.name()}">
+                            </option>
+                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numSize">Num Size</label>
+                        <input type="text"
+                               class="form-control"
+                               id="numSize"
+                               name="numSize"
+                               th:value="(${clothesAd} != null ? ${clothesAd.getNumSize()} : '')"
+                               placeholder="NumSize">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Color</label>
+                        <select name="color" class="form-control">
+                            <option th:if="${colorList} != null"
+                                    th:each="Color : ${colorList}"
+                                    th:value="${Color.name()}"
+                                    th:text="${Color.name()}">
+                            </option>
+                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="text"
+                               class="form-control"
+                               id="price"
+                               name="price"
+                               th:value="(${clothesAd} != null ? ${clothesAd.getPrice()} : '')"
+                               placeholder="Price">
+                    </div>
+
+                    <br><br><br>
+
+                    <button id="submit" type="submit" class="btn btn-primary">ПРИКАЧИ ОГЛАС</button>
+                    <a type="button" class="btn btn-primary" href="/add">Врати се назад</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+</html>

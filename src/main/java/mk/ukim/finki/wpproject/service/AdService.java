@@ -33,6 +33,8 @@ public interface AdService {
 
     public String renderAdBasedOnCategory(Ad ad, Long id, Model model);
 
+    public String redirectAdBasedOnCategory(Long id);
+
     void deleteById(Long adId);
 
 }

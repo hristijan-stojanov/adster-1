@@ -1,4 +1,4 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org">
     <section class="jumbotron text-center">
         <div class="container">
             <h1 class="jumbotron-heading">ВЕ МОЛИМЕ ИЗБЕРЕТЕ ВО КОЈА КАТЕГОРИЈА ПРИПАЃА ПРОДУКТОТ КОЈ ШТО САКАТЕ ДА ГО
@@ -6,67 +6,15 @@
         </div>
     </section>
 
-<!--    <div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col-md-5">-->
-
-<!--                <form action="" method="POST">-->
-
-<!--                    <select name="category" class="form-control">-->
-
-<!--                        <option th:each="cat : ${categories}"-->
-<!--                                th:value="${cat.getId()}"-->
-<!--                                th:text="${cat.getName()}">-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                    <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>-->
-
-
-<!--                    <button id="submit" type="submit" class="btn btn-primary">ОДИ НА СЛЕДЕН ЧЕКОР</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-
     <div class="container mb-4">
         <div class="row">
             <div class="col-12" th:if="${categories.size() > 0}">
-                <div class="">
-
-                        <div th:each="category : ${categories}" class="product">
-                            <div th:text="${category.getName()}"></div>
-                            <li class="nav-item m-auto">
-                                <a class="btn btn-primary btn-sm ml-5" href="/add">th:text="${category.getName()}</a>
-                            </li>
-                        </div>
-
+                <div th:each="category : ${categories}" >
+                    <a th:href="@{'/add/{id}' (id=${category.getId()})}"
+                       class="btn-info btn-lg " th:text="${category.getName()}"></a>
+                    <br> <br>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!--PROBUVAM TUKA NESTO , NE E TAJ FINALEN KOD-->
-
-</div>
 
 
-<!--        <div class="col mb-3">-->
-<!--            <div class="row">-->
-<!--                <div class="col-sm-12 col-md-12" sec:authorize="hasRole('ROLE_ADMIN')">-->
-<!--                    <a href="/products/add-form" class="btn btn-block btn-dark add-product-btn">-->
-<!--                        Add new product-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-
-<!--        <td th:switch="${ca}">-->
-<!--            <span th:case="'0'">NO COURSES YET!</span>-->
-<!--            <span th:case="'1'" th:text="${teacher.courses[0]}"></span>-->
-<!--            <div th:case="*">-->
-<!--                <div th:each="course:${teacher.courses}" th:text="${course}"/>-->
-<!--            </div>-->
-<!--        </td>-->

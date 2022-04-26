@@ -132,6 +132,29 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
+    public String redirectAdBasedOnCategory(Long id) {
+        Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
+
+        if (category.getName().equals("Apartment")){
+            return "ApartmentAd";
+        } else if (category.getName().equals("House")){
+            return "HouseAd";
+        } else if (category.getName().equals("Real Estate")){
+            return "RealEstateAd";
+        }else if (category.getName().equals("Book")){
+            return "BookAd";
+        }else if (category.getName().equals("Clothes")){
+            return "ClothesAd";
+        } else if (category.getName().equals("IT Equipment")){
+            return "ITEquipmentAd";
+        } else if (category.getName().equals("Vehicle")){
+            return "VehicleAd";
+        }
+        return "";
+    }
+
+
+    @Override
     public void deleteById(Long id) {
         Ad ad = this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         this.adRepository.delete(ad);

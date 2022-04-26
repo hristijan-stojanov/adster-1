@@ -1,17 +1,21 @@
 package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
 import mk.ukim.finki.wpproject.model.Category;
+import mk.ukim.finki.wpproject.model.City;
+import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.realEstates.ApartmentAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Heating;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
-import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -20,14 +24,17 @@ public class ApartmentAdController {
 
     private final CategoryService categoryService;
     private final ApartmentAdService apartmentAdService;
+    private final CityService cityService;
 
-    public ApartmentAdController(CategoryService categoryService, ApartmentAdService apartmentAdService) {
+    public ApartmentAdController(CategoryService categoryService, ApartmentAdService apartmentAdService, CityService cityService,
+                                 UserService userService) {
         this.categoryService = categoryService;
         this.apartmentAdService = apartmentAdService;
+        this.cityService = cityService;
     }
 
     @GetMapping("/{id}")
-    public String showApartmentAd(@PathVariable Long id, Model model){
+    public String showApartmentAd(@PathVariable Long id, Model model) {
 
         ApartmentAd apartmentAd = this.apartmentAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", apartmentAd);
@@ -40,9 +47,32 @@ public class ApartmentAdController {
 
         Category category = this.categoryService.findCategoryByName("Apartment");
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "adAdsTemplates/ApartmentAd");
+        model.addAttribute("bodyContent", "addAdsTemplates/addApartmentAd");
         return "master";
 
+    }
+
+    @GetMapping("/add-form/{categoryId}")
+    public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
+
+        if (this.categoryService.findById(categoryId).isPresent()) {
+
+            Category category = this.categoryService.findById(categoryId).get();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+            List<Heating> heatingList = Arrays.asList(Heating.values());
+
+            model.addAttribute("category_1", category);
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("heatingList", heatingList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addApartmentAd");
+            return "master";
+        }
+        return "redirect:/add?error=YouHaveNotSelectedCategory";
     }
 
     @PostMapping("/add")
@@ -56,8 +86,8 @@ public class ApartmentAdController {
             @RequestParam String cityId,
             @RequestParam AdType type,
             @RequestParam Condition condition,
-            @RequestParam Long categoryId,
-            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long userId, //todo
             @RequestParam int quadrature,
             @RequestParam int yearMade,
             @RequestParam int numRooms,
@@ -86,6 +116,8 @@ public class ApartmentAdController {
         return "redirect:/ads";
     }
 
+
+    // tuka ne treba da moze da mene kategorija
     @GetMapping("/edit-form/{id}")
     public String editApartmentAd(@PathVariable Long id, Model model) {
         if (this.apartmentAdService.findById(id).isPresent()) {
@@ -93,7 +125,7 @@ public class ApartmentAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("apartmentAd", apartmentAd);
-            model.addAttribute("bodyContent", "adsTemplates/ApartmentAd");
+            model.addAttribute("bodyContent", "adsTemplates/addApartmentAd");
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

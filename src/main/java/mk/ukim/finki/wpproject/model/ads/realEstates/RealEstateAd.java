@@ -28,3 +28,6 @@ public class RealEstateAd extends Ad {
         this.quadrature = quadrature;
     }
 }
+
+// dali nesto ke smene ako se izostava IsDevliveryPossible
+// ili da se naprave default false

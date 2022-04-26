@@ -1,17 +1,19 @@
 package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
 import mk.ukim.finki.wpproject.model.Category;
+import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
-import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
+import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.RealEstateAdService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -20,10 +22,12 @@ public class RealEstateAdController {
 
     private final CategoryService categoryService;
     private final RealEstateAdService realEstateAdService;
+    private final CityService cityService;
 
-    public RealEstateAdController(CategoryService categoryService, RealEstateAdService realEstateAdService) {
+    public RealEstateAdController(CategoryService categoryService, RealEstateAdService realEstateAdService, CityService cityService) {
         this.categoryService = categoryService;
         this.realEstateAdService = realEstateAdService;
+        this.cityService = cityService;
     }
 
     @GetMapping("/{id}")
@@ -40,9 +44,30 @@ public class RealEstateAdController {
 
         Category category = this.categoryService.findCategoryByName("Real Estate");
         model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "adAdsTemplates/RealEstateAd");
+        model.addAttribute("bodyContent", "adAdsTemplates/addRealEstateAd");
         return "master";
 
+    }
+
+    @GetMapping("/add-form/{categoryId}")
+    public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
+
+        if (this.categoryService.findById(categoryId).isPresent()){
+
+            Category category = this.categoryService.findById(categoryId).get();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+
+            model.addAttribute("category_1",category);
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList",adTypeList);
+            model.addAttribute("conditionList",conditionList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addRealEstateAd");
+            return "master";
+        }
+        return "redirect:/add?error=YouHaveNotSelectedCategory";
     }
 
     @PostMapping("/add")
@@ -53,11 +78,11 @@ public class RealEstateAdController {
             @RequestParam boolean isExchangePossible,
             @RequestParam boolean isDeliveryPossible,
             @RequestParam Double price,
-            @RequestParam String cityName,
+            @RequestParam String cityName, //todo
             @RequestParam AdType type,
             @RequestParam Condition condition,
-            @RequestParam Long categoryId,
-            @RequestParam(required = false) Long userId,
+            @RequestParam Long categoryId, //todo
+            @RequestParam(required = false) Long userId, //todo
             @RequestParam int quadrature
     ) {
         if (id != null) {
@@ -83,7 +108,7 @@ public class RealEstateAdController {
             List<Category> categories = this.categoryService.findAll();
             model.addAttribute("categories", categories);
             model.addAttribute("realEstateAd", realEstateAd);
-            model.addAttribute("bodyContent", "adsTemplates/RealEstateAd");
+            model.addAttribute("bodyContent", "adsTemplates/addRealEstateAd");
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

@@ -95,7 +95,10 @@ public class ITEquipmentAdServiceImpl implements ITEquipmentAdService {
 
     @Override
     public void deleteById(Long adId) {
-        ITEquipmentAd itEquipmentAd = this.itEquipmentAdRepository.findById(adId).orElseThrow(() -> new ITEquipmentAdNotFoundException(adId));
-        this.itEquipmentAdRepository.delete(itEquipmentAd);
+//        ITEquipmentAd itEquipmentAd = this.itEquipmentAdRepository.findById(adId).orElseThrow(() -> new ITEquipmentAdNotFoundException(adId));
+//        this.itEquipmentAdRepository.delete(itEquipmentAd);
+
+        this.itEquipmentAdRepository.deleteById(adId);
+        // zaso ne se brise na taj nacin
     }
 }

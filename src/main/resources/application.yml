@@ -6,6 +6,10 @@ server:
                 name: wp-project
             timeout: 60m
 spring:
+    web:
+      resources:
+          static-locations[0]: "file:src/main/resources/static/"
+          static-locations[1]: "classpath:/static/"
     mvc:
         hiddenmethod:
             filter:
@@ -29,7 +33,6 @@ spring:
                         scope:
                             - email
                             - public_profile
-
     servlet:
         multipart:
             enabled: true

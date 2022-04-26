@@ -2,12 +2,14 @@ package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
+import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.ITEquipmentAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.ITEquipmentAdService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -83,25 +85,26 @@ public class ITEquipmentsAdController {
             @RequestParam boolean isExchangePossible,
             @RequestParam boolean isDeliveryPossible,
             @RequestParam Double price,
-            @RequestParam String cityName, //todo
+            @RequestParam String cityId,
             @RequestParam AdType type,
             @RequestParam Condition condition,
-            @RequestParam Long categoryId, //todo
-            @RequestParam(required = false) Long userId, //todo
+            @RequestParam Long categoryId,
             @RequestParam ITBrand brand,
             @RequestParam ProcessorBrand processor,
             @RequestParam String processorModel,
             @RequestParam TypeMemory typeMemory,
             @RequestParam int memorySize,
-            @RequestParam int ramMemorySize
+            @RequestParam int ramMemorySize,
+            Authentication authentication
     ) {
+        Long userId = ((User) authentication.getPrincipal()).getId();
         if (id != null) {
             this.itEquipmentAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price,
-                    cityName, type, condition, categoryId, brand, processor, processorModel, typeMemory, memorySize,
+                        cityId, type, condition, categoryId, brand, processor, processorModel, typeMemory, memorySize,
                     ramMemorySize);
         } else {
             this.itEquipmentAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
-                    cityName, type, condition, categoryId, userId, brand, processor, processorModel, typeMemory, memorySize,
+                    cityId, type, condition, categoryId, userId, brand, processor, processorModel, typeMemory, memorySize,
                     ramMemorySize);
         }
         return "redirect:/ads";

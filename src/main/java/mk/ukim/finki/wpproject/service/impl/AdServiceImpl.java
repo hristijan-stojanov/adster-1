@@ -8,6 +8,8 @@ import mk.ukim.finki.wpproject.model.ads.BookAd;
 import mk.ukim.finki.wpproject.model.ads.ClothesAd;
 import mk.ukim.finki.wpproject.model.ads.ITEquipmentAd;
 import mk.ukim.finki.wpproject.model.ads.VehicleAd;
+import mk.ukim.finki.wpproject.model.ads.realEstates.ApartmentAd;
+import mk.ukim.finki.wpproject.model.ads.realEstates.HouseAd;
 import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
@@ -127,6 +129,16 @@ public class AdServiceImpl implements AdService {
             RealEstateAd realEstateAd = (RealEstateAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
             model.addAttribute("realEstateAd", realEstateAd);
             return "RealEstateAd";
+        }
+        else if (ad.getCategory().getName().equals("Apartment")) {
+            ApartmentAd apartmentAd = (ApartmentAd) this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+            model.addAttribute("apartmentAd", apartmentAd);
+            return "ApartmentAd";
+        }
+        else if (ad.getCategory().getName().equals("House")) {
+            HouseAd houseAd = (HouseAd) this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+            model.addAttribute("houseAd", houseAd);
+            return "HouseAd";
         }
         return "showAd";
     }

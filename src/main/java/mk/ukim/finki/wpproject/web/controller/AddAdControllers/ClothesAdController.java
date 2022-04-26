@@ -2,12 +2,14 @@ package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
+import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.ClothesAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.ClothesAdService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -86,12 +88,13 @@ public class ClothesAdController {
             @RequestParam AdType type,
             @RequestParam Condition condition,
             @RequestParam Long categoryId,
-            @RequestParam(required = false) Long userId, //todo
             @RequestParam TypeClothing typeClothing,
             @RequestParam int numSize, // ?
             @RequestParam Size size,
-            @RequestParam Color color
+            @RequestParam Color color,
+            Authentication authentication
     ) {
+        Long userId = ((User) authentication.getPrincipal()).getId();
         if (id != null) {
             this.clothesAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, typeClothing, numSize, size, color);

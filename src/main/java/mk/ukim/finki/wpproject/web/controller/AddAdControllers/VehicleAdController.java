@@ -2,12 +2,14 @@ package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
+import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.VehicleAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.VehicleAdService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -87,11 +89,10 @@ public class VehicleAdController {
             @RequestParam boolean isExchangePossible,
             @RequestParam boolean isDeliveryPossible,
             @RequestParam Double price,
-            @RequestParam String cityName, //todo
+            @RequestParam String cityId,
             @RequestParam AdType type,
             @RequestParam Condition condition,
-            @RequestParam Long categoryId, //todo
-            @RequestParam(required = false) Long userId, //todo
+            @RequestParam Long categoryId,
             @RequestParam CarBrand brand,
             @RequestParam int yearMade,
             @RequestParam Color color,
@@ -99,14 +100,16 @@ public class VehicleAdController {
             @RequestParam Fuel fuel,
             @RequestParam int enginePower,
             @RequestParam Gearbox gearbox,
-            @RequestParam Registration registration
+            @RequestParam Registration registration,
+            Authentication authentication
     ) {
+        Long userId = ((User) authentication.getPrincipal()).getId();
         if (id != null) {
-            this.vehicleAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityName,
+            this.vehicleAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, brand, yearMade, color, milesTraveled, fuel, enginePower, gearbox,
                     registration);
         } else {
-            this.vehicleAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityName,
+            this.vehicleAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, userId, brand, yearMade, color, milesTraveled, fuel, enginePower, gearbox,
                     registration);
         }

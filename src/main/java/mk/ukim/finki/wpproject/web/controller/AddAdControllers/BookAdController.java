@@ -2,6 +2,7 @@ package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
+import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.BookAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
@@ -10,6 +11,7 @@ import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.service.BookAdService;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -85,18 +87,19 @@ public class BookAdController {
             @RequestParam AdType type,
             @RequestParam Condition condition,
             @RequestParam Long categoryId,
-            @RequestParam(required = false) Long userId, //todo
             @RequestParam String author,
             @RequestParam int yearMade,
             @RequestParam int numPages,
-            @RequestParam Genre genre
+            @RequestParam Genre genre,
+            Authentication authentication
     ) {
+        User user = (User) authentication.getPrincipal();
         if (id != null) {
             this.bookAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible,
                     price, cityId, type, condition, categoryId, author, yearMade, numPages, genre);
         } else {
             this.bookAdService.save(title, description, isExchangePossible, isDeliveryPossible,
-                    price, cityId, type, condition, categoryId, userId, author, yearMade, numPages, genre);
+                    price, cityId, type, condition, categoryId, user.getId(), author, yearMade, numPages, genre);
         }
         return "redirect:/ads";
     }

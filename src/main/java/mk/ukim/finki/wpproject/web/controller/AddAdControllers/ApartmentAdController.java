@@ -9,6 +9,7 @@ import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Heating;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.service.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,8 +87,7 @@ public class ApartmentAdController {
             @RequestParam String cityId,
             @RequestParam AdType type,
             @RequestParam Condition condition,
-            @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) Long userId, //todo
+            @RequestParam Long categoryId,
             @RequestParam int quadrature,
             @RequestParam int yearMade,
             @RequestParam int numRooms,
@@ -96,8 +96,10 @@ public class ApartmentAdController {
             @RequestParam boolean hasBasement,
             @RequestParam boolean hasElevator,
             @RequestParam boolean hasParkingSpot,
-            @RequestParam Heating heating
+            @RequestParam Heating heating,
+            Authentication authentication
     ) {
+        Long userId = ((User) authentication.getPrincipal()).getId();
         if (id != null) {
             this.apartmentAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, quadrature, yearMade, numRooms, numFloors, floor, hasBasement, hasElevator,

@@ -10,23 +10,23 @@
         <div class="row">
             <div class="col-md-5">
 
-                <div class="form-group">
-                    <label>Category</label>
-                    <select name="categoryId" class="form-control" disabled>
-                        <option th:selected="${category_1.getName()}"
-                                th:value="${category_1.getId()}"
-                                th:text="${category_1.getName()}">
-                        </option>
-                    </select>
-                </div>
-
-                <div>
-                    <a type="button" class="btn btn-primary" href="/add">Избери друга категорија</a>
-                    <br><br><br><br>
-                </div>
-
-                <form action="VehicleAd/add" method="POST">
+                <form th:action="@{/VehicleAd/add}" method="POST">
                     <input id="id" type="hidden" name="id" th:value="(${vehicleAd} != null ? ${vehicleAd.getId()} : '')">
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="categoryId" class="form-control" >
+                            <option th:selected="${category_1.getName()}"
+                                    th:value="${category_1.getId()}"
+                                    th:text="${category_1.getName()}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <a type="button" class="btn btn-primary" href="/add">Избери друга категорија</a>
+                        <br><br><br><br>
+                    </div>
 
                     <div class="form-group">
                         <label for="title">Title</label>

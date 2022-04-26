@@ -2,6 +2,7 @@ package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
+import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
@@ -9,6 +10,7 @@ import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.RealEstateAdService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -78,19 +80,20 @@ public class RealEstateAdController {
             @RequestParam boolean isExchangePossible,
             @RequestParam boolean isDeliveryPossible,
             @RequestParam Double price,
-            @RequestParam String cityName, //todo
+            @RequestParam String cityId,
             @RequestParam AdType type,
             @RequestParam Condition condition,
-            @RequestParam Long categoryId, //todo
-            @RequestParam(required = false) Long userId, //todo
-            @RequestParam int quadrature
+            @RequestParam Long categoryId,
+            @RequestParam int quadrature,
+            Authentication authentication
     ) {
+        Long userId = ((User) authentication.getPrincipal()).getId();
         if (id != null) {
             this.realEstateAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price,
-                    cityName, type, condition, categoryId, quadrature);
+                    cityId, type, condition, categoryId, quadrature);
         } else {
             this.realEstateAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
-                    cityName, type, condition, categoryId, userId, quadrature);
+                    cityId, type, condition, categoryId, userId, quadrature);
         }
         return "redirect:/ads";
     }

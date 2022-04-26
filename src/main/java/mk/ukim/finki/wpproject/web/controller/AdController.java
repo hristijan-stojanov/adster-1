@@ -66,8 +66,7 @@ public class AdController {
     }
 
     @GetMapping("/{id}")
-    public String getAd(Model model,
-                        @PathVariable Long id){
+    public String getAd(Model model, @PathVariable Long id){
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
         return "redirect:/"+this.adService.renderAdBasedOnCategory(ad, id, model)+"/"+ad.getId();

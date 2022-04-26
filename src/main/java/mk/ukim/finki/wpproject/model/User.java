@@ -1,7 +1,6 @@
 package mk.ukim.finki.wpproject.model;
 
 import lombok.Data;
-import mk.ukim.finki.wpproject.model.enums.Provider;
 import mk.ukim.finki.wpproject.model.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,9 +32,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Enumerated(EnumType.STRING)
-    private Provider provider;
-
     @ManyToMany
     private List<Ad> savedAds;
 
@@ -52,6 +48,14 @@ public class User implements UserDetails {
         this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.savedAds = new ArrayList<>();
+        this.advertisedAds = new ArrayList<>();
+    }
+
+    public User(String username, String email, Role role) {
+        this.username = username;
+        this.email = email;
         this.role = role;
         this.savedAds = new ArrayList<>();
         this.advertisedAds = new ArrayList<>();

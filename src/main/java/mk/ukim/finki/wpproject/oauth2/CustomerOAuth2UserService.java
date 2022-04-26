@@ -1,6 +1,5 @@
-package mk.ukim.finki.wpproject.service;
+package mk.ukim.finki.wpproject.oauth2;
 
-import mk.ukim.finki.wpproject.model.CustomerOAuth2User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

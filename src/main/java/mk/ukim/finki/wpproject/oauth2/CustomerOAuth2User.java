@@ -1,4 +1,4 @@
-package mk.ukim.finki.wpproject.model;
+package mk.ukim.finki.wpproject.oauth2;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -27,5 +27,9 @@ public class CustomerOAuth2User implements OAuth2User {
     @Override
     public String getName() {
         return oAuth2User.getAttribute("name");
+    }
+
+    public String getEmail() {
+        return oAuth2User.getAttribute("email");
     }
 }

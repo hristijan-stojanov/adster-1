@@ -1,6 +1,7 @@
 package mk.ukim.finki.wpproject.config;
 
-import mk.ukim.finki.wpproject.service.CustomerOAuth2UserService;
+import mk.ukim.finki.wpproject.oauth2.CustomerOAuth2UserService;
+import mk.ukim.finki.wpproject.oauth2.OAuthLoginSuccessHandler;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,20 +9,20 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final PasswordEncoder passwordEncoder;
     private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
     private final CustomerOAuth2UserService customerOAuth2UserService;
+    private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
 
-    public SecurityConfig(PasswordEncoder passwordEncoder, CustomUsernamePasswordAuthenticationProvider authenticationProvider, CustomerOAuth2UserService customerOAuth2UserService) {
-        this.passwordEncoder = passwordEncoder;
+    public SecurityConfig(CustomUsernamePasswordAuthenticationProvider authenticationProvider,
+                          CustomerOAuth2UserService customerOAuth2UserService, OAuthLoginSuccessHandler oAuthLoginSuccessHandler) {
         this.authenticationProvider = authenticationProvider;
         this.customerOAuth2UserService = customerOAuth2UserService;
+        this.oAuthLoginSuccessHandler = oAuthLoginSuccessHandler;
     }
 
 
@@ -45,6 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint()
                 .userService(customerOAuth2UserService)
                 .and()
+
+                .successHandler(oAuthLoginSuccessHandler)
+                .defaultSuccessUrl("/profile")
                 .and()
 
                 .logout()

@@ -48,6 +48,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User register(String username, String email) {
+        if (this.userRepository.findByUsername(username).isPresent()){
+            return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+        }
+        User user = new User(username, email, Role.ROLE_USER);
+
+        return this.userRepository.save(user);
+    }
+
+    @Override
     public Optional<User> findByUsername(String username) {
         return this.userRepository.findByUsername(username);
     }

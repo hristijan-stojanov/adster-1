@@ -11,6 +11,8 @@ public interface UserService extends UserDetailsService {
 
     User register (String username, String password, String repeatPassword, String name, String surname, String email, String phoneNumber, Role role);
 
+    User register (String username, String email);
+
     Optional<User> findByUsername(String username);
 
 }

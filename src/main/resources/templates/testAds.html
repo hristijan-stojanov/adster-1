@@ -61,29 +61,6 @@
                        th:class="${pageNumber==adPage.number + 1} ? active"
                        class="page-link"></a>
                 </div>
-            <nav style="display: inline-block">
-                <ul class="pagination">
-                    <li th:class="page-item" th:classappend="${ads.number == 0} ? ''">
-                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI+'?'+filterDTO.toQueryString()}(page=0)}">&laquo;</a>
-                    </li>
-                    <li th:class="page-item" th:classappend="${rows.number == 0} ? ''">
-                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI+'?'+filterDTO.toQueryString()}(page=${rows.number - 1})}">&larr;</a>
-                    </li>
-                    <li th:class="page-item" th:classappend="${rows.number == (page - 1)} ? 'active pointer-disabled'"
-                        th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
-                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI+'?'+filterDTO.toQueryString()}(page=${page - 1})}" th:if="${page != 0}"
-                           th:text="${page}"></a>
-                    </li>
-                    <li th:class="page-item" th:classappend="${rows.number + 1 == rows.totalPages or pager.endPage == 0} ? ''">
-                        <a class="page-link"
-                           th:href="@{${#httpServletRequest.requestURI+'?'+filterDTO.toQueryString()}(page=${rows.number + 1})}">&rarr;</a>
-                    </li>
-                    <li th:class="page-item" th:classappend="${rows.number + 1 == rows.totalPages or pager.endPage == 0} ? ''">
-                        <a class="page-link"
-                           th:href="@{${#httpServletRequest.requestURI+'?'+filterDTO.toQueryString()}(page=${rows.totalPages - 1})}">&raquo;</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
 

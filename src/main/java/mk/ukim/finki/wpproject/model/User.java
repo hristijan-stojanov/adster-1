@@ -32,11 +32,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany
     private List<Ad> savedAds = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "advertisedByUser", cascade = CascadeType.ALL)
-    private List<Ad> advertisedAds;
+    @OneToMany
+    private List<Ad> advertisedAds = new ArrayList<>();
 
     public User() {
     }

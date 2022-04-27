@@ -5,10 +5,7 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.adImage;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.repository.ImageDbRepository;
-import mk.ukim.finki.wpproject.service.AdService;
-import mk.ukim.finki.wpproject.service.CategoryService;
-import mk.ukim.finki.wpproject.service.CommentService;
-import mk.ukim.finki.wpproject.service.FileLocationService;
+import mk.ukim.finki.wpproject.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -29,13 +26,15 @@ public class AdController {
     private final CommentService commentService;
     private final FileLocationService fileLocationService;
     private final ImageDbRepository imageDbRepository;
+    private final UserService userService;
 
-    public AdController(AdService adService, CategoryService categoryService, CommentService commentService, FileLocationService fileLocationService, ImageDbRepository imageDbRepository) {
+    public AdController(AdService adService, CategoryService categoryService, CommentService commentService, FileLocationService fileLocationService, ImageDbRepository imageDbRepository, UserService userService) {
         this.adService = adService;
         this.categoryService = categoryService;
         this.commentService = commentService;
         this.fileLocationService = fileLocationService;
         this.imageDbRepository = imageDbRepository;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -76,11 +75,11 @@ public class AdController {
 
     @GetMapping("/saved")
     public String getSavedAds(Authentication authentication, Model model) {
-        User user = (User)authentication.getPrincipal();
-        List<Ad> savedAds = user.getSavedAds();
-        model.addAttribute("savedAds", savedAds);
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        model.addAttribute("savedAds", userService.findAllSavedAdsByUser(userId));
 
         model.addAttribute("bodyContent", "showSavedAds");
+
         return "master";
     }
 

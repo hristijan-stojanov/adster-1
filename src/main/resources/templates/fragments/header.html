@@ -12,12 +12,19 @@
                     <li class="nav-item m-auto">
                         <a class="nav-link active" href="/ads"><i class="fa-solid fa-table-list"></i> Ads</a>
                     </li>
+
                     <li class="nav-item m-auto">
                         <a class="nav-link active" href="/categories"><i class="fa-solid fa-table-list"></i> Categories</a>
                     </li>
+
                     <li class="nav-item m-auto" sec:authorize="isAuthenticated()">
                         <a class="btn btn-primary btn-sm ml-5" href="/savedAds"><i class="fa-solid fa-floppy-disk"></i> Saved ads</a>
                     </li>
+
+                    <li class="nav-item m-auto" sec:authorize="isAuthenticated()">
+                        <a class="btn btn-primary btn-sm ml-5" href="/myAds"><i class="fa-solid fa-image-portrait"></i> My ads</a>
+                    </li>
+
                     <li class="nav-item m-auto" sec:authorize="isAuthenticated()">
                         <a class="btn btn-primary btn-sm ml-5" href="/add"><i class="fa-solid fa-plus"></i> Add new ad</a>
                     </li>

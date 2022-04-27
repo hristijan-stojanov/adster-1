@@ -6,8 +6,10 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.VehicleAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
+import mk.ukim.finki.wpproject.service.UserService;
 import mk.ukim.finki.wpproject.service.VehicleAdService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -24,11 +26,13 @@ public class VehicleAdController {
     private final CategoryService categoryService;
     private final VehicleAdService vehicleAdService;
     private final CityService cityService;
+    private final UserService userService;
 
-    public VehicleAdController(CategoryService categoryService, VehicleAdService vehicleAdService, CityService cityService) {
+    public VehicleAdController(CategoryService categoryService, VehicleAdService vehicleAdService, CityService cityService, UserService userService) {
         this.categoryService = categoryService;
         this.vehicleAdService = vehicleAdService;
         this.cityService = cityService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -104,14 +108,19 @@ public class VehicleAdController {
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         if (id != null) {
             this.vehicleAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, brand, yearMade, color, milesTraveled, fuel, enginePower, gearbox,
                     registration);
         } else {
-            this.vehicleAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
+            VehicleAd vehicleAd = this.vehicleAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, userId, brand, yearMade, color, milesTraveled, fuel, enginePower, gearbox,
-                    registration);
+                    registration).orElseThrow(RuntimeException :: new);
+
+            user.getAdvertisedAds().add(vehicleAd);
+            this.userService.save(user);
         }
         return "redirect:/ads";
     }

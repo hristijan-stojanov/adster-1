@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -90,7 +91,6 @@ public class AdServiceImpl implements AdService {
         Ad ad = this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         this.adRepository.delete(ad);
     }
-
 
     @Override
     public Page<Ad> findPaginated(Pageable pageable) {

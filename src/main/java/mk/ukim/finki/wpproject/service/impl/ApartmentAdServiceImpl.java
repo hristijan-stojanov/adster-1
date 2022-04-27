@@ -68,6 +68,8 @@ public class ApartmentAdServiceImpl implements ApartmentAdService {
                 quadrature, yearMade, numRooms, numFloors, floor,
                 hasBasement, hasElevator, hasParkingSpot, heating);
 
+
+
         return Optional.of(this.apartmentAdRepository.save(apartmentAd));
     }
 

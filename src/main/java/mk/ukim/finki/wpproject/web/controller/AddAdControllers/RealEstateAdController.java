@@ -7,9 +7,11 @@ import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.RealEstateAdService;
+import mk.ukim.finki.wpproject.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,11 +27,13 @@ public class RealEstateAdController {
     private final CategoryService categoryService;
     private final RealEstateAdService realEstateAdService;
     private final CityService cityService;
+    private final UserService userService;
 
-    public RealEstateAdController(CategoryService categoryService, RealEstateAdService realEstateAdService, CityService cityService) {
+    public RealEstateAdController(CategoryService categoryService, RealEstateAdService realEstateAdService, CityService cityService, UserService userService) {
         this.categoryService = categoryService;
         this.realEstateAdService = realEstateAdService;
         this.cityService = cityService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -88,12 +92,17 @@ public class RealEstateAdController {
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         if (id != null) {
             this.realEstateAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price,
                     cityId, type, condition, categoryId, quadrature);
         } else {
-            this.realEstateAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
-                    cityId, type, condition, categoryId, userId, quadrature);
+            RealEstateAd realEstateAd = this.realEstateAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
+                    cityId, type, condition, categoryId, userId, quadrature).orElseThrow(RuntimeException :: new);
+
+            user.getAdvertisedAds().add(realEstateAd);
+            this.userService.save(user);
         }
         return "redirect:/ads";
     }

@@ -8,14 +8,13 @@ import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Heating;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.service.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,12 +25,14 @@ public class ApartmentAdController {
     private final CategoryService categoryService;
     private final ApartmentAdService apartmentAdService;
     private final CityService cityService;
+    private final UserService userService;
 
-    public ApartmentAdController(CategoryService categoryService, ApartmentAdService apartmentAdService, CityService cityService,
-                                 UserService userService) {
+    public ApartmentAdController(CategoryService categoryService, ApartmentAdService apartmentAdService,
+                                 CityService cityService, UserService userService) {
         this.categoryService = categoryService;
         this.apartmentAdService = apartmentAdService;
         this.cityService = cityService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -100,14 +101,19 @@ public class ApartmentAdController {
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         if (id != null) {
             this.apartmentAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, quadrature, yearMade, numRooms, numFloors, floor, hasBasement, hasElevator,
                     hasParkingSpot, heating);
         } else {
-            this.apartmentAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
-                    type, condition, categoryId, userId, quadrature, yearMade, numRooms, numFloors, floor, hasBasement,
-                    hasElevator, hasParkingSpot, heating);
+            ApartmentAd apartmentAd = this.apartmentAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
+                    type, condition, categoryId, user.getId(), quadrature, yearMade, numRooms, numFloors, floor, hasBasement,
+                    hasElevator, hasParkingSpot, heating).orElseThrow(RuntimeException :: new);
+
+            user.getAdvertisedAds().add(apartmentAd);
+            this.userService.save(user);
         }
         return "redirect:/ads";
     }

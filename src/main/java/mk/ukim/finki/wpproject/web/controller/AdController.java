@@ -50,7 +50,7 @@ public class AdController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage-1, pageSize));
+        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
         model.addAttribute("adPage", adPage);
         model.addAttribute("adsSize", adPage.getTotalElements());
@@ -68,10 +68,10 @@ public class AdController {
     }
 
     @GetMapping("/{id}")
-    public String getAd(Model model, @PathVariable Long id){
+    public String getAd(Model model, @PathVariable Long id) {
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
-        return "redirect:/"+this.adService.renderAdBasedOnCategory(ad, id, model)+"/"+ad.getId();
+        return "redirect:/" + this.adService.renderAdBasedOnCategory(ad, id, model) + "/" + ad.getId();
     }
 
     @GetMapping("/savedAds")
@@ -83,6 +83,7 @@ public class AdController {
 
         return "master";
     }
+
 
     @PostMapping("/save/{id}")
     public String saveAdToUser(@PathVariable Long id, Authentication authentication) {
@@ -96,6 +97,16 @@ public class AdController {
         return "redirect:/savedAds";
     }
 
+
+    @GetMapping("/myAds")
+    public String getMyAds(Authentication authentication, Model model) {
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        model.addAttribute("myAds", userService.findAllAdvertisedAdsByUser(userId));
+        model.addAttribute("bodyContent", "showMyAds");
+
+        return "master";
+    }
+
     @CrossOrigin(origins = "http://localhost:9091")
     @GetMapping("/imgs")
     public String getImages() {
@@ -106,7 +117,7 @@ public class AdController {
     public String uploadingImageTest(@RequestParam("file") MultipartFile image, Model model) throws Exception {
         adImage adImage = fileLocationService.save(image.getBytes(), image.getOriginalFilename());
 
-        Ad ad = adService.findById((long)1).get();
+        Ad ad = adService.findById((long) 1).get();
         ad.getImages().add(adImage);
         adService.save(ad);
 
@@ -117,5 +128,5 @@ public class AdController {
         model.addAttribute("bodyContent", "showImages");
         return "master";
     }
-
 }
+

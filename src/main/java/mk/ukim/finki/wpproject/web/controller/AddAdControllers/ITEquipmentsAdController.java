@@ -6,9 +6,11 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.ITEquipmentAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.ITEquipmentAdService;
+import mk.ukim.finki.wpproject.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +26,13 @@ public class ITEquipmentsAdController {
     private final CategoryService categoryService;
     private final ITEquipmentAdService itEquipmentAdService;
     private final CityService cityService;
+    private final UserService userService;
 
-    public ITEquipmentsAdController(CategoryService categoryService, ITEquipmentAdService itEquipmentAdService, CityService cityService) {
+    public ITEquipmentsAdController(CategoryService categoryService, ITEquipmentAdService itEquipmentAdService, CityService cityService, UserService userService) {
         this.categoryService = categoryService;
         this.itEquipmentAdService = itEquipmentAdService;
         this.cityService = cityService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -98,14 +102,19 @@ public class ITEquipmentsAdController {
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         if (id != null) {
             this.itEquipmentAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price,
                         cityId, type, condition, categoryId, brand, processor, processorModel, typeMemory, memorySize,
                     ramMemorySize);
         } else {
-            this.itEquipmentAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
+            ITEquipmentAd itEquipmentAd = this.itEquipmentAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
                     cityId, type, condition, categoryId, userId, brand, processor, processorModel, typeMemory, memorySize,
-                    ramMemorySize);
+                    ramMemorySize).orElseThrow(RuntimeException :: new);
+
+            user.getAdvertisedAds().add(itEquipmentAd);
+            this.userService.save(user);
         }
         return "redirect:/ads";
     }

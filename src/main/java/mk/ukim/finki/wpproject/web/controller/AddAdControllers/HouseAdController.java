@@ -8,9 +8,11 @@ import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Heating;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.HouseAdService;
+import mk.ukim.finki.wpproject.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,11 +28,13 @@ public class HouseAdController {
     private final CategoryService categoryService;
     private final HouseAdService houseAdService;
     private final CityService cityService;
+    private final UserService userService;
 
-    public HouseAdController(CategoryService categoryService, HouseAdService houseAdService, CityService cityService) {
+    public HouseAdController(CategoryService categoryService, HouseAdService houseAdService, CityService cityService, UserService userService) {
         this.categoryService = categoryService;
         this.houseAdService = houseAdService;
         this.cityService = cityService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -95,13 +99,18 @@ public class HouseAdController {
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         if (id != null) {
             this.houseAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, quadrature, yearMade, yardArea, numRooms, numFloors, hasBasement, heating);
         } else {
-            this.houseAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
+            HouseAd houseAd = this.houseAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, userId, quadrature, yearMade, yardArea, numRooms, numFloors,
-                    hasBasement, heating);
+                    hasBasement, heating).orElseThrow(RuntimeException :: new);
+
+            user.getAdvertisedAds().add(houseAd);
+            this.userService.save(user);
         }
         return "redirect:/ads";
     }

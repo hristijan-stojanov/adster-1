@@ -7,9 +7,11 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.service.AdService;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
+import mk.ukim.finki.wpproject.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,11 +27,13 @@ public class OtherAdController {
     private final CategoryService categoryService;
     private final AdService adService;
     private final CityService cityService;
+    private final UserService userService;
 
-    public OtherAdController(CategoryService categoryService, AdService adService, CityService cityService) {
+    public OtherAdController(CategoryService categoryService, AdService adService, CityService cityService, UserService userService) {
         this.categoryService = categoryService;
         this.adService = adService;
         this.cityService = cityService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -77,12 +81,17 @@ public class OtherAdController {
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         if (id != null) {
             this.adService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId);
         } else {
-            this.adService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
-                    type, condition, categoryId, userId);
+            Ad ad = this.adService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
+                    type, condition, categoryId, user.getId()).orElseThrow(RuntimeException::new);
+
+            user.getAdvertisedAds().add(ad);
+            this.userService.save(user);
         }
         return "redirect:/ads";
     }

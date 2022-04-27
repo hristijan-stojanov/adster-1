@@ -92,13 +92,13 @@ public class AdServiceImpl implements AdService {
         this.adRepository.delete(ad);
     }
 
-    @Override
-    public Page<Ad> findPaginated(Pageable pageable) {
+
+    public Page<Ad> findPaginated(Pageable pageable, List<Ad>filteredAds) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
         List<Ad> adsSubList;
-        List<Ad> ads = this.adRepository.findAll();
+        List<Ad> ads = filteredAds;
 
         if (ads.size() < startItem) {
             adsSubList = new ArrayList<>();
@@ -167,5 +167,40 @@ public class AdServiceImpl implements AdService {
         } else {
             return "OtherAd";
         }
+    }
+
+    @Override
+    public List<Ad> filter(String title, String cityId, Long categoryId) {
+
+        if ((title != null && !title.isEmpty()) && (cityId != null && !cityId.isEmpty()) && (categoryId != null && !categoryId.toString().isEmpty())){
+            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+            return this.adRepository.findAllByTitleContainsAndCityAndCategory("%"+title+"%", city, category);
+        }
+        else if (title != null && !title.isEmpty() && cityId != null && !cityId.isEmpty()){
+            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+            return this.adRepository.findAllByTitleContainsAndCity(title, city);
+        }
+        else if (title != null && !title.isEmpty() && categoryId != null && !categoryId.toString().isEmpty()){
+            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+            return this.adRepository.findAllByTitleContainsAndCategory(title, category);
+        }
+        else if (cityId != null && !cityId.isEmpty() && categoryId != null && !categoryId.toString().isEmpty()){
+            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+            return this.adRepository.findAllByCityAndCategory(city, category);
+        }
+        else if (title != null && !title.isEmpty()){
+            return this.adRepository.findAllByTitleContains(title);
+        }
+        else if (cityId != null && !cityId.isEmpty()){
+            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+            return this.adRepository.findAllByCity(city);
+        }
+        else if (categoryId != null && !categoryId.toString().isEmpty()){
+            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+            return this.adRepository.findAllByCategory(category);
+        }
+        return this.adRepository.findAll();
     }
 }

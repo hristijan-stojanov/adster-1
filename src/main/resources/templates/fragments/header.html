@@ -35,12 +35,33 @@
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" aria-label="Small"
                                aria-describedby="inputGroup-sizing-sm"
+                               th:name="title"
                                placeholder="Search...">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-secondary btn-number">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="select-group select-group-sm">
+                        <select name="categoryId" class="form-control" >
+                            <option th:text="All"
+                                    value=""></option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.getId()}"
+                                    th:text="${category.getName()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="select-group select-group-sm">
+                        <select name="cityId" class="form-control" >
+                            <option th:text="All"
+                                    value=""></option>
+                            <option th:each="city : ${cities}"
+                                    th:value="${city.getName()}"
+                                    th:text="${city.getName()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="select-group-append">
+                        <button type="button" class="btn btn-secondary btn-number">
+                            <i class="fa fa-search"></i>
+                        </button>
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">

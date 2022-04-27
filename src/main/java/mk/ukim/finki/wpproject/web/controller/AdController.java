@@ -5,6 +5,8 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.adImage;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
+import mk.ukim.finki.wpproject.model.Category;
+import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.repository.ImageDbRepository;
 import mk.ukim.finki.wpproject.service.*;
 import org.springframework.data.domain.Page;
@@ -28,29 +30,51 @@ public class AdController {
     private final FileLocationService fileLocationService;
     private final ImageDbRepository imageDbRepository;
     private final UserService userService;
+    private final CityService cityService;
 
-    public AdController(AdService adService, CategoryService categoryService, CommentService commentService, FileLocationService fileLocationService, ImageDbRepository imageDbRepository, UserService userService) {
+
+
+
+    public AdController(AdService adService, CategoryService categoryService, CommentService commentService, FileLocationService fileLocationService, ImageDbRepository imageDbRepository, UserService userService, CityService cityService) {
         this.adService = adService;
         this.categoryService = categoryService;
         this.commentService = commentService;
         this.fileLocationService = fileLocationService;
         this.imageDbRepository = imageDbRepository;
         this.userService = userService;
+        this.cityService = cityService;
     }
 
     @GetMapping
     public String getAdsPage(@RequestParam(required = false) String error, Model model,
                              @RequestParam("page") Optional<Integer> page,
-                             @RequestParam("size") Optional<Integer> size) {
+                             @RequestParam("size") Optional<Integer> size,
+                             @RequestParam(required = false) String title,
+                             @RequestParam(required = false) String cityId,
+                             @RequestParam(required = false) Long categoryId) {
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
 
+        List<Ad>filteredAds;
+        List<Category> categories = this.categoryService.findAll();
+        List<City> cities = this.cityService.findAll();
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("cities", cities);
+
+        if ((title == null || title.isEmpty()) && (cityId == null || cityId.isEmpty()) && (categoryId == null || categoryId.toString().isEmpty())){
+            filteredAds = this.adService.findAll();
+        }
+        else{
+            filteredAds = this.adService.filter(title, cityId, categoryId);
+        }
+
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage-1, pageSize), filteredAds);
 
         model.addAttribute("adPage", adPage);
         model.addAttribute("adsSize", adPage.getTotalElements());

@@ -33,10 +33,12 @@ public interface AdService {
 
     void deleteById(Long adId);
 
-    public Page<Ad> findPaginated(Pageable pageable);
+    public Page<Ad> findPaginated(Pageable pageable, List<Ad>filteredAds);
 
     public String renderAdBasedOnCategory(Ad ad, Long id, Model model);
 
     public String redirectAdBasedOnCategory(Long id);
+
+    List<Ad> filter(String title, String city, Long categoryId);
 
 }

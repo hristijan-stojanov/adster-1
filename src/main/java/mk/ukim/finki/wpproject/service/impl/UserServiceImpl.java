@@ -85,4 +85,9 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         return user.getAdvertisedAds();
     }
+
+    @Override
+    public Optional<User> save(User user) {
+        return Optional.of(userRepository.save(user));
+    }
 }

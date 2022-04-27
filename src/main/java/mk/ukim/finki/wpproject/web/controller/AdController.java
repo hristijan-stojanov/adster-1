@@ -4,6 +4,7 @@ import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.adImage;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.repository.ImageDbRepository;
 import mk.ukim.finki.wpproject.service.*;
 import org.springframework.data.domain.Page;
@@ -73,7 +74,7 @@ public class AdController {
         return "redirect:/"+this.adService.renderAdBasedOnCategory(ad, id, model)+"/"+ad.getId();
     }
 
-    @GetMapping("/saved")
+    @GetMapping("/savedAds")
     public String getSavedAds(Authentication authentication, Model model) {
         Long userId = ((User) authentication.getPrincipal()).getId();
         model.addAttribute("savedAds", userService.findAllSavedAdsByUser(userId));
@@ -81,6 +82,18 @@ public class AdController {
         model.addAttribute("bodyContent", "showSavedAds");
 
         return "master";
+    }
+
+    @PostMapping("/save/{id}")
+    public String saveAdToUser(@PathVariable Long id, Authentication authentication) {
+        Ad ad = adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        user.getSavedAds().add(ad);
+        userService.save(user).orElseThrow(RuntimeException::new);
+        return "redirect:/savedAds";
     }
 
     @CrossOrigin(origins = "http://localhost:9091")

@@ -1,6 +1,6 @@
 <!--&#45;&#45; MAIN PAGE &#45;&#45;-->
 
-<div xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
     <section class="jumbotron text-center">
         <div class="container">
@@ -35,8 +35,19 @@
                             <td th:text="${ad.getCategory() != null}
                             ? ${ad.getCategory().getName()} : 'No Category'"></td>
                             <td>
-                                <a th:href="@{'/ads/{id}' (id = ${ad.getId()})}" > Click to view more
+                                <a th:href="@{'/ads/{id}' (id = ${ad.getId()})}"> Click to view more
                                 </a>
+                            </td>
+                            <td>
+                                <th:block sec:authorize="hasRole('ROLE_USER')">
+                                    <form th:action="@{'/save/{id}' (id=${ad.getId()})}" th:method="post"
+                                          sec:authorize="isAuthenticated()">
+                                        <button type="submit"
+                                                class="btn btn-sm btn-primary">
+                                            <i class="fa-solid fa-floppy-disk"></i> Save</i>
+                                        </button>
+                                    </form>
+                                </th:block>
                             </td>
                         </tr>
                         </tbody>
@@ -55,8 +66,8 @@
     <div class="container mb-4">
         <h1>Upload Image</h1>
         <form th:method="POST" th:action="@{'/ads/image'}" enctype="multipart/form-data">
-            <input type="file" name="file" /><br/><br/>
-            <input type="submit" value="Submit" />
+            <input type="file" name="file"/><br/><br/>
+            <input type="submit" value="Submit"/>
         </form>
     </div>
 </div>

@@ -23,4 +23,6 @@ public interface UserService extends UserDetailsService {
 
     List<Ad> findAllAdvertisedAdsByUser(Long userId);
 
+    Optional<User> save(User user);
+
 }

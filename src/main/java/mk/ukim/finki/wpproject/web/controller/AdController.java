@@ -1,12 +1,8 @@
 package mk.ukim.finki.wpproject.web.controller;
 
-import mk.ukim.finki.wpproject.model.Ad;
-import mk.ukim.finki.wpproject.model.User;
-import mk.ukim.finki.wpproject.model.adImage;
+import mk.ukim.finki.wpproject.model.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.model.Category;
-import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.repository.ImageDbRepository;
 import mk.ukim.finki.wpproject.service.*;
 import org.springframework.data.domain.Page;
@@ -31,9 +27,6 @@ public class AdController {
     private final ImageDbRepository imageDbRepository;
     private final UserService userService;
     private final CityService cityService;
-
-
-
 
     public AdController(AdService adService, CategoryService categoryService, CommentService commentService, FileLocationService fileLocationService, ImageDbRepository imageDbRepository, UserService userService, CityService cityService) {
         this.adService = adService;
@@ -92,7 +85,7 @@ public class AdController {
     }
 
     @GetMapping("/{id}")
-    public String getAd(Model model, @PathVariable Long id) {
+    public String getAd(@PathVariable Long id, Model model) {
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
         return "redirect:/" + this.adService.renderAdBasedOnCategory(ad, id, model) + "/" + ad.getId();
@@ -121,6 +114,22 @@ public class AdController {
         return "redirect:/savedAds";
     }
 
+    @PostMapping("/saveComment/{id}")
+    public String saveCommentToAd(@PathVariable Long id, @RequestParam String content, Authentication authentication) {
+        System.out.println(content);
+        Ad ad = adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        Comment comment = new Comment(content, user);
+        commentService.save(comment);
+
+        ad.getComments().add(comment);
+        adService.save(ad);
+
+        return "redirect:/{id}";
+    }
 
     @GetMapping("/myAds")
     public String getMyAds(Authentication authentication, Model model) {

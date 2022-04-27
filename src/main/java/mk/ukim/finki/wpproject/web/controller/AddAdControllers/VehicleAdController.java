@@ -40,6 +40,8 @@ public class VehicleAdController {
 
         VehicleAd vehicleAd = this.vehicleAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", vehicleAd);
+        model.addAttribute("comments", vehicleAd.getComments());
+
         model.addAttribute("bodyContent", "showAdsTemplates/showVehicleAd");
         return "master";
     }

@@ -41,6 +41,8 @@ public class RealEstateAdController {
 
         RealEstateAd realEstateAd = this.realEstateAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", realEstateAd);
+        model.addAttribute("comments", realEstateAd.getComments());
+
         model.addAttribute("bodyContent", "showAdsTemplates/showRealEstateAd");
         return "master";
     }

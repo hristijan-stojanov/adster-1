@@ -40,6 +40,8 @@ public class ITEquipmentsAdController {
 
         ITEquipmentAd itEquipmentAd = this.itEquipmentAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", itEquipmentAd);
+        model.addAttribute("comments", itEquipmentAd.getComments());
+
         model.addAttribute("bodyContent", "showAdsTemplates/showITEquipmentAd");
         return "master";
     }

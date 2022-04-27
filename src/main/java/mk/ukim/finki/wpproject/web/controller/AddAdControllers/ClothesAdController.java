@@ -40,6 +40,8 @@ public class ClothesAdController {
 
         ClothesAd clothesAd = this.clothesAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", clothesAd);
+        model.addAttribute("comments", clothesAd.getComments());
+
         model.addAttribute("bodyContent", "showAdsTemplates/showClothesAd");
         return "master";
     }

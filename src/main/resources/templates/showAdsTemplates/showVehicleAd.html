@@ -12,7 +12,7 @@
                             <form th:action="@{'/save/{id}' (id=${ad.getId()})}" th:method="post"
                                   sec:authorize="isAuthenticated()">
                                 <button type="submit"
-                                        class="btn btn-sm btn-primary mt-1">
+                                        class="btn btn-md btn-primary mt-1">
                                     <i class="fa-solid fa-floppy-disk"></i> Save</i>
                                 </button>
                             </form>
@@ -89,6 +89,54 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+
+                    <div class="container mt-100 mb-100">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="border border-dark">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Recent Comments</h4>
+                                        <h6 class="card-subtitle">Latest Comments section by users</h6>
+                                        <h7 sec:authorize="!isAuthenticated()" class="text-danger">Login to comment on this ad</h7>
+                                    </div>
+                                    <div class="comment-widgets m-b-20">
+                                        <div th:each="comment : ${comments}" class="d-flex flex-row comment-row mb-3">
+                                            <div class="container-fluid">
+                                                <h5 th:text="${comment.getUser().getUsername()}"></h5>
+                                                <div class="comment-footer">
+                                                    <span th:text="${#temporals.format(comment.getTimeCreated(), 'dd-MM-yyyy HH:mm')}"></span>
+                                                </div>
+                                                <div class="container">
+                                                    <p th:text="${comment.getContent()}"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row comment-row" sec:authorize="hasRole('ROLE_USER')">
+                                            <div class="comment-text active w-100 m-2">
+                                                <div class="comment-btns ml-2 mt-2">
+                                                    <div class="container">
+                                                        <form th:action="@{'/ads/saveComment/{id}' (id=${ad.getId()})}" th:method="post"
+                                                              sec:authorize="isAuthenticated()">
+                                                            <div class="comment-area">
+                                                                <textarea name="content" class="form-control" placeholder="what is your view?"
+                                                                          rows="4"></textarea>
+                                                            </div>
+                                                            <div class="mt-1">
+                                                                <button class="btn btn-success send btn-md">
+                                                                    Send <i class="fa fa-long-arrow-right ml-1"></i>
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

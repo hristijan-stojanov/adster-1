@@ -40,6 +40,8 @@ public class ApartmentAdController {
 
         ApartmentAd apartmentAd = this.apartmentAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", apartmentAd);
+        model.addAttribute("comments", apartmentAd.getComments());
+
         model.addAttribute("bodyContent", "showAdsTemplates/showApartmentAd");
         return "master";
     }

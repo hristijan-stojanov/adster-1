@@ -1,0 +1,45 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">WEB PROGRAMMING SHOP</h1>
+            <h3 class="jumbotron-heading">All saved ads</h3>
+        </div>
+    </section>
+
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-12" th:if="${savedAds.size() > 0}">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">City</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Select Ad</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="ad : ${savedAds}" class="product">
+                            <td th:text="${ad.getTitle()}"></td>
+                            <td th:text="${ad.getDescription()}"></td>
+                            <td th:text="${ad.getPrice()}"></td>
+                            <td th:text="${ad.getCity() != null}
+                            ? ${ad.getCity().getName()} : 'No City'"></td>
+                            <td th:text="${ad.getCategory() != null}
+                            ? ${ad.getCategory().getName()} : 'No Category'"></td>
+                            <td>
+                                <a th:href="@{'/ads/{id}' (id = ${ad.getId()})}"> Click to view more
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

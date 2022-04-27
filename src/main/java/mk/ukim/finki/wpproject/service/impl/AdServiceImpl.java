@@ -140,13 +140,11 @@ public class AdServiceImpl implements AdService {
             HouseAd houseAd = (HouseAd) this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
             model.addAttribute("houseAd", houseAd);
             return "HouseAd";
-        } else if (ad.getCategory().getName().equals("Other")){
+        } else {
             Ad otherAd =  this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
             model.addAttribute("otherAd",otherAd);
             return "OtherAd";
-        }
-        return "showAd";
-    }
+        }    }
 
     @Override
     public String redirectAdBasedOnCategory(Long id) {
@@ -166,9 +164,8 @@ public class AdServiceImpl implements AdService {
             return "ITEquipmentAd";
         } else if (category.getName().equals("Vehicle")) {
             return "VehicleAd";
-        } else if (category.getName().equals("Other")) {
+        } else {
             return "OtherAd";
         }
-        return "";
     }
 }

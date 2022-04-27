@@ -1,7 +1,5 @@
-package mk.ukim.finki.wpproject.oauth2;
+package mk.ukim.finki.wpproject.security.oauth2;
 
-import mk.ukim.finki.wpproject.model.User;
-import mk.ukim.finki.wpproject.model.enums.Role;
 import mk.ukim.finki.wpproject.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;

@@ -1,7 +1,8 @@
 package mk.ukim.finki.wpproject.config;
 
-import mk.ukim.finki.wpproject.oauth2.CustomerOAuth2UserService;
-import mk.ukim.finki.wpproject.oauth2.OAuthLoginSuccessHandler;
+import mk.ukim.finki.wpproject.security.oauth2.CustomerOAuth2UserService;
+import mk.ukim.finki.wpproject.security.oauth2.OAuthLoginSuccessHandler;
+import mk.ukim.finki.wpproject.security.CustomUsernamePasswordAuthenticationProvider;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

@@ -1,4 +1,4 @@
-package mk.ukim.finki.wpproject.config;
+package mk.ukim.finki.wpproject.security;
 
 import mk.ukim.finki.wpproject.service.UserService;
 import org.springframework.security.authentication.AuthenticationProvider;

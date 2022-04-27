@@ -1,6 +1,7 @@
 package mk.ukim.finki.wpproject.web.controller;
 
 import mk.ukim.finki.wpproject.model.Ad;
+import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.adImage;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.repository.ImageDbRepository;
@@ -10,6 +11,7 @@ import mk.ukim.finki.wpproject.service.CommentService;
 import mk.ukim.finki.wpproject.service.FileLocationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -70,6 +72,16 @@ public class AdController {
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
         return "redirect:/"+this.adService.renderAdBasedOnCategory(ad, id, model)+"/"+ad.getId();
+    }
+
+    @GetMapping("/saved")
+    public String getSavedAds(Authentication authentication, Model model) {
+        User user = (User)authentication.getPrincipal();
+        List<Ad> savedAds = user.getSavedAds();
+        model.addAttribute("savedAds", savedAds);
+
+        model.addAttribute("bodyContent", "showSavedAds");
+        return "master";
     }
 
     @CrossOrigin(origins = "http://localhost:9091")

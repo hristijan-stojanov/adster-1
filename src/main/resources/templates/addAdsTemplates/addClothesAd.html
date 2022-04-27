@@ -40,16 +40,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="description">Description</label>
-                        <input type="text"
-                               class="form-control"
-                               id="description"
-                               name="description"
-                               th:value="(${clothesAd} != null ? ${clothesAd.getDescription()} : '')"
-                               placeholder="Description">
-                    </div>
-
-                    <div class="form-group">
                         <label>City</label>
                         <select name="cityId" class="form-control">
                             <option th:if="${cityList} != null"
@@ -153,6 +143,17 @@
                             </option>
                             <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea type="text"
+                                  class="form-control"
+                                  id="description"
+                                  name="description"
+                                  th:value="(${clothesAd} != null ? ${clothesAd.getDescription()} : '')"
+                                  placeholder="Description">
+                        </textarea>
                     </div>
 
                     <div class="form-group">

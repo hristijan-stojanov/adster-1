@@ -34,19 +34,9 @@
                                class="form-control"
                                id="title"
                                name="title"
-                               th:value="(${apartmentAd} != null ? ${apartmentAd.getTitle()} : '')"
+                               th:value="(${otherAd} != null ? ${otherAd.getTitle()} : '')"
                                required
                                placeholder="Enter title to ad">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <input type="text"
-                               class="form-control"
-                               id="description"
-                               name="description"
-                               th:value="(${apartmentAd} != null ? ${apartmentAd.getDescription()} : '')"
-                               placeholder="Description">
                     </div>
 
                     <div class="form-group">
@@ -110,12 +100,23 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea type="text"
+                                  class="form-control"
+                                  id="description"
+                                  name="description"
+                                  th:value="(${otherAd} != null ? ${otherAd.getDescription()} : '')"
+                                  placeholder="Description">
+                        </textarea>
+                    </div>
+
+                    <div class="form-group">
                         <label for="price">Price</label>
                         <input type="text"
                                class="form-control"
                                id="price"
                                name="price"
-                               th:value="(${apartmentAd} != null ? ${apartmentAd.getPrice()} : '')"
+                               th:value="(${otherAd} != null ? ${otherAd.getPrice()} : '')"
                                placeholder="Price">
                     </div>
 

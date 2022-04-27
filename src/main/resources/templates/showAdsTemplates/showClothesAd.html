@@ -19,6 +19,14 @@
                             <table class="table table-striped table-product">
                                 <tbody>
                                 <tr>
+                                    <td>Category</td>
+                                    <td th:text="${ad.getCategory().name}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Ad Type</td>
+                                    <td th:text="${ad.getType()}"></td>
+                                </tr>
+                                <tr>
                                     <td width="390">Condition</td>
                                     <td th:text="${ad.getCondition()}"></td>
                                 </tr>

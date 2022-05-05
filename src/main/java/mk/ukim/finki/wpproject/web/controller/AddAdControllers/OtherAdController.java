@@ -8,14 +8,12 @@ import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.service.AdService;
-import mk.ukim.finki.wpproject.service.CategoryService;
-import mk.ukim.finki.wpproject.service.CityService;
-import mk.ukim.finki.wpproject.service.UserService;
+import mk.ukim.finki.wpproject.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +26,14 @@ public class OtherAdController {
     private final AdService adService;
     private final CityService cityService;
     private final UserService userService;
+    private final ImageService imageService;
 
-    public OtherAdController(CategoryService categoryService, AdService adService, CityService cityService, UserService userService) {
+    public OtherAdController(CategoryService categoryService, AdService adService, CityService cityService, UserService userService, ImageService imageService) {
         this.categoryService = categoryService;
         this.adService = adService;
         this.cityService = cityService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/{id}")
@@ -80,6 +80,7 @@ public class OtherAdController {
             @RequestParam AdType type,
             @RequestParam Condition condition,
             @RequestParam Long categoryId,
+            @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
@@ -94,6 +95,8 @@ public class OtherAdController {
 
             user.getAdvertisedAds().add(ad);
             this.userService.save(user);
+
+            imageService.addImagesToAd(ad.getId(), images);
         }
         return "redirect:/ads";
     }

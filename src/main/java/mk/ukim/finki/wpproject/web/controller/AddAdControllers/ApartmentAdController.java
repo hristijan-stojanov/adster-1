@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,13 +27,15 @@ public class ApartmentAdController {
     private final ApartmentAdService apartmentAdService;
     private final CityService cityService;
     private final UserService userService;
+    private final ImageService imageService;
 
     public ApartmentAdController(CategoryService categoryService, ApartmentAdService apartmentAdService,
-                                 CityService cityService, UserService userService) {
+                                 CityService cityService, UserService userService, ImageService imageService) {
         this.categoryService = categoryService;
         this.apartmentAdService = apartmentAdService;
         this.cityService = cityService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/{id}")
@@ -100,6 +103,7 @@ public class ApartmentAdController {
             @RequestParam boolean hasElevator,
             @RequestParam boolean hasParkingSpot,
             @RequestParam Heating heating,
+            @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
@@ -116,6 +120,8 @@ public class ApartmentAdController {
 
             user.getAdvertisedAds().add(apartmentAd);
             this.userService.save(user);
+
+            imageService.addImagesToAd(apartmentAd.getId(), images);
         }
         return "redirect:/ads";
     }

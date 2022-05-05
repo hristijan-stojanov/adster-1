@@ -7,14 +7,12 @@ import mk.ukim.finki.wpproject.model.ads.ClothesAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.service.CategoryService;
-import mk.ukim.finki.wpproject.service.CityService;
-import mk.ukim.finki.wpproject.service.ClothesAdService;
-import mk.ukim.finki.wpproject.service.UserService;
+import mk.ukim.finki.wpproject.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,12 +25,14 @@ public class ClothesAdController {
     private final ClothesAdService clothesAdService;
     private final CityService cityService;
     private final UserService userService;
+    private final ImageService imageService;
 
-    public ClothesAdController(CategoryService categoryService, ClothesAdService clothesAdService, CityService cityService, UserService userService) {
+    public ClothesAdController(CategoryService categoryService, ClothesAdService clothesAdService, CityService cityService, UserService userService, ImageService imageService) {
         this.categoryService = categoryService;
         this.clothesAdService = clothesAdService;
         this.cityService = cityService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/{id}")
@@ -98,6 +98,7 @@ public class ClothesAdController {
             @RequestParam int numSize,
             @RequestParam Size size,
             @RequestParam Color color,
+            @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
@@ -112,6 +113,8 @@ public class ClothesAdController {
 
             user.getAdvertisedAds().add(clothesAd);
             this.userService.save(user);
+
+            imageService.addImagesToAd(clothesAd.getId(), images);
         }
         return "redirect:/ads";
     }

@@ -3,11 +3,34 @@
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title" th:text="${ad.getTitle()}"></h3>
-                <div class="row">
-                    <div class="col-lg-5 col-md-5 col-sm-6">
-                        <div class="white-box text-center">
-                            <img src="https://via.placeholder.com/430x600/00CED1/000000" class="img-responsive">
+
+                <div th:if="${ad.getImages().size() > 0}" class="row justify-content-center">
+                    <div id="carouselExampleInterval" class="carousel slide"
+                         data-interval="false" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item" th:each="image : ${ad.getImages()}"
+                                 th:classappend="${image == ad.getImages().get(0)} ? active : ''" style="width: auto">
+                                <img class="d-block w-100" th:src="@{'/images/' + ${image.getName()}}" alt="Image"
+                                     height="500px"
+                                     style="max-width: 100%; object-fit: contain;">
+                            </div>
                         </div>
+                        <button class="carousel-control-prev" type="button"
+                                data-target="#carouselExampleInterval" data-slide="prev"
+                                style="background: none; border: none;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                                data-target="#carouselExampleInterval" data-slide="next"
+                                style="background: none; border: none;">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
                         <th:block sec:authorize="hasRole('ROLE_USER')">
                             <form th:action="@{'/save/{id}' (id=${ad.getId()})}" th:method="post"
                                   sec:authorize="isAuthenticated()">
@@ -18,12 +41,14 @@
                             </form>
                         </th:block>
                     </div>
-                    <div class="col-lg-7 col-md-7 col-sm-6">
+                    <div class="col-9">
                         <h4 class="box-title mt-5">Product description</h4>
                         <p th:text="${ad.getDescription()}"></p>
                         <h2 class="mt-5" th:text="${ad.getPrice()}"></h2>
                         <button class="btn btn-primary btn-rounded">Buy Now</button>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <h3 class="box-title mt-5">General Info</h3>
                         <div class="table-responsive">
@@ -85,11 +110,13 @@
                                             <div class="comment-text active w-100 m-2">
                                                 <div class="comment-btns ml-2 mt-2">
                                                     <div class="container">
-                                                        <form th:action="@{'/ads/saveComment/{id}' (id=${ad.getId()})}" th:method="post"
+                                                        <form th:action="@{'/ads/saveComment/{id}' (id=${ad.getId()})}"
+                                                              th:method="post"
                                                               sec:authorize="isAuthenticated()">
                                                             <div class="comment-area">
-                                                                <textarea name="content" class="form-control" placeholder="what is your view?"
-                                                              rows="4"></textarea>
+                                                                <textarea name="content" class="form-control"
+                                                                          placeholder="what is your view?"
+                                                                          rows="4"></textarea>
                                                             </div>
                                                             <div class="mt-1">
                                                                 <button class="btn btn-success send btn-md">

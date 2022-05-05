@@ -54,21 +54,23 @@
                     </table>
                 </div>
             </div>
-                <div th:if="${adPage.totalPages > 0}" class="pagination"
-                     th:each="pageNumber : ${pageNumbers}">
-                    <a th:href="@{/ads(size=${adPage.size}, page=${pageNumber})}"
-                       th:text="${pageNumber}"
-                       th:class="${pageNumber==adPage.number + 1} ? active"
-                       class="page-link"></a>
-                </div>
         </div>
-    </div>
-
-    <div class="container mb-4">
-        <h1>Upload Image</h1>
-        <form th:method="POST" th:action="@{'/ads/image'}" enctype="multipart/form-data">
-            <input type="file" name="file"/><br/><br/>
-            <input type="submit" value="Submit"/>
-        </form>
+        <div th:if="${adPage.totalPages > 0}" class="row justify-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item" th:classappend="${adPage.number == 0} ? disabled">
+                        <a class="page-link" th:href="@{/ads(size=${adPage.size}, page=${adPage.number})}">Previous</a>
+                    </li>
+                    <li th:each="pageNumber : ${pageNumbers}" class="page-item" th:classappend="${pageNumber==adPage.number + 1} ? active">
+                        <a th:href="@{/ads(size=${adPage.size}, page=${pageNumber})}"
+                           th:text="${pageNumber}"
+                           class="page-link"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${adPage.number + 1 == adPage.totalPages} ? disabled">
+                        <a class="page-link" th:href="@{/ads(size=${adPage.size}, page=${adPage.number + 2})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>

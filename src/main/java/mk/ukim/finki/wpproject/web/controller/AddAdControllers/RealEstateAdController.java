@@ -8,14 +8,12 @@ import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.service.CategoryService;
-import mk.ukim.finki.wpproject.service.CityService;
-import mk.ukim.finki.wpproject.service.RealEstateAdService;
-import mk.ukim.finki.wpproject.service.UserService;
+import mk.ukim.finki.wpproject.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +26,14 @@ public class RealEstateAdController {
     private final RealEstateAdService realEstateAdService;
     private final CityService cityService;
     private final UserService userService;
+    private final ImageService imageService;
 
-    public RealEstateAdController(CategoryService categoryService, RealEstateAdService realEstateAdService, CityService cityService, UserService userService) {
+    public RealEstateAdController(CategoryService categoryService, RealEstateAdService realEstateAdService, CityService cityService, UserService userService, ImageService imageService) {
         this.categoryService = categoryService;
         this.realEstateAdService = realEstateAdService;
         this.cityService = cityService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/{id}")
@@ -91,6 +91,7 @@ public class RealEstateAdController {
             @RequestParam Condition condition,
             @RequestParam Long categoryId,
             @RequestParam int quadrature,
+            @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
@@ -105,6 +106,8 @@ public class RealEstateAdController {
 
             user.getAdvertisedAds().add(realEstateAd);
             this.userService.save(user);
+
+            imageService.addImagesToAd(realEstateAd.getId(), images);
         }
         return "redirect:/ads";
     }

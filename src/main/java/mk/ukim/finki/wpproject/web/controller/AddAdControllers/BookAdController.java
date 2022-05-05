@@ -8,13 +8,13 @@ import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Genre;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
-import mk.ukim.finki.wpproject.service.BookAdService;
-import mk.ukim.finki.wpproject.service.CategoryService;
-import mk.ukim.finki.wpproject.service.CityService;
+import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
+import mk.ukim.finki.wpproject.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,11 +27,15 @@ public class BookAdController {
     private final CategoryService categoryService;
     private final BookAdService bookAdService;
     private final CityService cityService;
+    private final UserService userService;
+    private final ImageService imageService;
 
-    public BookAdController(CategoryService categoryService, BookAdService bookAdService, CityService cityService) {
+    public BookAdController(CategoryService categoryService, BookAdService bookAdService, CityService cityService, UserService userService, ImageService imageService) {
         this.categoryService = categoryService;
         this.bookAdService = bookAdService;
         this.cityService = cityService;
+        this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/{id}")
@@ -93,15 +97,23 @@ public class BookAdController {
             @RequestParam int yearMade,
             @RequestParam int numPages,
             @RequestParam Genre genre,
+            @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         if (id != null) {
             this.bookAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible,
                     price, cityId, type, condition, categoryId, author, yearMade, numPages, genre);
         } else {
-            this.bookAdService.save(title, description, isExchangePossible, isDeliveryPossible,
-                    price, cityId, type, condition, categoryId, user.getId(), author, yearMade, numPages, genre);
+            BookAd bookAd = this.bookAdService.save(title, description, isExchangePossible, isDeliveryPossible,
+                    price, cityId, type, condition, categoryId, user.getId(), author, yearMade, numPages, genre).orElseThrow(RuntimeException :: new);
+
+            user.getAdvertisedAds().add(bookAd);
+            this.userService.save(user);
+
+            imageService.addImagesToAd(bookAd.getId(), images);
         }
         return "redirect:/ads";
     }

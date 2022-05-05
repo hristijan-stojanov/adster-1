@@ -9,14 +9,12 @@ import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Heating;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.service.CategoryService;
-import mk.ukim.finki.wpproject.service.CityService;
-import mk.ukim.finki.wpproject.service.HouseAdService;
-import mk.ukim.finki.wpproject.service.UserService;
+import mk.ukim.finki.wpproject.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,12 +27,14 @@ public class HouseAdController {
     private final HouseAdService houseAdService;
     private final CityService cityService;
     private final UserService userService;
+    private final ImageService imageService;
 
-    public HouseAdController(CategoryService categoryService, HouseAdService houseAdService, CityService cityService, UserService userService) {
+    public HouseAdController(CategoryService categoryService, HouseAdService houseAdService, CityService cityService, UserService userService, ImageService imageService) {
         this.categoryService = categoryService;
         this.houseAdService = houseAdService;
         this.cityService = cityService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/{id}")
@@ -98,6 +98,7 @@ public class HouseAdController {
             @RequestParam int numFloors,
             @RequestParam boolean hasBasement,
             @RequestParam Heating heating,
+            @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
@@ -113,6 +114,8 @@ public class HouseAdController {
 
             user.getAdvertisedAds().add(houseAd);
             this.userService.save(user);
+
+            imageService.addImagesToAd(houseAd.getId(), images);
         }
         return "redirect:/ads";
     }

@@ -1,6 +1,7 @@
 package mk.ukim.finki.wpproject.model.enums;
 
 public enum Genre {
+    Novel,
     Action,
     Adventure,
     Classics,

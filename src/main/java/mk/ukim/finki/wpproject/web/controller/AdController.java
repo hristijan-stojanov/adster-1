@@ -140,26 +140,4 @@ public class AdController {
         return "master";
     }
 
-    @CrossOrigin(origins = "http://localhost:9091")
-    @GetMapping("/imgs")
-    public String getImages() {
-        return "imgTest";
-    }
-
-    @PostMapping("/image")
-    public String uploadingImageTest(@RequestParam("file") MultipartFile image, Model model) throws Exception {
-        adImage adImage = fileLocationService.save(image.getBytes(), image.getOriginalFilename());
-
-        Ad ad = adService.findById((long) 1).get();
-        ad.getImages().add(adImage);
-        adService.save(ad);
-
-        List<String> imagePaths = fileLocationService.findAllPaths(ad);
-        model.addAttribute("images", imageDbRepository.findAll());
-
-
-        model.addAttribute("bodyContent", "showImages");
-        return "master";
-    }
 }
-

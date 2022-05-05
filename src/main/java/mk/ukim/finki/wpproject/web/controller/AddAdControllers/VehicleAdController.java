@@ -7,14 +7,12 @@ import mk.ukim.finki.wpproject.model.ads.VehicleAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.service.CategoryService;
-import mk.ukim.finki.wpproject.service.CityService;
-import mk.ukim.finki.wpproject.service.UserService;
-import mk.ukim.finki.wpproject.service.VehicleAdService;
+import mk.ukim.finki.wpproject.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,12 +25,14 @@ public class VehicleAdController {
     private final VehicleAdService vehicleAdService;
     private final CityService cityService;
     private final UserService userService;
+    private final ImageService imageService;
 
-    public VehicleAdController(CategoryService categoryService, VehicleAdService vehicleAdService, CityService cityService, UserService userService) {
+    public VehicleAdController(CategoryService categoryService, VehicleAdService vehicleAdService, CityService cityService, UserService userService, ImageService imageService) {
         this.categoryService = categoryService;
         this.vehicleAdService = vehicleAdService;
         this.cityService = cityService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/{id}")
@@ -107,6 +107,7 @@ public class VehicleAdController {
             @RequestParam int enginePower,
             @RequestParam Gearbox gearbox,
             @RequestParam Registration registration,
+            @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
         Long userId = ((User) authentication.getPrincipal()).getId();
@@ -123,6 +124,8 @@ public class VehicleAdController {
 
             user.getAdvertisedAds().add(vehicleAd);
             this.userService.save(user);
+
+            imageService.addImagesToAd(vehicleAd.getId(), images);
         }
         return "redirect:/ads";
     }

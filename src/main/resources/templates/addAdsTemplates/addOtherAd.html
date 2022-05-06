@@ -116,12 +116,9 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea type="text"
+                        <textarea id="description" name="description" rows="8" cols="50"
                                   class="form-control"
-                                  id="description"
-                                  name="description"
-                                  th:value="(${otherAd} != null ? ${otherAd.getDescription()} : '')"
-                                  placeholder="Description">
+                                  th:text="(${otherAd} != null ? ${otherAd.getDescription()} : '')">
                         </textarea>
                     </div>
 
@@ -132,6 +129,7 @@
                                id="price"
                                name="price"
                                th:value="(${otherAd} != null ? ${otherAd.getPrice()} : '')"
+                               required
                                placeholder="Price">
                     </div>
 

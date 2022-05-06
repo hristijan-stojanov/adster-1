@@ -102,17 +102,17 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Is Delivery Possible</label>
-                        <select name="isDeliveryPossible" class="form-control">
-                            <option th:text="Yes"
-                                    th:value="True">
-                            </option>
-                            <option th:text="No"
-                                    th:value="False">
-                            </option>
-                        </select>
-                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label>Is Delivery Possible</label>-->
+<!--                        <select name="isDeliveryPossible" class="form-control">-->
+<!--                            <option th:text="Yes"-->
+<!--                                    th:value="True">-->
+<!--                            </option>-->
+<!--                            <option th:text="No"-->
+<!--                                    th:value="False">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
 
                     <div class="form-group">
                         <label for="quadrature">Quadrature (m^2)</label>
@@ -121,26 +121,29 @@
                                id="quadrature"
                                name="quadrature"
                                th:value="(${apartmentAd} != null ? ${apartmentAd.getQuadrature()} : '')"
+                               required
                                placeholder="Quadrature">
                     </div>
 
                     <div class="form-group">
-                        <label for="yearMade">Year of construction</label>
+                        <label for="yearMade"> Year of construction </label>
                         <input type="text"
                                class="form-control"
                                id="yearMade"
                                name="yearMade"
                                th:value="(${apartmentAd} != null ? ${apartmentAd.getYearMade()} : '')"
+                               required
                                placeholder="YearMade">
                     </div>
 
                     <div class="form-group">
-                        <label for="numRooms">Number of rooms/label>
+                        <label for="numRooms">Number of rooms</label>>
                         <input type="text"
                                class="form-control"
                                id="numRooms"
                                name="numRooms"
                                th:value="(${apartmentAd} != null ? ${apartmentAd.getNumRooms()} : '')"
+                               required
                                placeholder="NumRooms">
                     </div>
 
@@ -151,6 +154,7 @@
                                id="numFloors"
                                name="numFloors"
                                th:value="(${apartmentAd} != null ? ${apartmentAd.getNumFloors()} : '')"
+                               required
                                placeholder="NumFloors">
                     </div>
 
@@ -161,6 +165,7 @@
                                id="floor"
                                name="floor"
                                th:value="(${apartmentAd} != null ? ${apartmentAd.getFloor()} : '')"
+                               required
                                placeholder="Floor">
                     </div>
 
@@ -219,12 +224,9 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea type="text"
+                        <textarea id="description" name="description" rows="8" cols="50"
                                   class="form-control"
-                                  id="description"
-                                  name="description"
-                                  th:value="(${apartmentAd} != null ? ${apartmentAd.getDescription()} : '')"
-                                  placeholder="Description">
+                                  th:text="(${apartmentAd} != null ? ${apartmentAd.getDescription()} : '')">
                         </textarea>
                     </div>
 
@@ -235,6 +237,7 @@
                                id="price"
                                name="price"
                                th:value="(${apartmentAd} != null ? ${apartmentAd.getPrice()} : '')"
+                               required
                                placeholder="Price">
                     </div>
 

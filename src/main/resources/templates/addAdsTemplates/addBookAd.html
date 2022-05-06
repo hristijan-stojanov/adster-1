@@ -138,6 +138,7 @@
                                id="author"
                                name="author"
                                th:value="(${bookAd} != null ? ${bookAd.getAuthor()} : '')"
+                               required
                                placeholder="Author">
                     </div>
 
@@ -148,6 +149,7 @@
                                id="yearMade"
                                name="yearMade"
                                th:value="(${bookAd} != null ? ${bookAd.getYearMade()} : '')"
+                               required
                                placeholder="YearMade">
                     </div>
 
@@ -158,17 +160,15 @@
                                id="numPages"
                                name="numPages"
                                th:value="(${bookAd} != null ? ${bookAd.getNumPages()} : '')"
+                               required
                                placeholder="NumPages">
                     </div>
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea type="text"
+                        <textarea id="description" name="description" rows="8" cols="50"
                                   class="form-control"
-                                  id="description"
-                                  name="description"
-                                  th:value="(${bookAd} != null ? ${bookAd.getDescription()} : '')"
-                                  placeholder="Description">
+                                  th:text="(${bookAd} != null ? ${bookAd.getDescription()} : '')">
                         </textarea>
                     </div>
 
@@ -179,6 +179,7 @@
                                id="price"
                                name="price"
                                th:value="(${bookAd} != null ? ${bookAd.getPrice()} : '')"
+                               required
                                placeholder="Price">
                     </div>
 

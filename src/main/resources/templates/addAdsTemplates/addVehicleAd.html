@@ -103,17 +103,17 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Is Delivery Possible</label>
-                        <select name="isDeliveryPossible" class="form-control">
-                            <option th:text="Yes"
-                                    th:value="True">
-                            </option>
-                            <option th:text="No"
-                                    th:value="False">
-                            </option>
-                        </select>
-                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label>Is Delivery Possible</label>-->
+<!--                        <select name="isDeliveryPossible" class="form-control">-->
+<!--                            <option th:text="Yes"-->
+<!--                                    th:value="True">-->
+<!--                            </option>-->
+<!--                            <option th:text="No"-->
+<!--                                    th:value="False">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
 
                     <div class="form-group">
                         <label>Car Brand</label>
@@ -156,6 +156,7 @@
                                id="yearMade"
                                name="yearMade"
                                th:value="(${vehicleAd} != null ? ${vehicleAd.getYearMade()} : '')"
+                               required
                                placeholder="YearMade">
                     </div>
 
@@ -166,6 +167,7 @@
                                id="milesTraveled"
                                name="milesTraveled"
                                th:value="(${vehicleAd} != null ? ${vehicleAd.getMilesTraveled()} : '')"
+                               required
                                placeholder="MilesTraveled">
                     </div>
 
@@ -176,6 +178,7 @@
                                id="enginePower"
                                name="enginePower"
                                th:value="(${vehicleAd} != null ? ${vehicleAd.getEnginePower()} : '')"
+                               required
                                placeholder="EnginePower">
                     </div>
 
@@ -232,12 +235,9 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea type="text"
+                        <textarea id="description" name="description" rows="8" cols="50"
                                   class="form-control"
-                                  id="description"
-                                  name="description"
-                                  th:value="(${vehicleAd} != null ? ${vehicleAd.getDescription()} : '')"
-                                  placeholder="Description">
+                                  th:text="(${vehicleAd} != null ? ${vehicleAd.getDescription()} : '')">
                         </textarea>
                     </div>
 
@@ -248,6 +248,7 @@
                                id="price"
                                name="price"
                                th:value="(${vehicleAd} != null ? ${vehicleAd.getPrice()} : '')"
+                               required
                                placeholder="Price">
                     </div>
 

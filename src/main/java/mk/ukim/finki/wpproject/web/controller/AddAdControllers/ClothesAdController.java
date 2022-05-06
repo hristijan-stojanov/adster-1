@@ -85,7 +85,7 @@ public class ClothesAdController {
             @RequestParam Condition condition,
             @RequestParam Long categoryId,
             @RequestParam TypeClothing typeClothing,
-            @RequestParam int numSize,
+            @RequestParam(required = true) int numSize,
             @RequestParam Size size,
             @RequestParam Color color,
             @RequestParam("files") List<MultipartFile> images,

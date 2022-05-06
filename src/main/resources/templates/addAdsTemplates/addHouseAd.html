@@ -102,17 +102,17 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Is Delivery Possible</label>
-                        <select name="isDeliveryPossible" class="form-control">
-                            <option th:text="Yes"
-                                    th:value="True">
-                            </option>
-                            <option th:text="No"
-                                    th:value="False">
-                            </option>
-                        </select>
-                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label>Is Delivery Possible</label>-->
+<!--                        <select name="isDeliveryPossible" class="form-control">-->
+<!--                            <option th:text="Yes"-->
+<!--                                    th:value="True">-->
+<!--                            </option>-->
+<!--                            <option th:text="No"-->
+<!--                                    th:value="False">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
 
                     <div class="form-group">
                         <label for="quadrature">Quadrature (m^2)</label>
@@ -121,6 +121,7 @@
                                id="quadrature"
                                name="quadrature"
                                th:value="(${houseAd} != null ? ${houseAd.getQuadrature()} : '')"
+                               required
                                placeholder="Quadrature">
                     </div>
 
@@ -131,6 +132,7 @@
                                id="yearMade"
                                name="yearMade"
                                th:value="(${houseAd} != null ? ${houseAd.getYearMade()} : '')"
+                               required
                                placeholder="YearMade">
                     </div>
 
@@ -141,6 +143,7 @@
                                id="yardArea"
                                name="yardArea"
                                th:value="(${houseAd} != null ? ${houseAd.getYardArea()} : '')"
+                               required
                                placeholder="YardArea">
                     </div>
 
@@ -151,6 +154,7 @@
                                id="numRooms"
                                name="numRooms"
                                th:value="(${houseAd} != null ? ${houseAd.getNumRooms()} : '')"
+                               required
                                placeholder="NumRooms">
                     </div>
 
@@ -161,6 +165,7 @@
                                id="numFloors"
                                name="numFloors"
                                th:value="(${houseAd} != null ? ${houseAd.getNumFloors()} : '')"
+                               required
                                placeholder="NumFloors">
                     </div>
 
@@ -195,12 +200,9 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea type="text"
+                        <textarea id="description" name="description" rows="8" cols="50"
                                   class="form-control"
-                                  id="description"
-                                  name="description"
-                                  th:value="(${houseAd} != null ? ${houseAd.getDescription()} : '')"
-                                  placeholder="Description">
+                                  th:text="(${houseAd} != null ? ${houseAd.getDescription()} : '')">
                         </textarea>
                     </div>
 
@@ -211,6 +213,7 @@
                                id="price"
                                name="price"
                                th:value="(${houseAd} != null ? ${houseAd.getPrice()} : '')"
+                               required
                                placeholder="Price">
                     </div>
 

@@ -74,7 +74,7 @@ public class OtherAdController {
             @RequestParam String title,
             @RequestParam String description,
             @RequestParam boolean isExchangePossible,
-            @RequestParam boolean isDeliveryPossible,
+            @RequestParam(required = false) boolean isDeliveryPossible,
             @RequestParam Double price,
             @RequestParam String cityId,
             @RequestParam AdType type,

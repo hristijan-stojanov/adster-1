@@ -155,6 +155,7 @@
                                id="processorModel"
                                name="processorModel"
                                th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getProcessorModel()} : '')"
+                               required
                                placeholder="Processor Model">
                     </div>
 
@@ -182,6 +183,7 @@
                                id="memorySize"
                                name="memorySize"
                                th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getMemorySize()} : '')"
+                               required
                                placeholder="MemorySize">
                     </div>
 
@@ -192,17 +194,15 @@
                                id="ramMemorySize"
                                name="ramMemorySize"
                                th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getRamMemorySize()} : '')"
+                               required
                                placeholder="RamMemorySize">
                     </div>
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea type="text"
+                        <textarea id="description" name="description" rows="8" cols="50"
                                   class="form-control"
-                                  id="description"
-                                  name="description"
-                                  th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getDescription()} : '')"
-                                  placeholder="Description">
+                                  th:text="(${itEquipmentAd} != null ? ${itEquipmentAd.getDescription()} : '')">
                         </textarea>
                     </div>
 
@@ -213,6 +213,7 @@
                                id="price"
                                name="price"
                                th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getPrice()} : '')"
+                               required
                                placeholder="Price">
                     </div>
 

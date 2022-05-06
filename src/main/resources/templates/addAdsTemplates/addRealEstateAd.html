@@ -73,22 +73,22 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Condition</label>
-                        <select name="condition" class="form-control">
-                            <option th:if="${realEstateAd} != null"
-                                    th:selected="${realEstateAd.getCondition().name() == Condition.name()}"
-                                    th:each="Condition : ${conditionList}"
-                                    th:value="${Condition.name()}"
-                                    th:text="${Condition.name()}">
-                            </option>
-                            <option th:if="${realEstateAd} == null"
-                                    th:each="Condition : ${conditionList}"
-                                    th:value="${Condition.name()}"
-                                    th:text="${Condition.name()}">
-                            </option>
-                        </select>
-                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label>Condition</label>-->
+<!--                        <select name="condition" class="form-control">-->
+<!--                            <option th:if="${realEstateAd} != null"-->
+<!--                                    th:selected="${realEstateAd.getCondition().name() == Condition.name()}"-->
+<!--                                    th:each="Condition : ${conditionList}"-->
+<!--                                    th:value="${Condition.name()}"-->
+<!--                                    th:text="${Condition.name()}">-->
+<!--                            </option>-->
+<!--                            <option th:if="${realEstateAd} == null"-->
+<!--                                    th:each="Condition : ${conditionList}"-->
+<!--                                    th:value="${Condition.name()}"-->
+<!--                                    th:text="${Condition.name()}">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
 
                     <div class="form-group">
                         <label>Is Exchange Possible</label>
@@ -102,17 +102,17 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Is Delivery Possible</label>
-                        <select name="isDeliveryPossible" class="form-control">
-                            <option th:text="Yes"
-                                    th:value="True">
-                            </option>
-                            <option th:text="No"
-                                    th:value="False">
-                            </option>
-                        </select>
-                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label>Is Delivery Possible</label>-->
+<!--                        <select name="isDeliveryPossible" class="form-control">-->
+<!--                            <option th:text="Yes"-->
+<!--                                    th:value="True">-->
+<!--                            </option>-->
+<!--                            <option th:text="No"-->
+<!--                                    th:value="False">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
 
                     <div class="form-group">
                         <label for="quadrature">Quadrature (m^2)</label>
@@ -121,17 +121,15 @@
                                id="quadrature"
                                name="quadrature"
                                th:value="(${realEstateAd} != null ? ${realEstateAd.getQuadrature()} : '')"
+                               required
                                placeholder="Quadrature">
                     </div>
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea type="text"
+                        <textarea id="description" name="description" rows="8" cols="50"
                                   class="form-control"
-                                  id="description"
-                                  name="description"
-                                  th:value="(${realEstateAd} != null ? ${realEstateAd.getDescription()} : '')"
-                                  placeholder="Description">
+                                  th:text="(${realEstateAd} != null ? ${realEstateAd.getDescription()} : '')">
                         </textarea>
                     </div>
 
@@ -142,6 +140,7 @@
                                id="price"
                                name="price"
                                th:value="(${realEstateAd} != null ? ${realEstateAd.getPrice()} : '')"
+                               required
                                placeholder="Price">
                     </div>
 

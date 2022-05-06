@@ -14,16 +14,12 @@ import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.exceptions.*;
-import mk.ukim.finki.wpproject.repository.AdRepository;
-import mk.ukim.finki.wpproject.repository.CategoryRepository;
-import mk.ukim.finki.wpproject.repository.CityRepository;
-import mk.ukim.finki.wpproject.repository.UserRepository;
+import mk.ukim.finki.wpproject.repository.*;
 import mk.ukim.finki.wpproject.service.AdService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -34,12 +30,16 @@ import java.util.Optional;
 public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
+    private final ApartmentAdRepository apartmentAdRepository;
+    private final BookAdRepository bookAdRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
 
-    public AdServiceImpl(AdRepository adRepository, CategoryRepository categoryRepository, UserRepository userRepository, CityRepository cityRepository) {
+    public AdServiceImpl(AdRepository adRepository, ApartmentAdRepository apartmentAdRepository, BookAdRepository bookAdRepository, CategoryRepository categoryRepository, UserRepository userRepository, CityRepository cityRepository) {
         this.adRepository = adRepository;
+        this.apartmentAdRepository = apartmentAdRepository;
+        this.bookAdRepository = bookAdRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
         this.cityRepository = cityRepository;
@@ -88,8 +88,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public void deleteById(Long id) {
-        Ad ad = this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
-        this.adRepository.delete(ad);
+        this.adRepository.deleteById(id);
     }
 
 
@@ -168,6 +167,8 @@ public class AdServiceImpl implements AdService {
             return "OtherAd";
         }
     }
+
+
 
     @Override
     public List<Ad> filter(String title, String cityId, Long categoryId) {

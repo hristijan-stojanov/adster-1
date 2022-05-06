@@ -46,16 +46,6 @@ public class VehicleAdController {
         return "master";
     }
 
-    @GetMapping("/add-form")
-    public String AddVehicleAdPage(Model model) {
-
-        Category category = this.categoryService.findCategoryByName("Vehicle");
-        model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "adAdsTemplates/addVehicleAd");
-        return "master";
-
-    }
-
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
@@ -130,20 +120,34 @@ public class VehicleAdController {
         return "redirect:/ads";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteVehicleAd(@PathVariable Long id) {
-        this.vehicleAdService.deleteById(id);
-        return "redirect:/ads";
-    }
-
     @GetMapping("/edit-form/{id}")
     public String editVehicleAdPage(@PathVariable Long id, Model model) {
         if (this.vehicleAdService.findById(id).isPresent()) {
+
             VehicleAd vehicleAd = this.vehicleAdService.findById(id).get();
-            List<Category> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
+            Category category = vehicleAd.getCategory();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+            List<CarBrand> carBrandList = Arrays.asList(CarBrand.values());
+            List<Color> colorList = Arrays.asList(Color.values());
+            List<Fuel> fuelList = Arrays.asList(Fuel.values());
+            List<Gearbox> gearboxList = Arrays.asList(Gearbox.values());
+            List<Registration> registrationList = Arrays.asList(Registration.values());
+
             model.addAttribute("vehicleAd", vehicleAd);
-            model.addAttribute("bodyContent", "adsTemplates/addVehicleAd");
+            model.addAttribute("category_1", category);
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList",adTypeList);
+            model.addAttribute("conditionList",conditionList);
+            model.addAttribute("carBrandList",carBrandList);
+            model.addAttribute("colorList",colorList);
+            model.addAttribute("fuelList",fuelList);
+            model.addAttribute("gearboxList",gearboxList);
+            model.addAttribute("registrationList",registrationList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addVehicleAd");
+
             return "master";
 
         }

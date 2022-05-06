@@ -3,9 +3,12 @@ package mk.ukim.finki.wpproject.model;
 import lombok.Data;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -13,7 +16,8 @@ import java.util.*;
 @Entity
 @Table(name = "ads")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Ad {
+@OnDelete(action = OnDeleteAction.CASCADE)
+public class Ad implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

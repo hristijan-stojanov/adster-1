@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/ApartmentAd")
+@RequestMapping(value = "/ApartmentAd")
 public class ApartmentAdController {
 
     private final CategoryService categoryService;
@@ -47,16 +47,6 @@ public class ApartmentAdController {
 
         model.addAttribute("bodyContent", "showAdsTemplates/showApartmentAd");
         return "master";
-    }
-
-    @GetMapping("/add-form")
-    public String AddApartmentAdPage(Model model) {
-
-        Category category = this.categoryService.findCategoryByName("Apartment");
-        model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "addAdsTemplates/addApartmentAd");
-        return "master";
-
     }
 
     @GetMapping("/add-form/{categoryId}")
@@ -126,22 +116,26 @@ public class ApartmentAdController {
         return "redirect:/ads";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteApartmentAd(@PathVariable Long id) {
-        this.apartmentAdService.deleteById(id);
-        return "redirect:/ads";
-    }
-
-
-    // tuka ne treba da moze da mene kategorija
-    @GetMapping("/edit-form/{id}")
+     @GetMapping("/edit-form/{id}")
     public String editApartmentAd(@PathVariable Long id, Model model) {
         if (this.apartmentAdService.findById(id).isPresent()) {
+
             ApartmentAd apartmentAd = this.apartmentAdService.findById(id).get();
-            List<Category> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
+            Category category = apartmentAd.getCategory();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+            List<Heating> heatingList = Arrays.asList(Heating.values());
+
             model.addAttribute("apartmentAd", apartmentAd);
-            model.addAttribute("bodyContent", "adsTemplates/addApartmentAd");
+            model.addAttribute("category_1", category);
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("heatingList", heatingList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addApartmentAd");
+
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

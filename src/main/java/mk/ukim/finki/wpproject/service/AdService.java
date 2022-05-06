@@ -31,7 +31,7 @@ public interface AdService {
     Optional<Ad> edit(Long adId, String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
                       Double price, String cityId, AdType type, Condition condition, Long categoryId);
 
-    void deleteById(Long adId);
+    void deleteById(Long id);
 
     public Page<Ad> findPaginated(Pageable pageable, List<Ad>filteredAds);
 

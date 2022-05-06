@@ -2,6 +2,7 @@ package mk.ukim.finki.wpproject.web.controller;
 
 import mk.ukim.finki.wpproject.model.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.repository.ImageDbRepository;
 import mk.ukim.finki.wpproject.service.*;
@@ -89,6 +90,34 @@ public class AdController {
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
         return "redirect:/" + this.adService.renderAdBasedOnCategory(ad, id, model) + "/" + ad.getId();
+    }
+
+//    @GetMapping("/delete/{id}")
+//    public String deleteAd(Model model,@PathVariable Long id){
+//        Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+//
+//        return "redirect:/" + this.adService.renderAdBasedOnCategory(ad, id, model) + "/delete/" + ad.getId().toString();
+//    }
+
+//    @DeleteMapping("/delete/{categoryId}/{id}")
+//    public String deleteApartmentAd(@PathVariable Long categoryId, @PathVariable Long id) {
+//
+//
+//
+//        return "redirect:/ads";
+//    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteAd(@PathVariable Long id) {
+        this.adService.deleteById(id);
+        return "redirect:/myAds";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editAd(Model model,@PathVariable Long id){
+        Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+
+        return "redirect:/" + this.adService.renderAdBasedOnCategory(ad, id, model) + "/edit-form/" + ad.getId();
     }
 
     @GetMapping("/savedAds")

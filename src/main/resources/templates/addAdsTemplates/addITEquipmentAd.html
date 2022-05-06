@@ -15,7 +15,7 @@
 
                     <div class="form-group">
                         <label>Category</label>
-                        <select name="categoryId" class="form-control" >
+                        <select name="categoryId" class="form-control">
                             <option th:selected="${category_1.getName()}"
                                     th:value="${category_1.getId()}"
                                     th:text="${category_1.getName()}">
@@ -42,36 +42,51 @@
                     <div class="form-group">
                         <label>City</label>
                         <select name="cityId" class="form-control">
-                            <option th:if="${cityList} != null"
+                            <option th:if="${itEquipmentAd} != null"
+                                    th:selected="${itEquipmentAd.getCity().getName() == City.getName()}"
                                     th:each="City : ${cityList}"
                                     th:value="${City.getName()}"
                                     th:text="${City.getName()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${itEquipmentAd} == null"
+                                    th:each="City : ${cityList}"
+                                    th:value="${City.getName()}"
+                                    th:text="${City.getName()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Ad Type</label>
                         <select name="type" class="form-control">
-                            <option th:if="${adTypeList} != null"
+                            <option th:if="${itEquipmentAd} != null"
+                                    th:selected="${itEquipmentAd.getType().name() == Type.name()}"
                                     th:each="Type : ${adTypeList}"
                                     th:value="${Type.name()}"
                                     th:text="${Type.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${itEquipmentAd} == null"
+                                    th:each="Type : ${adTypeList}"
+                                    th:value="${Type.name()}"
+                                    th:text="${Type.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Condition</label>
                         <select name="condition" class="form-control">
-                            <option th:if="${conditionList} != null"
-                                    th:each="condition : ${conditionList}"
-                                    th:value="${condition.name()}"
-                                    th:text="${condition.name()}">
+                            <option th:if="${itEquipmentAd} != null"
+                                    th:selected="${itEquipmentAd.getCondition().name() == Condition.name()}"
+                                    th:each="Condition : ${conditionList}"
+                                    th:value="${Condition.name()}"
+                                    th:text="${Condition.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${itEquipmentAd} == null"
+                                    th:each="Condition : ${conditionList}"
+                                    th:value="${Condition.name()}"
+                                    th:text="${Condition.name()}">
+                            </option>
                         </select>
                     </div>
 
@@ -102,24 +117,34 @@
                     <div class="form-group">
                         <label>IT Brand</label>
                         <select name="brand" class="form-control">
-                            <option th:if="${itBrandList} != null"
+                            <option th:if="${itEquipmentAd} != null"
+                                    th:selected="${itEquipmentAd.getBrand().name() == Brand.name()}"
                                     th:each="Brand : ${itBrandList}"
                                     th:value="${Brand.name()}"
                                     th:text="${Brand.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${itEquipmentAd} == null"
+                                    th:each="Brand : ${itBrandList}"
+                                    th:value="${Brand.name()}"
+                                    th:text="${Brand.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Processor Brand</label>
                         <select name="processor" class="form-control">
-                            <option th:if="${processorBrandList} != null"
-                                    th:each="Brand : ${processorBrandList}"
-                                    th:value="${Brand.name()}"
-                                    th:text="${Brand.name()}">
+                            <option th:if="${itEquipmentAd} != null"
+                                    th:selected="${itEquipmentAd.getProcessor().name() == BrandP.name()}"
+                                    th:each="BrandP : ${processorBrandList}"
+                                    th:value="${BrandP.name()}"
+                                    th:text="${BrandP.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${itEquipmentAd} == null"
+                                    th:each="BrandP : ${processorBrandList}"
+                                    th:value="${BrandP.name()}"
+                                    th:text="${BrandP.name()}">
+                            </option>
                         </select>
                     </div>
 
@@ -129,39 +154,44 @@
                                class="form-control"
                                id="processorModel"
                                name="processorModel"
-                               th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getpProcessorModel()} : '')"
+                               th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getProcessorModel()} : '')"
                                placeholder="Processor Model">
                     </div>
 
                     <div class="form-group">
                         <label>Type of Memory</label>
                         <select name="typeMemory" class="form-control">
-                            <option th:if="${typeMemoryList} != null"
+                            <option th:if="${itEquipmentAd} != null"
+                                    th:selected="${itEquipmentAd.getTypeMemory().name() == Type.name()}"
                                     th:each="Type : ${typeMemoryList}"
                                     th:value="${Type.name()}"
                                     th:text="${Type.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${itEquipmentAd} == null"
+                                    th:each="Type : ${typeMemoryList}"
+                                    th:value="${Type.name()}"
+                                    th:text="${Type.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="memorySize">MemorySize</label>
+                        <label for="memorySize">Memory Size (GB)</label>
                         <input type="text"
                                class="form-control"
                                id="memorySize"
                                name="memorySize"
-                               th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getpMemorySize()} : '')"
+                               th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getMemorySize()} : '')"
                                placeholder="MemorySize">
                     </div>
 
                     <div class="form-group">
-                        <label for="ramMemorySize">RamMemorySize</label>
+                        <label for="ramMemorySize">RAM Memory Size (GB)</label>
                         <input type="text"
                                class="form-control"
                                id="ramMemorySize"
                                name="ramMemorySize"
-                               th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getpRamMemorySize()} : '')"
+                               th:value="(${itEquipmentAd} != null ? ${itEquipmentAd.getRamMemorySize()} : '')"
                                placeholder="RamMemorySize">
                     </div>
 
@@ -177,7 +207,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="price">Price</label>
+                        <label for="price">Price (euro)</label>
                         <input type="text"
                                class="form-control"
                                id="price"

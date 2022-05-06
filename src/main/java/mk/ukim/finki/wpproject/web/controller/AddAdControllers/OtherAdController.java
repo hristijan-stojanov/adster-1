@@ -101,20 +101,24 @@ public class OtherAdController {
         return "redirect:/ads";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteOtherAd(@PathVariable Long id) {
-        this.adService.deleteById(id);
-        return "redirect:/ads";
-    }
-
     @GetMapping("/edit-form/{id}")
     public String editApartmentAd(@PathVariable Long id, Model model) {
         if (this.adService.findById(id).isPresent()) {
+
             Ad otherAd = this.adService.findById(id).get();
-            List<Category> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
+            Category category = otherAd.getCategory();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+
             model.addAttribute("otherAd", otherAd);
-            model.addAttribute("bodyContent", "adsTemplates/addApartmentAd");
+            model.addAttribute("category_1", category);
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addOtherAd");
+
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

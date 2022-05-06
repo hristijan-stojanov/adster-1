@@ -39,7 +39,7 @@ public class BookAdController {
     }
 
     @GetMapping("/{id}")
-    public String showBookAd(@PathVariable Long id, Model model){
+    public String showBookAd(@PathVariable Long id, Model model) {
 
         BookAd bookAd = this.bookAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", bookAd);
@@ -49,20 +49,10 @@ public class BookAdController {
         return "master";
     }
 
-    @GetMapping("/add-form")
-    public String AddBookAdPage(Model model) {
-
-        Category category = this.categoryService.findCategoryByName("Book");
-        model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "adAdsTemplates/addBookAd");
-        return "master";
-
-    }
-
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()){
+        if (this.categoryService.findById(categoryId).isPresent()) {
             Category category = this.categoryService.findById(categoryId).get();
             List<City> cityList = this.cityService.findAll();
             List<AdType> adTypeList = Arrays.asList(AdType.values());
@@ -71,9 +61,9 @@ public class BookAdController {
 
             model.addAttribute("category_1", category);
             model.addAttribute("cityList", cityList);
-            model.addAttribute("adTypeList",adTypeList);
-            model.addAttribute("conditionList",conditionList);
-            model.addAttribute("genreList",genreList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("genreList", genreList);
 
             model.addAttribute("bodyContent", "addAdsTemplates/addBookAd");
             return "master";
@@ -108,7 +98,8 @@ public class BookAdController {
                     price, cityId, type, condition, categoryId, author, yearMade, numPages, genre);
         } else {
             BookAd bookAd = this.bookAdService.save(title, description, isExchangePossible, isDeliveryPossible,
-                    price, cityId, type, condition, categoryId, user.getId(), author, yearMade, numPages, genre).orElseThrow(RuntimeException :: new);
+                            price, cityId, type, condition, categoryId, user.getId(), author, yearMade, numPages, genre)
+                    .orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(bookAd);
             this.userService.save(user);
@@ -118,20 +109,26 @@ public class BookAdController {
         return "redirect:/ads";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteBookAd(@PathVariable Long id) {
-        this.bookAdService.deleteById(id);
-        return "redirect:/ads";
-    }
-
     @GetMapping("/edit-form/{id}")
     public String editBookAd(@PathVariable Long id, Model model) {
         if (this.bookAdService.findById(id).isPresent()) {
+
             BookAd bookAd = this.bookAdService.findById(id).get();
-            List<Category> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
+            Category category = bookAd.getCategory();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+            List<Genre> genreList = Arrays.asList(Genre.values());
+
             model.addAttribute("bookAd", bookAd);
-            model.addAttribute("bodyContent", "adsTemplates/addBookAd");
+            model.addAttribute("category_1", category);
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("genreList", genreList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addBookAd");
+
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

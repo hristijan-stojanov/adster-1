@@ -46,16 +46,6 @@ public class ITEquipmentsAdController {
         return "master";
     }
 
-    @GetMapping("/add-form")
-    public String AddITEquipmentsAdPage(Model model) {
-
-        Category category = this.categoryService.findCategoryByName("ITEquipment");
-        model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "adAdsTemplates/addITEquipmentAd");
-        return "master";
-
-    }
-
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
@@ -124,20 +114,30 @@ public class ITEquipmentsAdController {
         return "redirect:/ads";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteITEquipmentsAd(@PathVariable Long id) {
-        this.itEquipmentAdService.deleteById(id);
-        return "redirect:/ads";
-    }
-
     @GetMapping("/edit-form/{id}")
     public String editITEquipmentsAd(@PathVariable Long id, Model model) {
         if (this.itEquipmentAdService.findById(id).isPresent()) {
+
             ITEquipmentAd itEquipmentAd = this.itEquipmentAdService.findById(id).get();
-            List<Category> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
+            Category category = itEquipmentAd.getCategory();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+            List<ITBrand> itBrandList = Arrays.asList(ITBrand.values());
+            List<ProcessorBrand> processorBrandList = Arrays.asList(ProcessorBrand.values());
+            List<TypeMemory> typeMemoryList = Arrays.asList(TypeMemory.values());
+
             model.addAttribute("itEquipmentAd", itEquipmentAd);
-            model.addAttribute("bodyContent", "adsTemplates/addITEquipmentsAd");
+            model.addAttribute("category_1", category);
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("itBrandList", itBrandList);
+            model.addAttribute("processorBrandList", processorBrandList);
+            model.addAttribute("typeMemoryList", typeMemoryList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addITEquipmentAd");
+
             return "master";
 
         }

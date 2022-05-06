@@ -15,7 +15,7 @@
 
                     <div class="form-group">
                         <label>Category</label>
-                        <select name="categoryId" class="form-control" >
+                        <select name="categoryId" class="form-control">
                             <option th:selected="${category_1.getName()}"
                                     th:value="${category_1.getId()}"
                                     th:text="${category_1.getName()}">
@@ -42,36 +42,51 @@
                     <div class="form-group">
                         <label>City</label>
                         <select name="cityId" class="form-control">
-                            <option th:if="${cityList} != null"
+                            <option th:if="${clothesAd} != null"
+                                    th:selected="${clothesAd.getCity().getName() == City.getName()}"
                                     th:each="City : ${cityList}"
                                     th:value="${City.getName()}"
                                     th:text="${City.getName()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${clothesAd} == null"
+                                    th:each="City : ${cityList}"
+                                    th:value="${City.getName()}"
+                                    th:text="${City.getName()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Ad Type</label>
                         <select name="type" class="form-control">
-                            <option th:if="${adTypeList} != null"
+                            <option th:if="${clothesAd} != null"
+                                    th:selected="${clothesAd.getType().name() == Type.name()}"
                                     th:each="Type : ${adTypeList}"
                                     th:value="${Type.name()}"
                                     th:text="${Type.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${clothesAd} == null"
+                                    th:each="Type : ${adTypeList}"
+                                    th:value="${Type.name()}"
+                                    th:text="${Type.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Condition</label>
                         <select name="condition" class="form-control">
-                            <option th:if="${conditionList} != null"
-                                    th:each="condition : ${conditionList}"
-                                    th:value="${condition.name()}"
-                                    th:text="${condition.name()}">
+                            <option th:if="${clothesAd} != null"
+                                    th:selected="${clothesAd.getCondition().name() == Condition.name()}"
+                                    th:each="Condition : ${conditionList}"
+                                    th:value="${Condition.name()}"
+                                    th:text="${Condition.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${clothesAd} == null"
+                                    th:each="Condition : ${conditionList}"
+                                    th:value="${Condition.name()}"
+                                    th:text="${Condition.name()}">
+                            </option>
                         </select>
                     </div>
 
@@ -102,29 +117,39 @@
                     <div class="form-group">
                         <label>Type of Clothing</label>
                         <select name="typeClothing" class="form-control">
-                            <option th:if="${typeClothingList} != null"
+                            <option th:if="${clothesAd} != null"
+                                    th:selected="${clothesAd.getTypeClothing().name() == Type.name()}"
                                     th:each="Type : ${typeClothingList}"
                                     th:value="${Type.name()}"
                                     th:text="${Type.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${clothesAd} == null"
+                                    th:each="Type : ${typeClothingList}"
+                                    th:value="${Type.name()}"
+                                    th:text="${Type.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Size</label>
                         <select name="size" class="form-control">
-                            <option th:if="${sizeList} != null"
+                            <option th:if="${clothesAd} != null"
+                                    th:selected="${clothesAd.getSize().name() == Size.name()}"
                                     th:each="Size : ${sizeList}"
                                     th:value="${Size.name()}"
                                     th:text="${Size.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${clothesAd} == null"
+                                    th:each="Size : ${sizeList}"
+                                    th:value="${Size.name()}"
+                                    th:text="${Size.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="numSize">Num Size</label>
+                        <label for="numSize">Number (Size)</label>
                         <input type="text"
                                class="form-control"
                                id="numSize"
@@ -136,28 +161,35 @@
                     <div class="form-group">
                         <label>Color</label>
                         <select name="color" class="form-control">
-                            <option th:if="${colorList} != null"
+                            <option th:if="${clothesAd} != null"
+                                    th:selected="${clothesAd.getColor().name() == Color.name()}"
                                     th:each="Color : ${colorList}"
                                     th:value="${Color.name()}"
                                     th:text="${Color.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${clothesAd} == null"
+                                    th:each="Color : ${colorList}"
+                                    th:value="${Color.name()}"
+                                    th:text="${Color.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea type="text"
-                                  class="form-control"
-                                  id="description"
-                                  name="description"
-                                  th:value="(${clothesAd} != null ? ${clothesAd.getDescription()} : '')"
-                                  placeholder="Description">
-                        </textarea>
+<!--                        <input type="text"-->
+<!--                               class="form-control"-->
+<!--                               id="description"-->
+<!--                               name="description"-->
+<!--                               th:value="(${clothesAd} != null ? ${clothesAd.getDescription()} : '')"-->
+<!--                               placeholder="Description">-->
+
+                        <textarea name="description" class="form-control" type="text" placeholder="Description" id="description"
+                                  rows="4" th:value="(${clothesAd} != null ? ${clothesAd.getDescription()} : '')"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="price">Price</label>
+                        <label for="price">Price (euro)</label>
                         <input type="text"
                                class="form-control"
                                id="price"

@@ -9,12 +9,15 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Genre;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @Table(name = "book_ads")
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class BookAd extends Ad {
 
     private String author;
@@ -25,6 +28,10 @@ public class BookAd extends Ad {
 
     @Enumerated(EnumType.STRING)
     private Genre genre;
+
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(insertable = false, updatable = false, name = "id")
+    private Ad ad;
 
     public BookAd() {
     }

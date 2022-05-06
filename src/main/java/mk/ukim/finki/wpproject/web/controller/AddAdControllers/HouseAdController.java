@@ -48,15 +48,6 @@ public class HouseAdController {
         return "master";
     }
 
-    @GetMapping("/add-form")
-    public String AddHousePage(Model model) {
-
-        Category category = this.categoryService.findCategoryByName("House");
-        model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "adAdsTemplates/addHouseAd");
-        return "master";
-    }
-
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
@@ -120,20 +111,26 @@ public class HouseAdController {
         return "redirect:/ads";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteHouseAd(@PathVariable Long id) {
-        this.houseAdService.deleteById(id);
-        return "redirect:/ads";
-    }
-
     @GetMapping("/edit-form/{id}")
     public String editHouseAd(@PathVariable Long id, Model model) {
         if (this.houseAdService.findById(id).isPresent()) {
+
             HouseAd houseAd = this.houseAdService.findById(id).get();
-            List<Category> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
+            Category category = houseAd.getCategory();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+            List<Heating> heatingList = Arrays.asList(Heating.values());
+
+            model.addAttribute("category_1", category);
             model.addAttribute("houseAd", houseAd);
-            model.addAttribute("bodyContent", "adsTemplates/addHouseAd");
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList",adTypeList);
+            model.addAttribute("conditionList",conditionList);
+            model.addAttribute("heatingList",heatingList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addHouseAd");
+
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

@@ -42,36 +42,51 @@
                     <div class="form-group">
                         <label>City</label>
                         <select name="cityId" class="form-control">
-                            <option th:if="${cityList} != null"
+                            <option th:if="${apartmentAd} != null"
+                                    th:selected="${apartmentAd.getCity().getName() == City.getName()}"
                                     th:each="City : ${cityList}"
                                     th:value="${City.getName()}"
                                     th:text="${City.getName()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${apartmentAd} == null"
+                                    th:each="City : ${cityList}"
+                                    th:value="${City.getName()}"
+                                    th:text="${City.getName()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Ad Type</label>
                         <select name="type" class="form-control">
-                            <option th:if="${adTypeList} != null"
+                            <option th:if="${apartmentAd} != null"
+                                    th:selected="${apartmentAd.getType().name() == Type.name()}"
                                     th:each="Type : ${adTypeList}"
                                     th:value="${Type.name()}"
                                     th:text="${Type.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${apartmentAd} == null"
+                                    th:each="Type : ${adTypeList}"
+                                    th:value="${Type.name()}"
+                                    th:text="${Type.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Condition</label>
                         <select name="condition" class="form-control">
-                            <option th:if="${conditionList} != null"
-                                    th:each="condition : ${conditionList}"
-                                    th:value="${condition.name()}"
-                                    th:text="${condition.name()}">
+                            <option th:if="${apartmentAd} != null"
+                                    th:selected="${apartmentAd.getCondition().name() == Condition.name()}"
+                                    th:each="Condition : ${conditionList}"
+                                    th:value="${Condition.name()}"
+                                    th:text="${Condition.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${apartmentAd} == null"
+                                    th:each="Condition : ${conditionList}"
+                                    th:value="${Condition.name()}"
+                                    th:text="${Condition.name()}">
+                            </option>
                         </select>
                     </div>
 
@@ -100,7 +115,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="quadrature">Quadrature</label>
+                        <label for="quadrature">Quadrature (m^2)</label>
                         <input type="text"
                                class="form-control"
                                id="quadrature"
@@ -110,7 +125,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="yearMade">YearMade</label>
+                        <label for="yearMade">Year of construction</label>
                         <input type="text"
                                class="form-control"
                                id="yearMade"
@@ -120,7 +135,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="numRooms">NumRooms</label>
+                        <label for="numRooms">Number of rooms/label>
                         <input type="text"
                                class="form-control"
                                id="numRooms"
@@ -130,7 +145,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="numFloors">NumFloors</label>
+                        <label for="numFloors">Number of floors</label>
                         <input type="text"
                                class="form-control"
                                id="numFloors"
@@ -150,7 +165,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Has Basement</label>
+                        <label>Has Basement </label>
                         <select name="hasBasement" class="form-control">
                             <option th:text="Yes"
                                     th:value="True">
@@ -162,7 +177,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Has Elevator</label>
+                        <label>Has Elevator </label>
                         <select name="hasElevator" class="form-control">
                             <option th:text="Yes"
                                     th:value="True">
@@ -174,7 +189,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Has Parking Spot</label>
+                        <label>Has Parking Spot </label>
                         <select name="hasParkingSpot" class="form-control">
                             <option th:text="Yes"
                                     th:value="True">
@@ -188,12 +203,17 @@
                     <div class="form-group">
                         <label>Heating</label>
                         <select name="heating" class="form-control">
-                            <option th:if="${heatingList} != null"
+                            <option th:if="${apartmentAd} != null"
+                                    th:selected="${apartmentAd.getHeating().name() == Heating.name()}"
                                     th:each="Heating : ${heatingList}"
                                     th:value="${Heating.name()}"
                                     th:text="${Heating.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${apartmentAd} == null"
+                                    th:each="Heating : ${heatingList}"
+                                    th:value="${Heating.name()}"
+                                    th:text="${Heating.name()}">
+                            </option>
                         </select>
                     </div>
 
@@ -209,7 +229,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="price">Price</label>
+                        <label for="price">Price (euro)</label>
                         <input type="text"
                                class="form-control"
                                id="price"

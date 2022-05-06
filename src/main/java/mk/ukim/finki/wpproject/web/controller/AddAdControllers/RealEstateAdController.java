@@ -47,16 +47,6 @@ public class RealEstateAdController {
         return "master";
     }
 
-    @GetMapping("/add-form")
-    public String AddRealEstateAdPage(Model model) {
-
-        Category category = this.categoryService.findCategoryByName("Real Estate");
-        model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "adAdsTemplates/addRealEstateAd");
-        return "master";
-
-    }
-
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
@@ -112,20 +102,24 @@ public class RealEstateAdController {
         return "redirect:/ads";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteRealEstateAd(@PathVariable Long id) {
-        this.realEstateAdService.deleteById(id);
-        return "redirect:/ads";
-    }
-
     @GetMapping("/edit-form/{id}")
     public String editRealEstateAd(@PathVariable Long id, Model model) {
         if (this.realEstateAdService.findById(id).isPresent()) {
+
             RealEstateAd realEstateAd = this.realEstateAdService.findById(id).get();
-            List<Category> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
+            Category category = realEstateAd.getCategory();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+
+            model.addAttribute("category_1", category);
             model.addAttribute("realEstateAd", realEstateAd);
-            model.addAttribute("bodyContent", "adsTemplates/addRealEstateAd");
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList",adTypeList);
+            model.addAttribute("conditionList",conditionList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addRealEstateAd");
+
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

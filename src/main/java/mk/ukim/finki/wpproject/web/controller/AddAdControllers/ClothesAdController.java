@@ -46,16 +46,6 @@ public class ClothesAdController {
         return "master";
     }
 
-    @GetMapping("/add-form")
-    public String AddClothesAdPage(Model model) {
-
-        Category category = this.categoryService.findCategoryByName("Clothes");
-        model.addAttribute("category", category);
-        model.addAttribute("bodyContent", "adAdsTemplates/addClothesAd");
-        return "master";
-
-    }
-
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
@@ -119,20 +109,30 @@ public class ClothesAdController {
         return "redirect:/ads";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteClothesAd(@PathVariable Long id) {
-        this.clothesAdService.deleteById(id);
-        return "redirect:/ads";
-    }
-
     @GetMapping("/edit-form/{id}")
     public String editClothesAd(@PathVariable Long id, Model model) {
         if (this.clothesAdService.findById(id).isPresent()) {
+
             ClothesAd clothesAd = this.clothesAdService.findById(id).get();
-            List<Category> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
+            Category category = clothesAd.getCategory();
+            List<City> cityList = this.cityService.findAll();
+            List<AdType> adTypeList = Arrays.asList(AdType.values());
+            List<Condition> conditionList = Arrays.asList(Condition.values());
+            List<TypeClothing> typeClothingList = Arrays.asList(TypeClothing.values());
+            List<Size> sizeList = Arrays.asList(Size.values());
+            List<Color> colorList = Arrays.asList(Color.values());
+
             model.addAttribute("clothesAd", clothesAd);
-            model.addAttribute("bodyContent", "adsTemplates/addClothesAd");
+            model.addAttribute("category_1", category);
+            model.addAttribute("cityList", cityList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("typeClothingList", typeClothingList);
+            model.addAttribute("sizeList", sizeList);
+            model.addAttribute("colorList", colorList);
+
+            model.addAttribute("bodyContent", "addAdsTemplates/addClothesAd");
+
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";

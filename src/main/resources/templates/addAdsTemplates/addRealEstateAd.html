@@ -42,36 +42,51 @@
                     <div class="form-group">
                         <label>City</label>
                         <select name="cityId" class="form-control">
-                            <option th:if="${cityList} != null"
+                            <option th:if="${realEstateAd} != null"
+                                    th:selected="${realEstateAd.getCity().getName() == City.getName()}"
                                     th:each="City : ${cityList}"
                                     th:value="${City.getName()}"
                                     th:text="${City.getName()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${realEstateAd} == null"
+                                    th:each="City : ${cityList}"
+                                    th:value="${City.getName()}"
+                                    th:text="${City.getName()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Ad Type</label>
                         <select name="type" class="form-control">
-                            <option th:if="${adTypeList} != null"
+                            <option th:if="${realEstateAd} != null"
+                                    th:selected="${realEstateAd.getType().name() == Type.name()}"
                                     th:each="Type : ${adTypeList}"
                                     th:value="${Type.name()}"
                                     th:text="${Type.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${realEstateAd} == null"
+                                    th:each="Type : ${adTypeList}"
+                                    th:value="${Type.name()}"
+                                    th:text="${Type.name()}">
+                            </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Condition</label>
                         <select name="condition" class="form-control">
-                            <option th:if="${conditionList} != null"
-                                    th:each="condition : ${conditionList}"
-                                    th:value="${condition.name()}"
-                                    th:text="${condition.name()}">
+                            <option th:if="${realEstateAd} != null"
+                                    th:selected="${realEstateAd.getCondition().name() == Condition.name()}"
+                                    th:each="Condition : ${conditionList}"
+                                    th:value="${Condition.name()}"
+                                    th:text="${Condition.name()}">
                             </option>
-                            <!--ako eventualno sakame pti edit tie da bidat veke selektirani treba da se dava cel ApartmentAd-->
+                            <option th:if="${realEstateAd} == null"
+                                    th:each="Condition : ${conditionList}"
+                                    th:value="${Condition.name()}"
+                                    th:text="${Condition.name()}">
+                            </option>
                         </select>
                     </div>
 
@@ -100,7 +115,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="quadrature">Quadrature</label>
+                        <label for="quadrature">Quadrature (m^2)</label>
                         <input type="text"
                                class="form-control"
                                id="quadrature"
@@ -121,7 +136,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="price">Price</label>
+                        <label for="price">Price (euro)</label>
                         <input type="text"
                                class="form-control"
                                id="price"

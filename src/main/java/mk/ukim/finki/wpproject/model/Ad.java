@@ -42,7 +42,7 @@ public class Ad implements Serializable {
     @Enumerated(EnumType.STRING)
     private Condition condition;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<adImage> images;
 
     @ManyToOne
@@ -51,11 +51,14 @@ public class Ad implements Serializable {
     @ManyToOne
     private City city;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     @ManyToOne
     private User advertisedByUser;
+
+    @ManyToMany(mappedBy = "savedAds")
+    private List<User> savedByUsers = new ArrayList<>();
 
     public Ad() {
     }

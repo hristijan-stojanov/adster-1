@@ -2,9 +2,7 @@ package mk.ukim.finki.wpproject.web.controller;
 
 import mk.ukim.finki.wpproject.model.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
-import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.repository.ImageDbRepository;
 import mk.ukim.finki.wpproject.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.*;
@@ -24,17 +21,13 @@ public class AdController {
     private final AdService adService;
     private final CategoryService categoryService;
     private final CommentService commentService;
-    private final FileLocationService fileLocationService;
-    private final ImageDbRepository imageDbRepository;
     private final UserService userService;
     private final CityService cityService;
 
-    public AdController(AdService adService, CategoryService categoryService, CommentService commentService, FileLocationService fileLocationService, ImageDbRepository imageDbRepository, UserService userService, CityService cityService) {
+    public AdController(AdService adService, CategoryService categoryService, CommentService commentService, UserService userService, CityService cityService) {
         this.adService = adService;
         this.categoryService = categoryService;
         this.commentService = commentService;
-        this.fileLocationService = fileLocationService;
-        this.imageDbRepository = imageDbRepository;
         this.userService = userService;
         this.cityService = cityService;
     }
@@ -86,10 +79,10 @@ public class AdController {
     }
 
     @GetMapping("/{id}")
-    public String getAd(@PathVariable Long id, Model model) {
+    public String getAd(@PathVariable Long id) {
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
-        return "redirect:/" + this.adService.renderAdBasedOnCategory(ad, id, model) + "/" + ad.getId();
+        return "redirect:/" + this.adService.redirectAdBasedOnCategory(ad.getCategory().getId()) + "/" + ad.getId();
     }
 
 //    @GetMapping("/delete/{id}")
@@ -108,8 +101,17 @@ public class AdController {
 //    }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteAd(@PathVariable Long id) {
-        this.adService.deleteById(id);
+    public String deleteAd(@PathVariable Long id, Authentication authentication) {
+        Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        ad.getSavedByUsers().stream().forEach(u -> u.getSavedAds().remove(ad));
+
+        user.getAdvertisedAds().remove(ad);
+        userService.save(user).orElseThrow(RuntimeException::new);
+
         return "redirect:/myAds";
     }
 
@@ -117,7 +119,7 @@ public class AdController {
     public String editAd(Model model,@PathVariable Long id){
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
-        return "redirect:/" + this.adService.renderAdBasedOnCategory(ad, id, model) + "/edit-form/" + ad.getId();
+        return "redirect:/" + this.adService.redirectAdBasedOnCategory(ad.getCategory().getId()) + "/edit-form/" + ad.getId();
     }
 
     @GetMapping("/savedAds")

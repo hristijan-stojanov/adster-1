@@ -35,8 +35,6 @@ public interface AdService {
 
     public Page<Ad> findPaginated(Pageable pageable, List<Ad>filteredAds);
 
-    public String renderAdBasedOnCategory(Ad ad, Long id, Model model);
-
     public String redirectAdBasedOnCategory(Long id);
 
     List<Ad> filter(String title, String city, Long categoryId);

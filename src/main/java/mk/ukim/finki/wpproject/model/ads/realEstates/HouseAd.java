@@ -7,6 +7,8 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Heating;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,6 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @Table(name = "house_ads")
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class HouseAd extends RealEstateAd {
     private int yearMade;
 

@@ -6,6 +6,8 @@ import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @Table(name = "clothes_ads")
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class ClothesAd extends Ad {
     @Enumerated(EnumType.STRING)
     private TypeClothing typeClothing;

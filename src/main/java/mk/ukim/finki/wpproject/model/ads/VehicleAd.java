@@ -6,12 +6,15 @@ import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @Table(name = "vehicle_ads")
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class VehicleAd extends Ad {
     @Enumerated(EnumType.STRING)
     private CarBrand brand;

@@ -40,7 +40,7 @@
                     </div>
                     <div class="select-group select-group-sm">
                         <select name="categoryId" class="form-control" >
-                            <option th:text="All"
+                            <option th:text="Category"
                                     value=""></option>
                             <option th:each="category : ${categories}"
                                     th:value="${category.getId()}"
@@ -50,7 +50,7 @@
                     </div>
                     <div class="select-group select-group-sm">
                         <select name="cityId" class="form-control" >
-                            <option th:text="All"
+                            <option th:text="City"
                                     value=""></option>
                             <option th:each="city : ${cities}"
                                     th:value="${city.getName()}"

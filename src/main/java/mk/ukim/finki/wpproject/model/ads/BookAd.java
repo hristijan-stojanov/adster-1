@@ -29,10 +29,6 @@ public class BookAd extends Ad {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(insertable = false, updatable = false, name = "id")
-    private Ad ad;
-
     public BookAd() {
     }
 

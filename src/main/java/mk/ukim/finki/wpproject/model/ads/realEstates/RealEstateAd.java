@@ -7,6 +7,8 @@ import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @Table(name = "real_estate_ads")
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class RealEstateAd extends Ad {
 
     private int quadrature;//m^2

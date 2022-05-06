@@ -110,42 +110,6 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public String renderAdBasedOnCategory(Ad ad, Long id, Model model) {
-        if (ad.getCategory().getName().equals("Vehicle")) {
-            VehicleAd vehicleAd = (VehicleAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
-            model.addAttribute("vehicleAd", vehicleAd);
-            return "VehicleAd";
-        } else if (ad.getCategory().getName().equals("IT Equipment")) {
-            ITEquipmentAd itEquipmentAd = (ITEquipmentAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
-            model.addAttribute("itEquipmentAd", itEquipmentAd);
-            return "ITEquipmentAd";
-        } else if (ad.getCategory().getName().equals("Book")) {
-            BookAd bookAd = (BookAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
-            model.addAttribute("bookAd", bookAd);
-            return "BookAd";
-        } else if (ad.getCategory().getName().equals("Clothes")) {
-            ClothesAd clothesAd = (ClothesAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
-            model.addAttribute("clothesAd", clothesAd);
-            return "ClothesAd";
-        } else if (ad.getCategory().getName().equals("Real Estate")) {
-            RealEstateAd realEstateAd = (RealEstateAd) this.adRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
-            model.addAttribute("realEstateAd", realEstateAd);
-            return "RealEstateAd";
-        } else if (ad.getCategory().getName().equals("Apartment")) {
-            ApartmentAd apartmentAd = (ApartmentAd) this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
-            model.addAttribute("apartmentAd", apartmentAd);
-            return "ApartmentAd";
-        } else if (ad.getCategory().getName().equals("House")) {
-            HouseAd houseAd = (HouseAd) this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
-            model.addAttribute("houseAd", houseAd);
-            return "HouseAd";
-        } else {
-            Ad otherAd =  this.adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
-            model.addAttribute("otherAd",otherAd);
-            return "OtherAd";
-        }    }
-
-    @Override
     public String redirectAdBasedOnCategory(Long id) {
         Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
 

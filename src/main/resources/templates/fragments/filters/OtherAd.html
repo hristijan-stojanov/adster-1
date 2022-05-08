@@ -1,0 +1,20 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="container-fluid">
+        <form method="get" action="/OtherAd/filter" class="row justify-content-center">
+            <div class="input-group col-2 my-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa-solid fa-euro-sign"></i></span>
+                </div>
+                <input name="priceFrom" type="text" class="form-control" placeholder="Price from">
+            </div>
+
+            <div class="input-group col-2 my-2">
+                <input name="priceTo" type="text" class="form-control" placeholder="Price to">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fa-solid fa-euro-sign"></i></span>
+                </div>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>

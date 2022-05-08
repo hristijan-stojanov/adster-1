@@ -59,15 +59,15 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item" th:classappend="${adPage.number == 0} ? disabled">
-                        <a class="page-link" th:href="@{/ads(size=${adPage.size}, page=${adPage.number})}">Previous</a>
+                        <a class="page-link" th:href="@{/ads(size=${adPage.size}, page=${adPage.number}, title=${title}, cityId=${cityId}, categoryId=${categoryId})}">Previous</a>
                     </li>
                     <li th:each="pageNumber : ${pageNumbers}" class="page-item" th:classappend="${pageNumber==adPage.number + 1} ? active">
-                        <a th:href="@{/ads(size=${adPage.size}, page=${pageNumber})}"
+                        <a th:href="@{/ads(size=${adPage.size}, page=${pageNumber}, title=${title}, cityId=${cityId}, categoryId=${categoryId})}"
                            th:text="${pageNumber}"
                            class="page-link"></a>
                     </li>
                     <li class="page-item" th:classappend="${adPage.number + 1 == adPage.totalPages} ? disabled">
-                        <a class="page-link" th:href="@{/ads(size=${adPage.size}, page=${adPage.number + 2})}">Next</a>
+                        <a class="page-link" th:href="@{/ads(size=${adPage.size}, page=${adPage.number + 2}, title=${title}, cityId=${cityId}, categoryId=${categoryId})}">Next</a>
                     </li>
                 </ul>
             </nav>

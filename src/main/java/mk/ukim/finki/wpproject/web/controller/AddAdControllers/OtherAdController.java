@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -122,5 +123,15 @@ public class OtherAdController {
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";
+    }
+
+    @GetMapping("/filter")
+    public String getFilteredAds(@RequestParam Double priceFrom,
+                                 @RequestParam Double priceTo,
+                                 Model model) {
+        String newads = "Test";
+        model.addAttribute("newads", newads);
+
+        return "redirect:/ads(filteredAds2=${newads})";
     }
 }

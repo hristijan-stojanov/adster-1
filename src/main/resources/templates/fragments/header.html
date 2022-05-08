@@ -32,31 +32,34 @@
 
 
                 <form class="form-inline my-2 my-lg-0" >
-                    <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" aria-label="Small"
-                               aria-describedby="inputGroup-sizing-sm"
-                               th:name="title"
-                               placeholder="Search...">
-                    </div>
                     <div class="select-group select-group-sm">
                         <select name="categoryId" class="form-control" >
                             <option th:text="Category"
                                     value=""></option>
                             <option th:each="category : ${categories}"
                                     th:value="${category.getId()}"
-                                    th:text="${category.getName()}">
+                                    th:text="${category.getName()}"
+                                    th:selected="${categoryId != null and category.getId() == categoryId}">
                             </option>
                         </select>
                     </div>
-                    <div class="select-group select-group-sm">
+                    <div class="select-group select-group-sm mr-1">
                         <select name="cityId" class="form-control" >
                             <option th:text="City"
                                     value=""></option>
                             <option th:each="city : ${cities}"
                                     th:value="${city.getName()}"
-                                    th:text="${city.getName()}">
+                                    th:text="${city.getName()}"
+                                    th:selected="${cityId != null and city.getName() == cityId}">
                             </option>
                         </select>
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" aria-label="Small"
+                               aria-describedby="inputGroup-sizing-sm"
+                               th:name="title"
+                               th:value="${title != null} ? ${title} : ''"
+                               placeholder="Search...">
                     </div>
                     <div class="select-group-append">
                         <button type="submit" class="btn btn-secondary btn-number">

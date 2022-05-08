@@ -38,25 +38,28 @@ public class AdController {
                              @RequestParam("size") Optional<Integer> size,
                              @RequestParam(required = false) String title,
                              @RequestParam(required = false) String cityId,
-                             @RequestParam(required = false) Long categoryId) {
+                             @RequestParam(required = false) Long categoryId,
+                             @RequestParam(required = false) String filteredAds2) {
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
 
-        List<Ad>filteredAds;
+        List<Ad> filteredAds;
         List<Category> categories = this.categoryService.findAll();
         List<City> cities = this.cityService.findAll();
 
+        System.out.println(filteredAds2);
+        model.addAttribute("title", title);
         model.addAttribute("categories", categories);
+        model.addAttribute("categoryId", categoryId);
         model.addAttribute("cities", cities);
+        model.addAttribute("cityId", cityId);
 
-        if ((title == null || title.isEmpty()) && (cityId == null || cityId.isEmpty()) && (categoryId == null || categoryId.toString().isEmpty())){
+        if ((title == null || title.isEmpty()) && (cityId == null || cityId.isEmpty()) && (categoryId == null || categoryId.toString().isEmpty()))
             filteredAds = this.adService.findAll();
-        }
-        else{
+        else
             filteredAds = this.adService.filter(title, cityId, categoryId);
-        }
 
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
@@ -75,6 +78,12 @@ public class AdController {
         }
 
         model.addAttribute("bodyContent", "testAds");
+
+        if (categoryId != null)
+            model.addAttribute("filterContent", "fragments/filters/" + this.adService.redirectAdBasedOnCategory(categoryId));
+        else
+            model.addAttribute("filterContent", null);
+
         return "master";
     }
 

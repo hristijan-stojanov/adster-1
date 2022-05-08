@@ -34,4 +34,11 @@ public class Category {
         parentCategory = new Category();
         this.subCategories = new ArrayList<>();
     }
+
+    public String getSubCategoriesToString() {
+        StringBuilder sb = new StringBuilder("");
+        getSubCategories().forEach(c -> sb.append(c.getName()).append(", "));
+
+        return sb.substring(0, sb.length() - 2);
+    }
 }

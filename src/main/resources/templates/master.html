@@ -11,6 +11,9 @@
 </head>
 <body>
 <header th:replace="fragments/header"/>
+<header th:if="${filterContent != null}">
+  <div th:replace="${filterContent}"></div>
+</header>
 
 <section th:include="${bodyContent}"></section>
 

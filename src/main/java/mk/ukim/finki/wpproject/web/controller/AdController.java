@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.*;
 
@@ -33,38 +34,32 @@ public class AdController {
     }
 
     @GetMapping
-    public String getAdsPage(@RequestParam(required = false) String error, Model model,
+    public String getAdsPage(@RequestParam(required = false) String error,
                              @RequestParam("page") Optional<Integer> page,
                              @RequestParam("size") Optional<Integer> size,
-                             @RequestParam(required = false) String title,
-                             @RequestParam(required = false) String cityId,
                              @RequestParam(required = false) Long categoryId,
-                             @RequestParam(required = false) String filteredAds2) {
+                             HttpServletRequest request,
+                             Model model) {
+
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
 
-        List<Ad> filteredAds;
         List<Category> categories = this.categoryService.findAll();
         List<City> cities = this.cityService.findAll();
-
-        System.out.println(filteredAds2);
-        model.addAttribute("title", title);
         model.addAttribute("categories", categories);
-        model.addAttribute("categoryId", categoryId);
         model.addAttribute("cities", cities);
-        model.addAttribute("cityId", cityId);
-
-        if ((title == null || title.isEmpty()) && (cityId == null || cityId.isEmpty()) && (categoryId == null || categoryId.toString().isEmpty()))
-            filteredAds = this.adService.findAll();
-        else
-            filteredAds = this.adService.filter(title, cityId, categoryId);
+        model.addAttribute("categoryId", categoryId);
 
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage-1, pageSize), filteredAds);
+        List<Ad> filteredAds = (List<Ad>) request.getSession().getAttribute("filteredAds");
+        if (filteredAds == null)
+            filteredAds = adService.findAll();
+
+        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage - 1, pageSize), filteredAds);
 
         model.addAttribute("adPage", adPage);
         model.addAttribute("adsSize", adPage.getTotalElements());
@@ -77,13 +72,12 @@ public class AdController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        model.addAttribute("bodyContent", "testAds");
-
         if (categoryId != null)
             model.addAttribute("filterContent", "fragments/filters/" + this.adService.redirectAdBasedOnCategory(categoryId));
         else
             model.addAttribute("filterContent", null);
 
+        model.addAttribute("bodyContent", "testAds");
         return "master";
     }
 
@@ -125,7 +119,7 @@ public class AdController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editAd(Model model,@PathVariable Long id){
+    public String editAd(Model model, @PathVariable Long id) {
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
         return "redirect:/" + this.adService.redirectAdBasedOnCategory(ad.getCategory().getId()) + "/edit-form/" + ad.getId();

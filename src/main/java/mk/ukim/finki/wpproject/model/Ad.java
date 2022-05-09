@@ -79,4 +79,17 @@ public class Ad implements Serializable {
         this.comments = new ArrayList<>();
         this.advertisedByUser = advertisedByUser;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ad ad = (Ad) o;
+        return id.equals(ad.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

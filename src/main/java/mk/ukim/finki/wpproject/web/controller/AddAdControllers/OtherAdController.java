@@ -9,15 +9,21 @@ import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.service.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/OtherAd")
@@ -126,12 +132,20 @@ public class OtherAdController {
     }
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam Double priceFrom,
-                                 @RequestParam Double priceTo,
-                                 Model model) {
-        String newads = "Test";
-        model.addAttribute("newads", newads);
+    public String getFilteredAds(@RequestParam(required = false) String title,
+                                 @RequestParam(required = false) String cityId,
+                                 @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) Double priceFrom,
+                                 @RequestParam(required = false) Double priceTo,
+                                 HttpServletRequest request) {
 
-        return "redirect:/ads(filteredAds2=${newads})";
+        List<Ad> filteredAds = this.adService.filter(title, cityId, categoryId);
+        List<Ad> additionalFilteredAds = adService.additionalFilter(priceFrom, priceTo);
+
+        filteredAds.retainAll(additionalFilteredAds);
+
+        request.getSession().setAttribute("filteredAds", filteredAds);
+
+        return "redirect:/ads?categoryId=" + categoryId;
     }
 }

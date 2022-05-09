@@ -175,4 +175,15 @@ public class AdServiceImpl implements AdService {
         }
         return this.adRepository.findAll();
     }
+
+    @Override
+    public List<Ad> additionalFilter(Double priceFrom, Double priceTo) {
+        if (priceFrom != null && priceTo != null)
+            return adRepository.findAllByPriceIsBetween(priceFrom, priceTo);
+        else if (priceFrom != null)
+            return adRepository.findAllByPriceIsBetween(priceFrom, Double.MAX_VALUE);
+        else if (priceTo != null)
+            return adRepository.findAllByPriceIsBetween(0.0, priceTo);
+        return adRepository.findAll();
+    }
 }

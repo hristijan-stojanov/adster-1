@@ -139,13 +139,18 @@ public class OtherAdController {
                                  @RequestParam(required = false) Double priceTo,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = this.adService.filter(title, cityId, categoryId);
-        List<Ad> additionalFilteredAds = adService.additionalFilter(priceFrom, priceTo);
+//        List<Ad> filteredAds = this.adService.filter(title, cityId, categoryId);
+//        List<Ad> additionalFilteredAds = adService.additionalFilter(priceFrom, priceTo);
+//
+//        filteredAds.retainAll(additionalFilteredAds);
 
-        filteredAds.retainAll(additionalFilteredAds);
+        List<Ad> filteredAds = adService.filterList(title, cityId, categoryId, priceFrom, priceTo);
 
         request.getSession().setAttribute("filteredAds", filteredAds);
 
-        return "redirect:/ads?categoryId=" + categoryId;
+        if (categoryId != null)
+            return "redirect:/ads?categoryId=" + categoryId;
+        else
+            return "redirect:/ads";
     }
 }

@@ -40,4 +40,6 @@ public interface AdService {
     List<Ad> filter(String title, String city, Long categoryId);
 
     List<Ad> additionalFilter(Double priceFrom, Double priceTo);
+
+    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo);
 }

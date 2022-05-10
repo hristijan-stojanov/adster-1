@@ -72,13 +72,24 @@ public class AdController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        if (categoryId != null)
+        if (categoryId != null) {
             model.addAttribute("filterContent", "fragments/filters/" + this.adService.redirectAdBasedOnCategory(categoryId));
-        else
+            model.addAttribute("categoryName", this.adService.redirectAdBasedOnCategory(categoryId));
+        }
+        else {
             model.addAttribute("filterContent", null);
+            model.addAttribute("categoryName", "OtherAd");
+        }
 
         model.addAttribute("bodyContent", "testAds");
         return "master";
+    }
+
+    @GetMapping("/invalidateFilters")
+    public String invalidateFilters(@RequestParam(required = false) Long categoryId,
+                                    HttpServletRequest request) {
+        request.getSession().setAttribute("filteredAds", null);
+        return "redirect:/ads";
     }
 
     @GetMapping("/{id}")

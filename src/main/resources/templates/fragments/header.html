@@ -10,7 +10,8 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
                 <ul class="navbar-nav m-auto">
                     <li class="nav-item m-auto">
-                        <a class="nav-link active" th:href="@{/ads/invalidateFilters(categoryId=${categoryId})}"><i class="fa-solid fa-table-list"></i> Ads</a>
+                        <a class="nav-link active" th:href="@{/ads/invalidateFilters(categoryId=${categoryId})}"><i
+                                class="fa-solid fa-table-list"></i> Ads</a>
                     </li>
 
                     <li class="nav-item m-auto">
@@ -32,6 +33,26 @@
                             ad</a>
                     </li>
                 </ul>
+
+                <form class="form-inline my-5 my-lg-0 row justify-content-center align-items-center"
+                      th:action="@{${categoryName} + '/filter'}">
+                    <div class="select-group select-group-sm">
+                        <select name="categoryId" class="form-control">
+                            <option th:text="Category"
+                                    value=""></option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.getId()}"
+                                    th:text="${category.getName()}"
+                                    th:selected="${categoryId != null and category.getId() == categoryId}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="select-group-append">
+                        <button type="submit" class="btn btn-secondary btn-number">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </form>
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -55,18 +76,9 @@
     </nav>
 </header>
 <div class="container-fluid my-3">
-    <form class="form-inline my-5 my-lg-0 row justify-content-center" th:action="@{${categoryName} + '/filter'}">
-        <div class="select-group select-group-sm">
-            <select name="categoryId" class="form-control">
-                <option th:text="Category"
-                        value=""></option>
-                <option th:each="category : ${categories}"
-                        th:value="${category.getId()}"
-                        th:text="${category.getName()}"
-                        th:selected="${categoryId != null and category.getId() == categoryId}">
-                </option>
-            </select>
-        </div>
+    <form class="form-inline my-5 my-lg-0 row justify-content-center align-items-center"
+          th:action="@{${categoryName} + '/filter'}">
+        <input type="hidden" name="categoryId" th:value="${categoryId}">
         <div class="select-group select-group-sm mr-1">
             <select name="cityId" class="form-control">
                 <option th:text="City"
@@ -83,7 +95,7 @@
                    th:name="title"
                    placeholder="Search...">
         </div>
-        <div th:if="${filterContent != null}" class="row mx-2">
+        <div th:if="${filterContent != null}" class="row mx-2 justify-content-center align-items-center">
             <div th:replace="${filterContent}"></div>
         </div>
         <div class="select-group-append">

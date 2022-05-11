@@ -73,7 +73,7 @@ public class AdController {
         }
 
         if (categoryId != null) {
-            model.addAttribute("filterContent", "fragments/filters/" + this.adService.redirectAdBasedOnCategory(categoryId));
+            model.addAttribute("filterContent", "fragments/filters/" + this.adService.redirectAdBasedOnCategory(categoryId) + "Filter");
             model.addAttribute("categoryName", this.adService.redirectAdBasedOnCategory(categoryId));
         }
         else {

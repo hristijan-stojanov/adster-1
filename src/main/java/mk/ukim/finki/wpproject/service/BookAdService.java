@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.service;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
@@ -30,4 +31,6 @@ public interface BookAdService {
                           String author, int yearMade, int numPages, Genre genre);
 
     void deleteById(Long id);
+
+    List<Ad> filterList(String title, String cityId, Long categoryId, String author, Genre genre);
 }

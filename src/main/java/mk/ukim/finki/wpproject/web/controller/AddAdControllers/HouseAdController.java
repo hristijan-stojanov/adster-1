@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -135,4 +137,37 @@ public class HouseAdController {
         }
         return "redirect:/ads?error=AdNotFound";
     }
+
+
+    @GetMapping("/filter")
+    public String getFilteredAds(@RequestParam(required = false) String title,
+                                 @RequestParam(required = false) String cityId,
+                                 @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) Double priceFrom,
+                                 @RequestParam(required = false) Double priceTo,
+                                 @RequestParam(required = false) Integer quadratureFrom,
+                                 @RequestParam(required = false) Integer quadratureTo,
+                                 @RequestParam(required = false) Integer yearMadeFrom,
+                                 @RequestParam(required = false) Integer yearMadeTo,
+                                 @RequestParam(required = false) Integer yardAreaFrom,
+                                 @RequestParam(required = false) Integer yardAreaTo,
+                                 @RequestParam(required = false) Integer numRoomsFrom,
+                                 @RequestParam(required = false) Integer numRoomsTo,
+                                 @RequestParam(required = false) Integer numFloorsFrom,
+                                 @RequestParam(required = false) Integer numFloorsTo,
+                                 @RequestParam(required = false) Boolean hasBasement,
+                                 @RequestParam(required = false) Heating heating,
+                                 HttpServletRequest request) {
+
+        List<Ad> filteredAds = houseAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo,
+                yearMadeFrom, yearMadeTo, yardAreaFrom, yardAreaTo, numRoomsFrom, numRoomsTo, numFloorsFrom, numFloorsTo, hasBasement, heating);
+
+        request.getSession().setAttribute("filteredAds", filteredAds);
+
+        if (categoryId != null)
+            return "redirect:/ads?categoryId=" + categoryId;
+        else
+            return "redirect:/ads";
+    }
+
 }

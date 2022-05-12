@@ -7,6 +7,7 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.realEstates.ApartmentAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
+import mk.ukim.finki.wpproject.model.enums.Genre;
 import mk.ukim.finki.wpproject.model.enums.Heating;
 
 import java.util.List;
@@ -32,6 +33,10 @@ public interface ApartmentAdService {
                                boolean hasBasement, boolean hasElevator, boolean hasParkingSpot, Heating heating);
 
     void deleteById(Long id);
+
+    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom , Integer quadratureTo
+                        , Integer yearMadeFrom, Integer yearMadeTo,Integer numRoomsFrom, Integer numRoomsTo, Integer floorFrom, Integer floorTo
+                        , Boolean hasBasement, Boolean hasElevator, Boolean hasParkingSpot, Heating heating);
 
     // save create update delete findAll
 }

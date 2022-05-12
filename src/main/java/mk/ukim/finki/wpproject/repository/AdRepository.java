@@ -24,4 +24,5 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
     List<Ad> findAllByCategory(Category category);
 
     List<Ad> findAllByPriceIsBetween(Double priceFrom, Double priceTo);
+
 }

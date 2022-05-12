@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.service;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.ads.VehicleAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 
@@ -23,5 +24,9 @@ public interface VehicleAdService {
                              Gearbox gearbox, Registration registration);
 
     void deleteById(Long adId);
+
+    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, CarBrand carBrand, Integer yearMadeFrom,
+                        Integer yearMadeTo, Integer enginePowerFrom, Integer enginePowerTo, Double milesTraveledFrom, Double milesTraveledTo,
+                        Fuel fuel, Color color, Gearbox gearbox, Registration registration);
 
 }

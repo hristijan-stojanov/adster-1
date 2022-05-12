@@ -13,6 +13,7 @@ import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CityNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.repository.*;
+import mk.ukim.finki.wpproject.service.AdService;
 import mk.ukim.finki.wpproject.service.BookAdService;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +22,16 @@ import java.util.Optional;
 
 @Service
 public class BookAdServiceImpl implements BookAdService {
+    private final AdService adService;
     private final AdRepository adRepository;
     private final BookAdRepository bookAdRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
 
-    public BookAdServiceImpl(AdRepository adRepository, BookAdRepository bookAdRepository, CategoryRepository categoryRepository,
+    public BookAdServiceImpl(AdService adService, AdRepository adRepository, BookAdRepository bookAdRepository, CategoryRepository categoryRepository,
                              UserRepository userRepository, CityRepository cityRepository) {
+        this.adService = adService;
         this.adRepository = adRepository;
         this.bookAdRepository = bookAdRepository;
         this.categoryRepository = categoryRepository;
@@ -94,21 +97,12 @@ public class BookAdServiceImpl implements BookAdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, String author, Genre genre) {
-        List<Ad> filteredList = adRepository.findAll();
+    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, String author, Genre genre) {
 
-        if (title != null && !title.isEmpty()){
-            filteredList.retainAll(this.adRepository.findByTitleContainsIgnoreCase(title));
-        }
-        if (cityId != null && !cityId.isEmpty()){
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            filteredList.retainAll(this.adRepository.findAllByCity(city));
-        }
-        if (categoryId != null && !categoryId.toString().isEmpty()){
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            filteredList.retainAll(this.adRepository.findAllByCategory(category));
-        }
-        if (author != null && !author.isEmpty()){
+        List<Ad> filteredList = adRepository.findAll();
+        filteredList.retainAll(adService.filterList(title, cityId, categoryId, priceFrom, priceTo));
+
+        if (author != null && !author.isEmpty()) {
             filteredList.retainAll(bookAdRepository.findAllByAuthorContainsIgnoreCase(author));
         }
         if (genre != null && !genre.toString().isEmpty()) {

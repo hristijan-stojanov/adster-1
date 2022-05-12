@@ -99,6 +99,11 @@
                                     <td th:if="${!ad.isHasElevator()}">No</td>
                                 </tr>
                                 <tr>
+                                    <td>Has Parking Spot</td>
+                                    <td th:if="${ad.isHasParkingSpot()}">Yes</td>
+                                    <td th:if="${!ad.isHasParkingSpot()}">No</td>
+                                </tr>
+                                <tr>
                                     <td>Heating</td>
                                     <td th:text="${ad.getHeating()}"></td>
                                 </tr>

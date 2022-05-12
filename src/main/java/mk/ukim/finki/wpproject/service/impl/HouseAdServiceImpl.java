@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.service.impl;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
@@ -11,11 +12,9 @@ import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CityNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.HouseAdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.repository.CategoryRepository;
-import mk.ukim.finki.wpproject.repository.CityRepository;
-import mk.ukim.finki.wpproject.repository.HouseAdRepository;
-import mk.ukim.finki.wpproject.repository.UserRepository;
+import mk.ukim.finki.wpproject.repository.*;
 import mk.ukim.finki.wpproject.service.HouseAdService;
+import mk.ukim.finki.wpproject.service.RealEstateAdService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +23,17 @@ import java.util.Optional;
 @Service
 public class HouseAdServiceImpl implements HouseAdService {
 
+    private final RealEstateAdService realEstateAdService;
+    private final AdRepository adRepository;
     private final HouseAdRepository houseAdRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
 
-    public HouseAdServiceImpl(HouseAdRepository houseAdRepository, CategoryRepository categoryRepository, UserRepository userRepository, CityRepository cityRepository) {
+    public HouseAdServiceImpl(RealEstateAdService realEstateAdService, AdRepository adRepository, HouseAdRepository houseAdRepository,
+                              CategoryRepository categoryRepository, UserRepository userRepository, CityRepository cityRepository) {
+        this.realEstateAdService = realEstateAdService;
+        this.adRepository = adRepository;
         this.houseAdRepository = houseAdRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
@@ -99,5 +103,58 @@ public class HouseAdServiceImpl implements HouseAdService {
     public void deleteById(Long adId) {
         HouseAd houseAd = this.houseAdRepository.findById(adId).orElseThrow(() -> new HouseAdNotFoundException(adId));
         this.houseAdRepository.delete(houseAd);
+    }
+
+    @Override
+    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo,
+                               Integer yearMadeFrom, Integer yearMadeTo, Integer yardAreaFrom, Integer yardAreaTo, Integer numRoomsFrom, Integer numRoomsTo,
+                               Integer numFloorsFrom, Integer numFloorsTo, Boolean hasBasement, Heating heating) {
+
+
+        List<Ad> filteredList = adRepository.findAll();
+        filteredList.retainAll(realEstateAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo));
+
+        if (yearMadeFrom != null && yearMadeTo != null)
+            filteredList.retainAll(houseAdRepository.findAllByYearMadeGreaterThanAndYearMadeLessThan(yearMadeFrom, yearMadeTo));
+        else if (yearMadeTo != null)
+            filteredList.retainAll(houseAdRepository.findAllByYearMadeLessThan(yearMadeTo));
+        else if (yearMadeFrom != null)
+            filteredList.retainAll(houseAdRepository.findAllByYearMadeGreaterThan(yearMadeFrom));
+
+
+        if (yardAreaFrom != null && yardAreaTo != null)
+            filteredList.retainAll(houseAdRepository.findAllByYardAreaGreaterThanAndYardAreaLessThan(yardAreaFrom, yardAreaTo));
+        else if (yardAreaTo != null)
+            filteredList.retainAll(houseAdRepository.findAllByYardAreaLessThan(yardAreaTo));
+        else if (yardAreaFrom != null)
+            filteredList.retainAll(houseAdRepository.findAllByYardAreaGreaterThan(yardAreaFrom));
+
+
+        if (numRoomsFrom != null && numRoomsTo != null)
+            filteredList.retainAll(houseAdRepository.findAllByNumRoomsGreaterThanAndNumRoomsLessThan(numRoomsFrom, numRoomsTo));
+        else if (numRoomsTo != null)
+            filteredList.retainAll(houseAdRepository.findAllByNumRoomsLessThan(numRoomsTo));
+        else if (numRoomsFrom != null)
+            filteredList.retainAll(houseAdRepository.findAllByNumRoomsGreaterThan(numRoomsFrom));
+
+
+        if (numFloorsFrom != null && numFloorsTo != null)
+            filteredList.retainAll(houseAdRepository.findAllByNumFloorsGreaterThanAndNumFloorsLessThan(numFloorsFrom, numFloorsTo));
+        else if (numFloorsTo != null)
+            filteredList.retainAll(houseAdRepository.findAllByNumFloorsLessThanEqual(numFloorsTo));
+        else if (numFloorsFrom != null)
+            filteredList.retainAll(houseAdRepository.findAllByNumFloorsGreaterThanEqual(numFloorsFrom));
+
+
+        if (hasBasement != null && !hasBasement.toString().isEmpty()) {
+            filteredList.retainAll(houseAdRepository.findAllByHasBasement(hasBasement));
+        }
+
+
+        if (heating != null && !heating.toString().isEmpty()) {
+            filteredList.retainAll(houseAdRepository.findAllByHeating(heating));
+        }
+
+        return filteredList;
     }
 }

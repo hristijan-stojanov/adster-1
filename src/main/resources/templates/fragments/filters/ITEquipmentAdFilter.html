@@ -1,0 +1,81 @@
+<div class="select-group select-group-sm">
+    <select name="itBrand" class="form-control">
+        <option th:text="ItBrand"
+                value=""></option>
+        <option th:each="brandd : ${T(mk.ukim.finki.wpproject.model.enums.ITBrand).values()}"
+                th:value="${brandd.name()}"
+                th:text="${brandd.name()}">
+        </option>
+    </select>
+</div>
+
+
+<div class="input-group input-group-sm">
+    <input type="text" class="form-control" aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           th:name="model"
+           placeholder="Model...">
+</div>
+
+
+<div class="select-group select-group-sm">
+    <select name="processorBrand" class="form-control">
+        <option th:text="ProcessorBrand"
+                value=""></option>
+        <option th:each="pb : ${T(mk.ukim.finki.wpproject.model.enums.ProcessorBrand).values()}"
+                th:value="${pb.name()}"
+                th:text="${pb.name()}">
+        </option>
+    </select>
+</div>
+
+
+<div class="input-group input-group-sm">
+    <input type="text" class="form-control" aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           th:name="processorModel"
+           placeholder="ProcessorModel...">
+</div>
+
+
+
+<div class="select-group select-group-sm">
+    <select name="typeMemory" class="form-control">
+        <option th:text="TypeMemory"
+                value=""></option>
+        <option th:each="typee : ${T(mk.ukim.finki.wpproject.model.enums.TypeMemory).values()}"
+                th:value="${typee.name()}"
+                th:text="${typee.name()}">
+        </option>
+    </select>
+</div>
+
+
+<div class="input-group input-group-sm">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa-solid fa-euro-sign"></i></span>
+    </div>
+    <input name="memorySizeFrom" type="text" class="form-control" placeholder="Memory Size From">
+</div>
+
+<div class="input-group input-group-sm">
+    <input name="memorySizeTo" type="text" class="form-control" placeholder="Memory Size To">
+    <div class="input-group-append">
+        <span class="input-group-text"><i class="fa-solid fa-euro-sign"></i></span>
+    </div>
+</div>
+
+
+<div class="input-group input-group-sm">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa-solid fa-euro-sign"></i></span>
+    </div>
+    <input name="ramMemorySizeFrom" type="text" class="form-control" placeholder="Ram Memory Size From">
+</div>
+
+<div class="input-group input-group-sm">
+    <input name="ramMemorySizeTo" type="text" class="form-control" placeholder="Ram Memory Size To">
+    <div class="input-group-append">
+        <span class="input-group-text"><i class="fa-solid fa-euro-sign"></i></span>
+    </div>
+</div>

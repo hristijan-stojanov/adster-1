@@ -62,24 +62,23 @@
                                     <td>Ad Type</td>
                                     <td th:text="${ad.getType()}"></td>
                                 </tr>
-                                <tr>
+                                <tr th:if="${ad.getCondition()} != null">
                                     <td width="390">Condition</td>
                                     <td th:text="${ad.getCondition()}"></td>
                                 </tr>
-                                <tr>
+                                <tr th:if="${ad.isDeliveryPossible()}">
                                     <td>Is delivery possible</td>
-                                    <td th:if="${ad.isDeliveryPossible()}">Yes</td>
-                                    <td th:if="${!ad.isDeliveryPossible()}">No</td>
+                                    <td>Yes</td>
                                 </tr>
-                                <tr>
+                                <tr th:if="${ad.isExchangePossible()}">
                                     <td>Is exchange possible</td>
-                                    <td th:if="${ad.isExchangePossible()}">Yes</td>
-                                    <td th:if="${!ad.isExchangePossible()}">No</td>
+                                    <td>Yes</td>
                                 </tr>
                                 <tr>
                                     <td>City</td>
                                     <td th:text="${ad.getCity().getName()}"></td>
                                 </tr>
+                                <span th:if="${additionalContent} != null"><div th:replace="'showAdsTemplates/'+${additionalContent}"></div></span>
                                 </tbody>
                             </table>
                         </div>

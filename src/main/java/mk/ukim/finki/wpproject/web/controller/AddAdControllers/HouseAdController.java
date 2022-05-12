@@ -43,8 +43,9 @@ public class HouseAdController {
         HouseAd houseAd = this.houseAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", houseAd);
         model.addAttribute("comments", houseAd.getComments());
+        model.addAttribute("additionalContent", "showHouseAd");
 
-        model.addAttribute("bodyContent", "showAdsTemplates/showHouseAd");
+        model.addAttribute("bodyContent", "showAdDetails");
         return "master";
     }
 

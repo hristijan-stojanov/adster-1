@@ -42,7 +42,7 @@ public class Ad implements Serializable {
     @Enumerated(EnumType.STRING)
     private Condition condition;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<adImage> images;
 
     @ManyToOne

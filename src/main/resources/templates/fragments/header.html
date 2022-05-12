@@ -75,7 +75,7 @@
         </div>
     </nav>
 </header>
-<div class="container-fluid my-3" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" style="height: 60px">
+<div class="container-fluid my-3" th:if="${#httpServletRequest.requestURI} == '/ads' or ${#httpServletRequest.requestURI} == '/'" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <form class="form-inline my-5 my-lg-0 row justify-content-center align-items-center"
           th:action="@{${categoryName} + '/filter'}">
         <input type="hidden" name="categoryId" th:value="${categoryId}">

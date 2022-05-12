@@ -156,7 +156,6 @@ public class AdController {
 
         if (!user.getSavedAds().contains(ad))
             user.getSavedAds().add(ad);
-        user.getSavedAds().add(ad);
         userService.save(user).orElseThrow(RuntimeException::new);
         return "redirect:/savedAds";
     }

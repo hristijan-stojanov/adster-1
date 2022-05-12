@@ -132,48 +132,6 @@ public class AdServiceImpl implements AdService {
         }
     }
 
-
-
-    @Override
-    public List<Ad> filter(String title, String cityId, Long categoryId) {
-
-        if ((title != null && !title.isEmpty()) &&
-                (cityId != null && !cityId.isEmpty()) &&
-                (categoryId != null && !categoryId.toString().isEmpty())){
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            return this.adRepository.findAllByTitleContainsIgnoreCaseAndCityAndCategory(title, city, category);
-        }
-        else if (title != null && !title.isEmpty() &&
-                cityId != null && !cityId.isEmpty()){
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            return this.adRepository.findAllByTitleContainsIgnoreCaseAndCity(title, city);
-        }
-        else if (title != null && !title.isEmpty() &&
-                categoryId != null && !categoryId.toString().isEmpty()){
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            return this.adRepository.findAllByTitleContainsIgnoreCaseAndCategory(title, category);
-        }
-        else if (cityId != null && !cityId.isEmpty() &&
-                categoryId != null && !categoryId.toString().isEmpty()){
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            return this.adRepository.findAllByCityAndCategory(city, category);
-        }
-        else if (title != null && !title.toString().isEmpty()){
-            return this.adRepository.findByTitleContainsIgnoreCase(title);
-        }
-        else if (cityId != null && !cityId.isEmpty()){
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            return this.adRepository.findAllByCity(city);
-        }
-        else if (categoryId != null && !categoryId.toString().isEmpty()){
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            return this.adRepository.findAllByCategory(category);
-        }
-        return this.adRepository.findAll();
-    }
-
     @Override
     public List<Ad> additionalFilter(Double priceFrom, Double priceTo) {
         if (priceFrom != null && priceTo != null)

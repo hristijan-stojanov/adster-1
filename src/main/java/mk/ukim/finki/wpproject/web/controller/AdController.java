@@ -154,6 +154,8 @@ public class AdController {
         Long userId = ((User) authentication.getPrincipal()).getId();
         User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
+        if (!user.getSavedAds().contains(ad))
+            user.getSavedAds().add(ad);
         user.getSavedAds().add(ad);
         userService.save(user).orElseThrow(RuntimeException::new);
         return "redirect:/savedAds";

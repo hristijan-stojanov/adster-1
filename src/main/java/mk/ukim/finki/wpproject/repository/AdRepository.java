@@ -15,14 +15,6 @@ import java.util.List;
 @Repository
 public interface AdRepository extends JpaRepository<Ad, Long> {
 
-    List<Ad> findAllByTitleContainsIgnoreCaseAndCityAndCategory(String title, City city, Category category);
-
-    List<Ad> findAllByTitleContainsIgnoreCaseAndCity(String title, City city);
-
-    List<Ad> findAllByTitleContainsIgnoreCaseAndCategory(String title, Category category);
-
-    List<Ad> findAllByCityAndCategory(City city, Category category);
-
     List<Ad> findByTitleContainsIgnoreCase(String title);
 //    @Query(value = "select *, 0 as clazz_ from ads a where a.title ilike :title", nativeQuery = true)
 //    List<Ad> findAllByTitleLikeQuery(@Param("title") String title);

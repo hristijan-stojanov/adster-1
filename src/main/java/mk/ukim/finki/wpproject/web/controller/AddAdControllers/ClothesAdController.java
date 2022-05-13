@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,14 +88,18 @@ public class ClothesAdController {
             @RequestParam Condition condition,
             @RequestParam Long categoryId,
             @RequestParam TypeClothing typeClothing,
-            @RequestParam(required = true) int numSize,
+            @RequestParam int numSize,
             @RequestParam Size size,
             @RequestParam Color color,
             @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+          Long userId = ((User) authentication.getPrincipal()).getId();
+          User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+//        Integer intNumSize = null;
+//        if (numSize != null && !numSize.isEmpty())
+//            intNumSize = Integer.parseInt(numSize);
 
         if (id != null) {
             this.clothesAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
@@ -137,5 +143,24 @@ public class ClothesAdController {
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";
+    }
+
+    @GetMapping("/filter")
+    public String getFilteredAds(@RequestParam(required = false) String title,
+                                 @RequestParam(required = false) String cityId,
+                                 @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) TypeClothing typeClothing,
+                                 @RequestParam(required = false) Size size,
+                                 @RequestParam(required = false) Color color,
+                                 HttpServletRequest request) {
+
+        List<Ad> filteredAds = clothesAdService.filterList(title, cityId, categoryId, typeClothing, size, color);
+
+        request.getSession().setAttribute("filteredAds", filteredAds);
+
+        if (categoryId != null)
+            return "redirect:/ads?categoryId=" + categoryId;
+        else
+            return "redirect:/ads";
     }
 }

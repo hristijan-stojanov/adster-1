@@ -42,7 +42,7 @@ public class Ad implements Serializable {
     @Enumerated(EnumType.STRING)
     private Condition condition;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<adImage> images;
 
     @ManyToOne
@@ -78,5 +78,18 @@ public class Ad implements Serializable {
         this.images = new ArrayList<>();
         this.comments = new ArrayList<>();
         this.advertisedByUser = advertisedByUser;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ad ad = (Ad) o;
+        return id.equals(ad.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

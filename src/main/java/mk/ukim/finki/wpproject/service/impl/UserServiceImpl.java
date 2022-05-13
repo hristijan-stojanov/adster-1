@@ -87,6 +87,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> edit(Long id, String username, String name, String surname, String email, String phoneNumber) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        user.setUsername(username);
+        user.setName(name);
+        user.setSurname(surname);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+
+        return this.save(user);
+    }
+
+    @Override
     public Optional<User> save(User user) {
         return Optional.of(userRepository.save(user));
     }

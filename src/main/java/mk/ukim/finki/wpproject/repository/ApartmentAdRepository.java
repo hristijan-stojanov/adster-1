@@ -11,28 +11,31 @@ import java.util.*;
 @Repository
 public interface ApartmentAdRepository extends JpaRepository<ApartmentAd, Long> {
 
-    List<ApartmentAd> findAllByQuadratureGreaterThanEqual(Integer quadrature);
 
-    List<ApartmentAd> findAllByQuadratureLessThanEqual(Integer quadrature);
+    List<ApartmentAd> findAllByHasBasement (Boolean hasBasment);
 
-    List<ApartmentAd> findAllByNumFloorsGreaterThanEqual(Integer floors);
+    List<ApartmentAd> findAllByHasElevator (Boolean hasElevator);
 
-    List<ApartmentAd> findAllByNumFloorsLessThanEqual(Integer floors);
+    List<ApartmentAd> findAllByHasParkingSpot (Boolean hasParkingSpot);
 
-    List<ApartmentAd> findAllByHasElevator(Boolean hasElevator);
+    List<ApartmentAd> findAllByHeating (Heating heating);
 
-    List<ApartmentAd> findAllByHasParkingSpot(Boolean hasParkingSpot);
+    List<ApartmentAd> findAllByFloorGreaterThanAndFloorLessThan (Integer floorFrom, Integer floorTo);
 
-    List<ApartmentAd> findAllByHeating(Heating heating);
+    List<ApartmentAd> findAllByFloorGreaterThan (Integer floor);
 
-    List<ApartmentAd> findAllByQuadratureLessThanEqualAndQuadratureGreaterThanEqual(Integer quadratureLess, Integer quadratureGreater);
-
-    List<ApartmentAd> findAllByNumFloorsLessThanEqualAndNumFloorsGreaterThanEqual(Integer floorsLess, Integer floorsGreater);
+    List<ApartmentAd> findAllByFloorLessThan (Integer floor);
 
     List<ApartmentAd> findAllByYearMadeGreaterThan(Integer yearMade);
 
-    List<ApartmentAd> findAllByYearMadeLessThan(Integer yearMade);
+    List<ApartmentAd> findAllByYearMadeLessThan (Integer yearMade);
 
-    List<ApartmentAd> findAllByYearMadeGreaterThanAndYearMadeLessThan(Integer yearGreater, Integer yearLess);
+    List<ApartmentAd> findAllByYearMadeGreaterThanAndYearMadeLessThan(Integer yearFrom, Integer yearTo);
+
+    List<ApartmentAd> findAllByNumRoomsGreaterThanEqualAndNumRoomsLessThanEqual (Integer numRoomsGreater, Integer numRoomsLess);
+
+    List<ApartmentAd> findAllByNumRoomsLessThan(Integer numRooms);
+
+    List<ApartmentAd> findAllByNumRoomsGreaterThan (Integer numRooms);
 
 }

@@ -1,11 +1,13 @@
 package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.realEstates.ApartmentAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
+import mk.ukim.finki.wpproject.model.enums.Genre;
 import mk.ukim.finki.wpproject.model.enums.Heating;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
@@ -16,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -140,5 +143,36 @@ public class ApartmentAdController {
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";
+    }
+
+    @GetMapping("/filter")
+    public String getFilteredAds(@RequestParam(required = false) String title,
+                                 @RequestParam(required = false) String cityId,
+                                 @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) Double priceFrom,
+                                 @RequestParam(required = false) Double priceTo,
+                                 @RequestParam(required = false) Integer quadratureFrom,
+                                 @RequestParam(required = false) Integer quadratureTo,
+                                 @RequestParam(required = false) Integer yearMadeFrom,
+                                 @RequestParam(required = false) Integer yearMadeTo,
+                                 @RequestParam(required = false) Integer numRoomsFrom,
+                                 @RequestParam(required = false) Integer numRoomsTo,
+                                 @RequestParam(required = false) Integer floorFrom,
+                                 @RequestParam(required = false) Integer floorTo,
+                                 @RequestParam(required = false) Boolean hasBasement,
+                                 @RequestParam(required = false) Boolean hasElevator,
+                                 @RequestParam(required = false) Boolean hasParkingSpot,
+                                 @RequestParam(required = false) Heating heating,
+                                 HttpServletRequest request) {
+
+        List<Ad> filteredAds = apartmentAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo,
+                yearMadeFrom, yearMadeTo, numRoomsFrom, numRoomsTo, floorFrom, floorTo, hasBasement, hasElevator, hasParkingSpot, heating);
+
+        request.getSession().setAttribute("filteredAds", filteredAds);
+
+        if (categoryId != null)
+            return "redirect:/ads?categoryId=" + categoryId;
+        else
+            return "redirect:/ads";
     }
 }

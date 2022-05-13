@@ -10,7 +10,7 @@ import java.util.*;
 @Repository
 public interface BookAdRepository extends JpaRepository<BookAd, Long> {
 
-    List<BookAd> findAllByAuthor(String name);
+    List<BookAd> findAllByAuthorContainsIgnoreCase(String name);
 
     List<BookAd> findAllByYearMadeGreaterThan(Integer yearMade);
 

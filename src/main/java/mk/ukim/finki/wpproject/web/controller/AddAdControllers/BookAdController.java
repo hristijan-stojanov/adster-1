@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -133,5 +135,25 @@ public class BookAdController {
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";
+    }
+
+    @GetMapping("/filter")
+    public String getFilteredAds(@RequestParam(required = false) String title,
+                                 @RequestParam(required = false) String cityId,
+                                 @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) Double priceFrom,
+                                 @RequestParam(required = false) Double priceTo,
+                                 @RequestParam(required = false) String author,
+                                 @RequestParam(required = false) Genre genre,
+                                 HttpServletRequest request) {
+
+        List<Ad> filteredAds = bookAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, author, genre);
+
+        request.getSession().setAttribute("filteredAds", filteredAds);
+
+        if (categoryId != null)
+            return "redirect:/ads?categoryId=" + categoryId;
+        else
+            return "redirect:/ads";
     }
 }

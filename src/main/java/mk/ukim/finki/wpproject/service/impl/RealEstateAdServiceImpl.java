@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.service.impl;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
@@ -10,10 +11,8 @@ import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CityNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.RealEstateAdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.repository.CategoryRepository;
-import mk.ukim.finki.wpproject.repository.CityRepository;
-import mk.ukim.finki.wpproject.repository.RealEstateAdRepository;
-import mk.ukim.finki.wpproject.repository.UserRepository;
+import mk.ukim.finki.wpproject.repository.*;
+import mk.ukim.finki.wpproject.service.AdService;
 import mk.ukim.finki.wpproject.service.RealEstateAdService;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +22,17 @@ import java.util.Optional;
 @Service
 public class RealEstateAdServiceImpl implements RealEstateAdService {
 
+    private final AdService adService;
+    private final AdRepository adRepository;
     private final RealEstateAdRepository realEstateAdRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
 
-    public RealEstateAdServiceImpl(RealEstateAdRepository realEstateAdRepository, CategoryRepository categoryRepository, UserRepository userRepository, CityRepository cityRepository) {
+    public RealEstateAdServiceImpl(AdService adService, AdRepository adRepository, RealEstateAdRepository realEstateAdRepository,
+                                   CategoryRepository categoryRepository, UserRepository userRepository, CityRepository cityRepository) {
+        this.adService = adService;
+        this.adRepository = adRepository;
         this.realEstateAdRepository = realEstateAdRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
@@ -62,7 +66,7 @@ public class RealEstateAdServiceImpl implements RealEstateAdService {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         RealEstateAd realEstateAd = new RealEstateAd(title, description, isExchangePossible, isDeliveryPossible,
-                                                    price, city, type, condition, category, user, quadrature);
+                price, city, type, condition, category, user, quadrature);
 
         return this.save(realEstateAd);
     }
@@ -89,5 +93,33 @@ public class RealEstateAdServiceImpl implements RealEstateAdService {
     public void deleteById(Long adId) {
         RealEstateAd realEstateAd = this.realEstateAdRepository.findById(adId).orElseThrow(() -> new RealEstateAdNotFoundException(adId));
         this.realEstateAdRepository.delete(realEstateAd);
+    }
+
+    @Override
+    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo) {
+        List<Ad> filteredList = adRepository.findAll();
+
+//        if (title != null && !title.isEmpty()){
+//            filteredList.retainAll(this.adRepository.findByTitleContainsIgnoreCase(title));
+//        }
+//        if (cityId != null && !cityId.isEmpty()){
+//            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+//            filteredList.retainAll(this.adRepository.findAllByCity(city));
+//        }
+//        if (categoryId != null && !categoryId.toString().isEmpty()){
+//            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+//            filteredList.retainAll(this.adRepository.findAllByCategory(category));
+//        }
+
+        filteredList.retainAll(adService.filterList(title, cityId, categoryId, priceFrom, priceTo));
+
+        if (quadratureFrom != null && quadratureTo != null)
+            filteredList.retainAll(realEstateAdRepository.findAllByQuadratureGreaterThanEqualAndQuadratureLessThanEqual(quadratureFrom, quadratureTo));
+        else if (quadratureTo != null)
+            filteredList.retainAll(realEstateAdRepository.findAllByQuadratureLessThanEqual(quadratureTo));
+        else if (quadratureFrom != null)
+            filteredList.retainAll(realEstateAdRepository.findAllByQuadratureGreaterThanEqual(quadratureFrom));
+
+        return filteredList;
     }
 }

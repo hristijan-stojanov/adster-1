@@ -132,47 +132,40 @@ public class AdServiceImpl implements AdService {
         }
     }
 
-
+    @Override
+    public List<Ad> additionalFilter(Double priceFrom, Double priceTo) {
+        if (priceFrom != null && priceTo != null)
+            return adRepository.findAllByPriceIsBetween(priceFrom, priceTo);
+        else if (priceFrom != null)
+            return adRepository.findAllByPriceIsBetween(priceFrom, Double.MAX_VALUE);
+        else if (priceTo != null)
+            return adRepository.findAllByPriceIsBetween(0.0, priceTo);
+        return adRepository.findAll();
+    }
 
     @Override
-    public List<Ad> filter(String title, String cityId, Long categoryId) {
+    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo) {
+        List<Ad> filteredList = adRepository.findAll();
 
-        if ((title != null && !title.isEmpty()) &&
-                (cityId != null && !cityId.isEmpty()) &&
-                (categoryId != null && !categoryId.toString().isEmpty())){
+        if (title != null && !title.isEmpty()){
+            filteredList.retainAll(this.adRepository.findByTitleContainsIgnoreCase(title));
+        }
+        if (cityId != null && !cityId.isEmpty()){
             City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+            filteredList.retainAll(this.adRepository.findAllByCity(city));
+        }
+        if (categoryId != null && !categoryId.toString().isEmpty()){
             Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            return this.adRepository.findAllByTitleContainsIgnoreCaseAndCityAndCategory(title, city, category);
+            filteredList.retainAll(this.adRepository.findAllByCategory(category));
         }
-        else if (title != null && !title.isEmpty() &&
-                cityId != null && !cityId.isEmpty()){
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            return this.adRepository.findAllByTitleContainsIgnoreCaseAndCity(title, city);
-        }
-        else if (title != null && !title.isEmpty() &&
-                categoryId != null && !categoryId.toString().isEmpty()){
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            return this.adRepository.findAllByTitleContainsIgnoreCaseAndCategory(title, category);
-        }
-        else if (cityId != null && !cityId.isEmpty() &&
-                categoryId != null && !categoryId.toString().isEmpty()){
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            return this.adRepository.findAllByCityAndCategory(city, category);
-        }
-        else if (title != null && !title.toString().isEmpty()){
-//            String nameLike = "%" + title + "%";
-//            return this.adRepository.findAllByTitleLikeQuery(nameLike);
-            return this.adRepository.findByTitleContainsIgnoreCase(title);
-        }
-        else if (cityId != null && !cityId.isEmpty()){
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            return this.adRepository.findAllByCity(city);
-        }
-        else if (categoryId != null && !categoryId.toString().isEmpty()){
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            return this.adRepository.findAllByCategory(category);
-        }
-        return this.adRepository.findAll();
+
+        if (priceFrom != null && priceTo != null)
+            filteredList.retainAll(adRepository.findAllByPriceIsBetween(priceFrom, priceTo));
+        else if (priceFrom != null)
+            filteredList.retainAll(adRepository.findAllByPriceIsBetween(priceFrom, Double.MAX_VALUE));
+        else if (priceTo != null)
+            filteredList.retainAll(adRepository.findAllByPriceIsBetween(0.0, priceTo));
+
+        return filteredList;
     }
 }

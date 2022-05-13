@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.service.impl;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
@@ -11,10 +12,8 @@ import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CityNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.repository.BookAdRepository;
-import mk.ukim.finki.wpproject.repository.CategoryRepository;
-import mk.ukim.finki.wpproject.repository.CityRepository;
-import mk.ukim.finki.wpproject.repository.UserRepository;
+import mk.ukim.finki.wpproject.repository.*;
+import mk.ukim.finki.wpproject.service.AdService;
 import mk.ukim.finki.wpproject.service.BookAdService;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +22,17 @@ import java.util.Optional;
 
 @Service
 public class BookAdServiceImpl implements BookAdService {
-
+    private final AdService adService;
+    private final AdRepository adRepository;
     private final BookAdRepository bookAdRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
 
-    public BookAdServiceImpl(BookAdRepository bookAdRepository, CategoryRepository categoryRepository,
+    public BookAdServiceImpl(AdService adService, AdRepository adRepository, BookAdRepository bookAdRepository, CategoryRepository categoryRepository,
                              UserRepository userRepository, CityRepository cityRepository) {
+        this.adService = adService;
+        this.adRepository = adRepository;
         this.bookAdRepository = bookAdRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
@@ -92,5 +94,21 @@ public class BookAdServiceImpl implements BookAdService {
     public void deleteById(Long id) {
         BookAd bookAd = this.bookAdRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         this.bookAdRepository.delete(bookAd);
+    }
+
+    @Override
+    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, String author, Genre genre) {
+
+        List<Ad> filteredList = adRepository.findAll();
+        filteredList.retainAll(adService.filterList(title, cityId, categoryId, priceFrom, priceTo));
+
+        if (author != null && !author.isEmpty()) {
+            filteredList.retainAll(bookAdRepository.findAllByAuthorContainsIgnoreCase(author));
+        }
+        if (genre != null && !genre.toString().isEmpty()) {
+            filteredList.retainAll(bookAdRepository.findAllByGenre(genre));
+        }
+
+        return filteredList;
     }
 }

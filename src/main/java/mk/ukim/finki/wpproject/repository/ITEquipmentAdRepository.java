@@ -16,7 +16,7 @@ public interface ITEquipmentAdRepository extends JpaRepository<ITEquipmentAd, Lo
 
     List<ITEquipmentAd> findAllByProcessor(ProcessorBrand processor);
 
-    List<ITEquipmentAd> findAllByProcessorModel(String processorModel);
+    List<ITEquipmentAd> findAllByProcessorModelContains(String processorModel);
 
     List<ITEquipmentAd> findAllByTypeMemory(TypeMemory typeMemory);
 

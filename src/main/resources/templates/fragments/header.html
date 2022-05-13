@@ -1,7 +1,7 @@
 <header xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" style="height: 60px">
     <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/ads">ADSTER</a>
+            <a class="navbar-brand" th:href="@{/ads/invalidateFilters(categoryId=${categoryId})}">ADSTER</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                     aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,8 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
                 <ul class="navbar-nav m-auto">
                     <li class="nav-item m-auto">
-                        <a class="nav-link active" href="/ads"><i class="fa-solid fa-table-list"></i> Ads</a>
+                        <a class="nav-link active" th:href="@{/ads/invalidateFilters(categoryId=${categoryId})}"><i
+                                class="fa-solid fa-table-list"></i> Ads</a>
                     </li>
 
                     <li class="nav-item m-auto">
@@ -18,22 +19,25 @@
                     </li>
 
                     <li class="nav-item m-auto" sec:authorize="isAuthenticated()">
-                        <a class="btn btn-primary btn-sm ml-5" href="/savedAds"><i class="fa-solid fa-floppy-disk"></i> Saved ads</a>
+                        <a class="btn btn-primary btn-sm ml-5" href="/savedAds"><i class="fa-solid fa-floppy-disk"></i>
+                            Saved ads</a>
                     </li>
 
                     <li class="nav-item m-auto" sec:authorize="isAuthenticated()">
-                        <a class="btn btn-primary btn-sm ml-5" href="/myAds"><i class="fa-solid fa-image-portrait"></i> My ads</a>
+                        <a class="btn btn-primary btn-sm ml-5" href="/myAds"><i class="fa-solid fa-image-portrait"></i>
+                            My ads</a>
                     </li>
 
                     <li class="nav-item m-auto" sec:authorize="isAuthenticated()">
-                        <a class="btn btn-primary btn-sm ml-5" href="/add"><i class="fa-solid fa-plus"></i> Add new ad</a>
+                        <a class="btn btn-primary btn-sm ml-5" href="/add"><i class="fa-solid fa-plus"></i> Add new
+                            ad</a>
                     </li>
                 </ul>
 
-
-                <form class="form-inline my-2 my-lg-0" >
+                <form class="form-inline my-5 my-lg-0 row justify-content-center align-items-center"
+                      th:action="@{${categoryName} + '/filter'}">
                     <div class="select-group select-group-sm">
-                        <select name="categoryId" class="form-control" >
+                        <select name="categoryId" class="form-control">
                             <option th:text="Category"
                                     value=""></option>
                             <option th:each="category : ${categories}"
@@ -43,30 +47,13 @@
                             </option>
                         </select>
                     </div>
-                    <div class="select-group select-group-sm mr-1">
-                        <select name="cityId" class="form-control" >
-                            <option th:text="City"
-                                    value=""></option>
-                            <option th:each="city : ${cities}"
-                                    th:value="${city.getName()}"
-                                    th:text="${city.getName()}"
-                                    th:selected="${cityId != null and city.getName() == cityId}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" aria-label="Small"
-                               aria-describedby="inputGroup-sizing-sm"
-                               th:name="title"
-                               th:value="${title != null} ? ${title} : ''"
-                               placeholder="Search...">
-                    </div>
                     <div class="select-group-append">
                         <button type="submit" class="btn btn-secondary btn-number">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
                 </form>
+
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item" sec:authorize="isAuthenticated()">
                         <a class="btn btn-success btn-sm ml-3" href="/profile">
@@ -88,3 +75,48 @@
         </div>
     </nav>
 </header>
+<div class="container-fluid my-3" th:if="${#httpServletRequest.requestURI} == '/ads' or ${#httpServletRequest.requestURI} == '/'" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <form class="form-inline my-5 my-lg-0 row justify-content-center align-items-center"
+          th:action="@{${categoryName} + '/filter'}">
+        <input type="hidden" name="categoryId" th:value="${categoryId}">
+        <div class="select-group select-group-sm mr-1">
+            <select name="cityId" class="form-control">
+                <option th:text="City"
+                        value=""></option>
+                <option th:each="city : ${cities}"
+                        th:value="${city.getName()}"
+                        th:text="${city.getName()}">
+                </option>
+            </select>
+        </div>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" aria-label="Small"
+                   aria-describedby="inputGroup-sizing-sm"
+                   th:name="title"
+                   placeholder="Search...">
+        </div>
+
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa-solid fa-euro-sign"></i></span>
+            </div>
+            <input name="priceFrom" type="text" class="form-control" placeholder="Price from">
+        </div>
+
+        <div class="input-group input-group-sm">
+            <input name="priceTo" type="text" class="form-control" placeholder="Price to">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fa-solid fa-euro-sign"></i></span>
+            </div>
+        </div>
+
+        <div th:if="${filterContent != null}" class="row mx-2 justify-content-center align-items-center">
+            <div th:replace="${filterContent}"></div>
+        </div>
+        <div class="select-group-append">
+            <button type="submit" class="btn btn-secondary btn-number">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </form>
+</div>

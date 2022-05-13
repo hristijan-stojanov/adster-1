@@ -23,6 +23,8 @@ public interface UserService extends UserDetailsService {
 
     List<Ad> findAllAdvertisedAdsByUser(Long userId);
 
+    Optional<User> edit(Long id, String username, String name, String surname, String email, String phoneNumber);
+
     Optional<User> save(User user);
 
 }

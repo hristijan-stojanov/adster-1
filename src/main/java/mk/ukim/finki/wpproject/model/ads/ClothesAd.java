@@ -8,11 +8,9 @@ import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.enums.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.lang.Nullable;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -22,6 +20,7 @@ public class ClothesAd extends Ad {
     @Enumerated(EnumType.STRING)
     private TypeClothing typeClothing;
 
+    @Column(nullable = true)
     private int numSize;
 
     @Enumerated(EnumType.STRING)

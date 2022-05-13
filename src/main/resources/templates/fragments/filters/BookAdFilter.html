@@ -1,0 +1,17 @@
+<div class="input-group input-group-sm">
+    <input type="text" class="form-control" aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           th:name="author"
+           placeholder="Author...">
+</div>
+
+<div class="select-group select-group-sm">
+    <select name="genre" class="form-control">
+        <option th:text="Genre"
+                value=""></option>
+        <option th:each="genre : ${T(mk.ukim.finki.wpproject.model.enums.Genre).values()}"
+                th:value="${genre.name()}"
+                th:text="${genre.name()}">
+        </option>
+    </select>
+</div>

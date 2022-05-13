@@ -19,10 +19,10 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Ad> ads;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Category parentCategory;
 
-    @OneToMany(mappedBy = "parentCategory")
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     private List<Category> subCategories;
 
     public Category() {
@@ -32,6 +32,13 @@ public class Category {
         this.name = name;
         ads = new ArrayList<>();
         parentCategory = new Category();
+        this.subCategories = new ArrayList<>();
+    }
+
+    public Category(String name, Category parentCategory){
+        this.name = name;
+        this.parentCategory = parentCategory;
+        ads = new ArrayList<>();
         this.subCategories = new ArrayList<>();
     }
 

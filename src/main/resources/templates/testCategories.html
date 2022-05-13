@@ -15,18 +15,28 @@
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Subcategories</th>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                            <th scope="col">Edit</th>
+                            </th:block>
                         </tr>
                         </thead>
+
                         <tbody>
                         <tr th:each="category : ${categories}" class="product">
                             <td th:text="${category.getName()}"></td>
                             <td th:text="${category.getSubCategories() != null && !category.getSubCategories().isEmpty()}
                             ? ${category.getSubCategoriesToString()} : 'No Category'"></td>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                            <td><a class="btn btn-primary" type="button" th:href="@{'/categories/edit-form/{id}' (id = ${category.getId()})}">Edit Category</a></td>
+                            </th:block>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="btn btn-primary" type="button" th:href="@{/categories/add-form}">Add Category</a></td>
+            </th:block>
         </div>
     </div>
 </div>

@@ -22,8 +22,6 @@ public class ITEquipmentAd extends Ad {
     @Enumerated(EnumType.STRING)
     private ITBrand brand;
 
-    private String model;
-
     @Enumerated(EnumType.STRING)
     private ProcessorBrand processor;
 

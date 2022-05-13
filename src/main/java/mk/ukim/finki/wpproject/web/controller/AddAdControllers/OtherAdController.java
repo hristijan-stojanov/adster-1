@@ -49,8 +49,9 @@ public class OtherAdController {
         Ad otherAd = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", otherAd);
         model.addAttribute("comments", otherAd.getComments());
+        model.addAttribute("additionalContent", null);
 
-        model.addAttribute("bodyContent", "showAdsTemplates/showOtherAd");
+        model.addAttribute("bodyContent", "showAdDetails");
         return "master";
     }
 

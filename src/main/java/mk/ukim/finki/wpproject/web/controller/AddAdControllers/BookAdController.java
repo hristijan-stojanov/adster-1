@@ -46,8 +46,9 @@ public class BookAdController {
         BookAd bookAd = this.bookAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", bookAd);
         model.addAttribute("comments", bookAd.getComments());
+        model.addAttribute("additionalContent", "showBookAd");
 
-        model.addAttribute("bodyContent", "showAdsTemplates/showBookAd");
+        model.addAttribute("bodyContent", "showAdDetails");
         return "master";
     }
 

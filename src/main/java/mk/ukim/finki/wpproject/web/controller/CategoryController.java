@@ -1,12 +1,11 @@
 package mk.ukim.finki.wpproject.web.controller;
 
 import mk.ukim.finki.wpproject.model.Category;
+import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -33,4 +32,42 @@ public class CategoryController {
         return "master";
     }
 
+    @GetMapping("/add-form")
+    public String addCategory(Model model){
+        List<Category> categories = this.categoryService.findAll();
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("bodyContent", "addCategory");
+
+        return "master";
+    }
+
+    @GetMapping("/edit-form/{id}")
+    public String editCategory(@PathVariable Long id,
+                               Model model){
+
+        Category category = this.categoryService.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
+        List<Category> categories = this.categoryService.findAll();
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("category", category);
+        model.addAttribute("bodyContent", "addCategory");
+
+        return "master";
+    }
+
+    @PostMapping("/add")
+    public String addCategoryForm(@RequestParam (required = false) Long id,
+                                  @RequestParam String name,
+                                  @RequestParam (required = false) Long parentCategoryId){
+
+        if (id != null){
+            this.categoryService.edit(id, name, parentCategoryId);
+        }
+        else{
+            this.categoryService.save(name, parentCategoryId);
+        }
+
+        return "redirect:/categories";
+    }
 }

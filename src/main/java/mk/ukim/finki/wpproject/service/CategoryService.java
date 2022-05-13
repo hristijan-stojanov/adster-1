@@ -12,9 +12,9 @@ public interface CategoryService {
 
     Category findCategoryByName(String name);
 
-    Category create (String name);
+    Category save (String name, Long parentCategoryId);
 
-    Category edit (Long id, String name);
+    Category edit (Long id, String name, Long parentCategoryId);
 
     void deleteById(Long id);
 

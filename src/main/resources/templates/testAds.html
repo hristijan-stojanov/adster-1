@@ -53,7 +53,7 @@
                                     <div class="col text-right">
                                         <p class="h6">User: <span class="h6" th:text="${ad.getAdvertisedByUser().getUsername()}"></span></p>
                                         <p>Type: <span th:text="${ad.getType()}"></span></p>
-                                        <p>Condition: <span th:text="${ad.getCondition()}"></span></p>
+                                        <p th:if="${ad.getCondition()} != null">Condition: <span th:text="${ad.getCondition()}"></span></p>
                                         <th:block sec:authorize="hasRole('ROLE_USER')">
                                             <form th:action="@{'/save/{id}' (id=${ad.getId()})}" th:method="post"
                                                   sec:authorize="isAuthenticated()">

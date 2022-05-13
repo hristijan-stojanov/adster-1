@@ -1,7 +1,7 @@
 <header xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" style="height: 60px">
     <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{/ads/invalidateFilters(categoryId=${categoryId})}">ADSTER</a>
+            <a class="navbar-brand" th:href="@{/ads/invalidateFilters}">ADSTER</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                     aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
                 <ul class="navbar-nav m-auto">
                     <li class="nav-item m-auto">
-                        <a class="nav-link active" th:href="@{/ads/invalidateFilters(categoryId=${categoryId})}"><i
+                        <a class="nav-link active" th:href="@{/ads/invalidateFilters}"><i
                                 class="fa-solid fa-table-list"></i> Ads</a>
                     </li>
 

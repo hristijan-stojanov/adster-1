@@ -86,8 +86,7 @@ public class AdController {
     }
 
     @GetMapping("/invalidateFilters")
-    public String invalidateFilters(@RequestParam(required = false) Long categoryId,
-                                    HttpServletRequest request) {
+    public String invalidateFilters(HttpServletRequest request) {
         request.getSession().setAttribute("filteredAds", null);
         return "redirect:/ads";
     }
@@ -137,9 +136,34 @@ public class AdController {
     }
 
     @GetMapping("/savedAds")
-    public String getSavedAds(Authentication authentication, Model model) {
+    public String getSavedAds(@RequestParam(required = false) String error,
+                              @RequestParam("page") Optional<Integer> page,
+                              @RequestParam("size") Optional<Integer> size,
+                              Authentication authentication,
+                              Model model) {
+        if (error != null && !error.isEmpty()) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", error);
+        }
+
         Long userId = ((User) authentication.getPrincipal()).getId();
-        model.addAttribute("savedAds", userService.findAllSavedAdsByUser(userId));
+        List<Ad> savedAds = userService.findAllSavedAdsByUser(userId);
+
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+
+        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage - 1, pageSize), savedAds);
+
+        model.addAttribute("adPage", adPage);
+        model.addAttribute("adsSize", adPage.getTotalElements());
+
+        int totalPages = adPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
 
         model.addAttribute("bodyContent", "showSavedAds");
 

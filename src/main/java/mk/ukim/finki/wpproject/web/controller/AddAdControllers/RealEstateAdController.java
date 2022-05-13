@@ -1,11 +1,13 @@
 package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.realEstates.RealEstateAd;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
+import mk.ukim.finki.wpproject.model.enums.Genre;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.service.*;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,30 +40,31 @@ public class RealEstateAdController {
     }
 
     @GetMapping("/{id}")
-    public String showRealEstateAd(@PathVariable Long id, Model model){
+    public String showRealEstateAd(@PathVariable Long id, Model model) {
 
         RealEstateAd realEstateAd = this.realEstateAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", realEstateAd);
         model.addAttribute("comments", realEstateAd.getComments());
+        model.addAttribute("additionalContent", "showRealEstateAd");
 
-        model.addAttribute("bodyContent", "showAdsTemplates/showRealEstateAd");
+        model.addAttribute("bodyContent", "showAdDetails");
         return "master";
     }
 
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()){
+        if (this.categoryService.findById(categoryId).isPresent()) {
 
             Category category = this.categoryService.findById(categoryId).get();
             List<City> cityList = this.cityService.findAll();
             List<AdType> adTypeList = Arrays.asList(AdType.values());
             List<Condition> conditionList = Arrays.asList(Condition.values());
 
-            model.addAttribute("category_1",category);
+            model.addAttribute("category_1", category);
             model.addAttribute("cityList", cityList);
-            model.addAttribute("adTypeList",adTypeList);
-            model.addAttribute("conditionList",conditionList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
 
             model.addAttribute("bodyContent", "addAdsTemplates/addRealEstateAd");
             return "master";
@@ -92,7 +96,7 @@ public class RealEstateAdController {
                     cityId, type, condition, categoryId, quadrature);
         } else {
             RealEstateAd realEstateAd = this.realEstateAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
-                    cityId, type, condition, categoryId, userId, quadrature).orElseThrow(RuntimeException :: new);
+                    cityId, type, condition, categoryId, userId, quadrature).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(realEstateAd);
             this.userService.save(user);
@@ -115,13 +119,33 @@ public class RealEstateAdController {
             model.addAttribute("category_1", category);
             model.addAttribute("realEstateAd", realEstateAd);
             model.addAttribute("cityList", cityList);
-            model.addAttribute("adTypeList",adTypeList);
-            model.addAttribute("conditionList",conditionList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
 
             model.addAttribute("bodyContent", "addAdsTemplates/addRealEstateAd");
 
             return "master";
         }
         return "redirect:/ads?error=AdNotFound";
+    }
+
+    @GetMapping("/filter")
+    public String getFilteredAds(@RequestParam(required = false) String title,
+                                 @RequestParam(required = false) String cityId,
+                                 @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) Double priceFrom,
+                                 @RequestParam(required = false) Double priceTo,
+                                 @RequestParam(required = false) Integer quadratureFrom,
+                                 @RequestParam(required = false) Integer quadratureTo,
+                                 HttpServletRequest request) {
+
+        List<Ad> filteredAds = realEstateAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo);
+
+        request.getSession().setAttribute("filteredAds", filteredAds);
+
+        if (categoryId != null)
+            return "redirect:/ads?categoryId=" + categoryId;
+        else
+            return "redirect:/ads";
     }
 }

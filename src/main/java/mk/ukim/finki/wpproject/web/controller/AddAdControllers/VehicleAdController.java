@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.web.controller.AddAdControllers;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,8 +43,9 @@ public class VehicleAdController {
         VehicleAd vehicleAd = this.vehicleAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", vehicleAd);
         model.addAttribute("comments", vehicleAd.getComments());
+        model.addAttribute("additionalContent", "showVehicleAd");
 
-        model.addAttribute("bodyContent", "showAdsTemplates/showVehicleAd");
+        model.addAttribute("bodyContent", "showAdDetails");
         return "master";
     }
 
@@ -152,5 +155,36 @@ public class VehicleAdController {
 
         }
         return "redirect:/ads?error=AdNotFound";
+    }
+
+    @GetMapping("/filter")
+    public String getFilteredAds(@RequestParam(required = false) String title,
+                                 @RequestParam(required = false) String cityId,
+                                 @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) Double priceFrom,
+                                 @RequestParam(required = false) Double priceTo,
+                                 @RequestParam(required = false) CarBrand carBrand,
+                                 @RequestParam(required = false) Integer yearMadeFrom,
+                                 @RequestParam(required = false) Integer yearMadeTo,
+                                 @RequestParam(required = false) Integer enginePowerFrom,
+                                 @RequestParam(required = false) Integer enginePowerTo,
+                                 @RequestParam(required = false) Double milesTraveledFrom,
+                                 @RequestParam(required = false) Double milesTraveledTo,
+                                 @RequestParam(required = false) Fuel fuel,
+                                 @RequestParam(required = false) Color color,
+                                 @RequestParam(required = false) Gearbox gearbox,
+                                 @RequestParam(required = false) Registration registration,
+                                 HttpServletRequest request) {
+
+        List<Ad> filteredAds = vehicleAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, carBrand,
+                yearMadeFrom, yearMadeTo, enginePowerFrom, enginePowerTo, milesTraveledFrom, milesTraveledTo,
+                fuel, color, gearbox, registration);
+
+        request.getSession().setAttribute("filteredAds", filteredAds);
+
+        if (categoryId != null)
+            return "redirect:/ads?categoryId=" + categoryId;
+        else
+            return "redirect:/ads";
     }
 }

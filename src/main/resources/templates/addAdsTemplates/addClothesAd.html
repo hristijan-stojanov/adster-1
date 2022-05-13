@@ -149,12 +149,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="numSize">Number (Size)</label>
+                        <label for="numSize">Number (Size) [in case the appropriate type of clothing does not have a number, enter it: 0]</label>
                         <input type="text"
                                class="form-control"
                                id="numSize"
                                name="numSize"
                                th:value="(${clothesAd} != null ? ${clothesAd.getNumSize()} : '')"
+                               required
                                placeholder="NumSize">
                     </div>
 

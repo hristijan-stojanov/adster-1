@@ -46,8 +46,9 @@ public class BookAdController {
         BookAd bookAd = this.bookAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", bookAd);
         model.addAttribute("comments", bookAd.getComments());
+        model.addAttribute("additionalContent", "showBookAd");
 
-        model.addAttribute("bodyContent", "showAdsTemplates/showBookAd");
+        model.addAttribute("bodyContent", "showAdDetails");
         return "master";
     }
 
@@ -140,11 +141,13 @@ public class BookAdController {
     public String getFilteredAds(@RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) Double priceFrom,
+                                 @RequestParam(required = false) Double priceTo,
                                  @RequestParam(required = false) String author,
                                  @RequestParam(required = false) Genre genre,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = bookAdService.filterList(title, cityId, categoryId, author, genre);
+        List<Ad> filteredAds = bookAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, author, genre);
 
         request.getSession().setAttribute("filteredAds", filteredAds);
 

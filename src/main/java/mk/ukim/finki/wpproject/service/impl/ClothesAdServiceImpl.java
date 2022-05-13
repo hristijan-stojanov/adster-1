@@ -1,19 +1,16 @@
 package mk.ukim.finki.wpproject.service.impl;
 
+import mk.ukim.finki.wpproject.model.Ad;
 import mk.ukim.finki.wpproject.model.Category;
 import mk.ukim.finki.wpproject.model.City;
 import mk.ukim.finki.wpproject.model.User;
 import mk.ukim.finki.wpproject.model.ads.ClothesAd;
-import mk.ukim.finki.wpproject.model.ads.realEstates.ApartmentAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CityNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
-import mk.ukim.finki.wpproject.repository.CategoryRepository;
-import mk.ukim.finki.wpproject.repository.CityRepository;
-import mk.ukim.finki.wpproject.repository.ClothesAdRepository;
-import mk.ukim.finki.wpproject.repository.UserRepository;
+import mk.ukim.finki.wpproject.repository.*;
 import mk.ukim.finki.wpproject.service.ClothesAdService;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +20,15 @@ import java.util.Optional;
 @Service
 public class ClothesAdServiceImpl implements ClothesAdService {
 
+    private final AdRepository adRepository;
     private final ClothesAdRepository clothesAdRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
 
-    public ClothesAdServiceImpl(ClothesAdRepository clothesAdRepository, CategoryRepository categoryRepository,
+    public ClothesAdServiceImpl(AdRepository adRepositoryl, ClothesAdRepository clothesAdRepository, CategoryRepository categoryRepository,
                                 UserRepository userRepository, CityRepository cityRepository) {
+        this.adRepository = adRepositoryl;
         this.clothesAdRepository = clothesAdRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
@@ -92,5 +91,33 @@ public class ClothesAdServiceImpl implements ClothesAdService {
     public void deleteById(Long id) {
         ClothesAd clothesAd = this.clothesAdRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         this.clothesAdRepository.delete(clothesAd);
+    }
+
+    @Override
+    public List<Ad> filterList(String title, String cityId, Long categoryId, TypeClothing typeClothing, Size size, Color color) {
+        List<Ad> filteredList = adRepository.findAll();
+
+        if (title != null && !title.isEmpty()) {
+            filteredList.retainAll(this.adRepository.findByTitleContainsIgnoreCase(title));
+        }
+        if (cityId != null && !cityId.isEmpty()) {
+            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+            filteredList.retainAll(this.adRepository.findAllByCity(city));
+        }
+        if (categoryId != null && !categoryId.toString().isEmpty()) {
+            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+            filteredList.retainAll(this.adRepository.findAllByCategory(category));
+        }
+        if (typeClothing != null && !typeClothing.toString().isEmpty()) {
+            filteredList.retainAll(clothesAdRepository.findAllByTypeClothing(typeClothing));
+        }
+        if (size != null && !size.toString().isEmpty()) {
+            filteredList.retainAll(clothesAdRepository.findAllBySize(size));
+        }
+        if (color != null && !color.toString().isEmpty()) {
+            filteredList.retainAll(clothesAdRepository.findAllByColor(color));
+        }
+
+        return filteredList;
     }
 }

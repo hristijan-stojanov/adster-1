@@ -14,11 +14,9 @@ public interface ITEquipmentAdRepository extends JpaRepository<ITEquipmentAd, Lo
 
     List<ITEquipmentAd> findAllByBrand(ITBrand itBrand);
 
-    List<ITEquipmentAd> findAllByModelContains (String model);
-
     List<ITEquipmentAd> findAllByProcessor(ProcessorBrand processor);
 
-    List<ITEquipmentAd> findAllByProcessorModel(String processorModel);
+    List<ITEquipmentAd> findAllByProcessorModelContains(String processorModel);
 
     List<ITEquipmentAd> findAllByTypeMemory(TypeMemory typeMemory);
 
@@ -33,6 +31,5 @@ public interface ITEquipmentAdRepository extends JpaRepository<ITEquipmentAd, Lo
     List<ITEquipmentAd> findAllByRamMemorySizeLessThanEqual(Integer ramMemorySize);
 
     List<ITEquipmentAd> findAllByRamMemorySizeGreaterThanEqualAndRamMemorySizeLessThanEqual(Integer ramMemorySizeGreater, Integer ramMemorySizeLess);
-
 
 }

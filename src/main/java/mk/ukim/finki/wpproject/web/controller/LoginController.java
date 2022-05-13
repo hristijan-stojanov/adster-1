@@ -31,7 +31,8 @@ public class LoginController {
                         Model model) {
         User user = null;
         try{
-            user = this.authService.login(request.getParameter("username"), request.getParameter("password"));
+            user = this.authService.login(request.getParameter("username"),
+                                          request.getParameter("password"));
             request.getSession().setAttribute("user", user);
 
             return "redirect:/profile";

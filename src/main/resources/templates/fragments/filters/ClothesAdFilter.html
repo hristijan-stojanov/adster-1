@@ -1,33 +1,38 @@
+<div class="container">
+    <div class="row ustify-content-center mt-2">
 
-<div class="select-group select-group-sm">
-    <select name="typeClothing" class="form-control">
-        <option th:text="TypeClothing"
-                value=""></option>
-        <option th:each="typeClothing : ${T(mk.ukim.finki.wpproject.model.enums.TypeClothing).values()}"
-                th:value="${typeClothing.name()}"
-                th:text="${typeClothing.name()}">
-        </option>
-    </select>
-</div>
+        <div class="select-group select-group-sm mr-4">
+            <select name="typeClothing" class="form-control">
+                <option th:text="TypeClothing"
+                        value=""></option>
+                <option th:each="typeClothing : ${T(mk.ukim.finki.wpproject.model.enums.TypeClothing).values()}"
+                        th:value="${typeClothing.name()}"
+                        th:text="${typeClothing.name()}">
+                </option>
+            </select>
+        </div>
 
-<div class="select-group select-group-sm">
-    <select name="size" class="form-control">
-        <option th:text="Size"
-                value=""></option>
-        <option th:each="size : ${T(mk.ukim.finki.wpproject.model.enums.Size).values()}"
-                th:value="${size.name()}"
-                th:text="${size.name()}">
-        </option>
-    </select>
-</div>
+        <div class="select-group select-group-sm mr-4">
+            <select name="size" class="form-control">
+                <option th:text="Size"
+                        value=""></option>
+                <option th:each="size : ${T(mk.ukim.finki.wpproject.model.enums.Size).values()}"
+                        th:value="${size.name()}"
+                        th:text="${size.name()}">
+                </option>
+            </select>
+        </div>
 
-<div class="select-group select-group-sm">
-    <select name="color" class="form-control">
-        <option th:text="Color"
-                value=""></option>
-        <option th:each="color : ${T(mk.ukim.finki.wpproject.model.enums.Color).values()}"
-                th:value="${color.name()}"
-                th:text="${color.name()}">
-        </option>
-    </select>
+        <div class="select-group select-group-sm">
+            <select name="color" class="form-control">
+                <option th:text="Color"
+                        value=""></option>
+                <option th:each="color : ${T(mk.ukim.finki.wpproject.model.enums.Color).values()}"
+                        th:value="${color.name()}"
+                        th:text="${color.name()}">
+                </option>
+            </select>
+        </div>
+
+    </div>
 </div>

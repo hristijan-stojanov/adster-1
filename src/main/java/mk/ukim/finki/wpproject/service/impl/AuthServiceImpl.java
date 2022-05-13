@@ -22,6 +22,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidArgumentsException();
         }
 
-        return userRepository.findByUsernameAndPassword(username, password).orElseThrow(InvalidUserCredentialsException::new);
+        return userRepository.findByUsernameAndPassword(username, password).
+                orElseThrow(InvalidUserCredentialsException::new);
     }
 }

@@ -121,7 +121,7 @@ public class ITEquipmentAdServiceImpl implements ITEquipmentAdService {
 
 
         if (model != null && !model.isEmpty()) {
-            filteredList.retainAll(itEquipmentAdRepository.findAllByModelContains(model));
+            filteredList.retainAll(itEquipmentAdRepository.findAllByProcessorModelContains(model));
         }
 
 

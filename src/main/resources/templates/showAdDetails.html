@@ -29,6 +29,12 @@
                         </button>
                     </div>
                 </div>
+                <div th:if="${ad.getImages().size() <= 0}" class="row justify-content-center">
+                    <div class="bg-secondary text-white row text-center justify-content-center w-75"
+                         style="height: 500px">
+                        <h1 class="m-auto">No Images</h1>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-3">
                         <th:block sec:authorize="hasRole('ROLE_USER')">

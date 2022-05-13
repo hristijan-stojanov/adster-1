@@ -27,10 +27,12 @@ public class ImageServiceImpl implements ImageService {
 
         images.stream().forEach(image -> {
             try {
-                adImage adImage = fileLocationService.save(image.getBytes(), image.getOriginalFilename());
+                if (image.getOriginalFilename() != null && !image.getOriginalFilename().isEmpty()) {
+                    adImage adImage = fileLocationService.save(image.getBytes(), image.getOriginalFilename());
 
-                ad.getImages().add(adImage);
-                adService.save(ad);
+                    ad.getImages().add(adImage);
+                    adService.save(ad);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

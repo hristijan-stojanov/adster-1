@@ -14,9 +14,12 @@
                                 class="fa-solid fa-table-list"></i> Ads</a>
                     </li>
 
-                    <li class="nav-item m-auto">
-                        <a class="nav-link active" href="/categories"><i class="fa-solid fa-table-list"></i> Categories</a>
-                    </li>
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item m-auto">
+                            <a class="nav-link active" href="/categories"><i class="fa-solid fa-table-list"></i>
+                                Categories</a>
+                        </li>
+                    </th:block>
 
                     <li class="nav-item m-auto" sec:authorize="isAuthenticated() && hasRole('ROLE_USER')">
                         <a class="btn btn-primary btn-sm ml-5" href="/savedAds"><i class="fa-solid fa-floppy-disk"></i>

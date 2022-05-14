@@ -52,25 +52,27 @@ public class AdController {
         model.addAttribute("cities", cities);
         model.addAttribute("categoryId", categoryId);
 
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
-
         List<Ad> filteredAds = (List<Ad>) request.getSession().getAttribute("filteredAds");
         if (filteredAds == null)
             filteredAds = adService.findAll();
 
-        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage - 1, pageSize), filteredAds);
+//        int currentPage = page.orElse(1);
+//        int pageSize = size.orElse(5);
+//
+//        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage - 1, pageSize), filteredAds);
+//
+//        model.addAttribute("adPage", adPage);
+//        model.addAttribute("adsSize", adPage.getTotalElements());
+//
+//        int totalPages = adPage.getTotalPages();
+//        if (totalPages > 0) {
+//            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+//                    .boxed()
+//                    .collect(Collectors.toList());
+//            model.addAttribute("pageNumbers", pageNumbers);
+//        }
 
-        model.addAttribute("adPage", adPage);
-        model.addAttribute("adsSize", adPage.getTotalElements());
-
-        int totalPages = adPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        paginationTemplate(page, size, model, filteredAds);
 
         if (categoryId != null) {
             model.addAttribute("filterContent", "fragments/filters/" + this.adService.redirectAdBasedOnCategory(categoryId) + "Filter");
@@ -149,21 +151,7 @@ public class AdController {
         Long userId = ((User) authentication.getPrincipal()).getId();
         List<Ad> savedAds = userService.findAllSavedAdsByUser(userId);
 
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
-
-        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage - 1, pageSize), savedAds);
-
-        model.addAttribute("adPage", adPage);
-        model.addAttribute("adsSize", adPage.getTotalElements());
-
-        int totalPages = adPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        paginationTemplate(page, size, model, savedAds);
 
         model.addAttribute("bodyContent", "showSavedAds");
 
@@ -202,12 +190,44 @@ public class AdController {
     }
 
     @GetMapping("/myAds")
-    public String getMyAds(Authentication authentication, Model model) {
+    public String getMyAds(@RequestParam(required = false) String error,
+                           @RequestParam("page") Optional<Integer> page,
+                           @RequestParam("size") Optional<Integer> size,
+                           Authentication authentication,
+                           Model model) {
+        if (error != null && !error.isEmpty()) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", error);
+        }
+
         Long userId = ((User) authentication.getPrincipal()).getId();
-        model.addAttribute("myAds", userService.findAllAdvertisedAdsByUser(userId));
+        List<Ad> ads = userService.findAllAdvertisedAdsByUser(userId);
+
+        paginationTemplate(page, size, model, ads);
+
         model.addAttribute("bodyContent", "showMyAds");
 
         return "master";
+
+    }
+
+    public void paginationTemplate(Optional<Integer> page, Optional<Integer> size, Model model, List<Ad> ads){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+
+        Page<Ad> adPage = this.adService.findPaginated(PageRequest.of(currentPage - 1, pageSize), ads);
+
+        model.addAttribute("adPage", adPage);
+        model.addAttribute("adsSize", adPage.getTotalElements());
+
+        int totalPages = adPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
     }
 
 }

@@ -31,7 +31,7 @@ public class Category {
     public Category(String name) {
         this.name = name;
         ads = new ArrayList<>();
-        parentCategory = new Category();
+        parentCategory = null;
         this.subCategories = new ArrayList<>();
     }
 

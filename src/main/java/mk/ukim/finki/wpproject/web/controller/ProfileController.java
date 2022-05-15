@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/profile")
@@ -26,10 +27,11 @@ public class ProfileController {
     }
 
     @GetMapping
-    public String getProfile(Model model, Authentication authentication) {
+    public String getProfile(Model model, Authentication authentication, HttpSession session) {
         User user = userService.getUserFromType(authentication.getPrincipal());
 
         model.addAttribute("user", user);
+        session.setAttribute("userId", user.getId());
         model.addAttribute("bodyContent", "showProfile");
         return "master";
     }

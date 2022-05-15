@@ -55,13 +55,11 @@ public class CommentController {
     }
 
     @PostMapping("/save/{id}")
-    public String saveCommentForAd(@PathVariable Long id, @RequestParam String content, Authentication authentication, HttpSession session) {
+    public String saveCommentForAd(@PathVariable Long id, @RequestParam String content, Authentication authentication) {
 
         Ad ad = adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
         User user = userService.getUserFromType(authentication.getPrincipal());
-        session.setAttribute("userId", user.getId());
-
         Comment comment = new Comment(content, user);
         commentService.save(comment);
 

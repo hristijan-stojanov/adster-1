@@ -100,8 +100,7 @@ public class ApartmentAdController {
             @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userService.getUserFromType(authentication.getPrincipal());
 
         if (id != null) {
             this.apartmentAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,

@@ -117,8 +117,7 @@ public class AdController {
     public String deleteAd(@PathVariable Long id, Authentication authentication) {
         Ad ad = this.adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userService.getUserFromType(authentication.getPrincipal());
 
         ad.getSavedByUsers().stream().forEach(u -> u.getSavedAds().remove(ad));
 
@@ -146,8 +145,9 @@ public class AdController {
             model.addAttribute("error", error);
         }
 
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        List<Ad> savedAds = userService.findAllSavedAdsByUser(userId);
+        User user = userService.getUserFromType(authentication.getPrincipal());
+
+        List<Ad> savedAds = userService.findAllSavedAdsByUser(user.getId());
 
         paginationTemplate(page, size, model, savedAds);
 
@@ -161,8 +161,7 @@ public class AdController {
     public String saveAdToUser(@PathVariable Long id, Authentication authentication) {
         Ad ad = adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
 
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userService.getUserFromType(authentication.getPrincipal());
 
         if (!user.getSavedAds().contains(ad))
             user.getSavedAds().add(ad);

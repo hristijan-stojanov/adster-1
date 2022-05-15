@@ -103,8 +103,7 @@ public class VehicleAdController {
             @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userService.getUserFromType(authentication.getPrincipal());
 
         if (id != null) {
             this.vehicleAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
@@ -112,7 +111,7 @@ public class VehicleAdController {
                     registration);
         } else {
             VehicleAd vehicleAd = this.vehicleAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
-                    type, condition, categoryId, userId, brand, yearMade, color, milesTraveled, fuel, enginePower, gearbox,
+                    type, condition, categoryId, user.getId(), brand, yearMade, color, milesTraveled, fuel, enginePower, gearbox,
                     registration).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(vehicleAd);

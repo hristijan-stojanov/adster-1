@@ -96,8 +96,7 @@ public class ITEquipmentsAdController {
             @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userService.getUserFromType(authentication.getPrincipal());
 
         if (id != null) {
             this.itEquipmentAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price,
@@ -105,7 +104,7 @@ public class ITEquipmentsAdController {
                     ramMemorySize);
         } else {
             ITEquipmentAd itEquipmentAd = this.itEquipmentAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
-                    cityId, type, condition, categoryId, userId, brand, processor, processorModel, typeMemory, memorySize,
+                    cityId, type, condition, categoryId, user.getId(), brand, processor, processorModel, typeMemory, memorySize,
                     ramMemorySize).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(itEquipmentAd);

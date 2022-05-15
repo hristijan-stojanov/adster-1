@@ -94,8 +94,7 @@ public class ClothesAdController {
             @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userService.getUserFromType(authentication.getPrincipal());
 
 //        Integer intNumSize = null;
 //        if (numSize != null && !numSize.isEmpty())
@@ -106,7 +105,7 @@ public class ClothesAdController {
                     type, condition, categoryId, typeClothing, numSize, size, color);
         } else {
             ClothesAd clothesAd = this.clothesAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId, type,
-                    condition, categoryId, userId, typeClothing, numSize, size, color).orElseThrow(RuntimeException::new);
+                    condition, categoryId, user.getId(), typeClothing, numSize, size, color).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(clothesAd);
             this.userService.save(user);

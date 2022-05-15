@@ -50,8 +50,11 @@
                     <div class="col-9">
                         <h4 class="box-title mt-5">Product description</h4>
                         <p th:text="${ad.getDescription()}"></p>
-                        <h2 class="mt-5" th:text="${ad.getPrice()}"></h2>
-                        <button class="btn btn-primary btn-rounded">Buy Now</button>
+                        <h2 class="mt-5">Price: <span class="h2"th:text="${ad.getPrice()}"></span><span> <i
+                                class="fa-solid fa-euro-sign"></i></span></h2>
+                        <h2 class="mt-5"> Contacts: </h2>
+                        <h4 class="mt-2" th:text="'Phone number: '+${ad.getAdvertisedByUser().getPhoneNumber()}"></h4>
+                        <h4 class="mt-2" th:text="'Email: '+${ad.getAdvertisedByUser().getEmail()}"></h4>
                     </div>
                 </div>
                 <div class="row">
@@ -110,7 +113,7 @@
                                                     <span th:text="${#temporals.format(comment.getTimeCreated(), 'dd-MM-yyyy HH:mm')}"></span>
                                                 </div>
                                                 <div sec:authorize="hasRole('ROLE_USER')" class="col text-right">
-                                                    <div th:if="${#authentication.getPrincipal().getId()} == ${comment.getUser().getId()}">
+                                                    <div th:if="${session.userId} == ${comment.getUser().getId()}">
                                                         <a th:href="@{'/comment/edit/{id}' (id=${ad.getId()}, commentId=${comment.getId()})}"
                                                            style="justify-content: right"
                                                            class="btn btn-outline-primary btn-sm">
@@ -162,8 +165,3 @@
         </div>
     </div>
 </div>
-<script>
-    focusMethod = function getFocus() {
-        document.getElementById("commentContentText").focus();
-    }
-</script>

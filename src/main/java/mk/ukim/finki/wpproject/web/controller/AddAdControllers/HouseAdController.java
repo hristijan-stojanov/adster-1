@@ -95,15 +95,14 @@ public class HouseAdController {
             @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userService.getUserFromType(authentication.getPrincipal());
 
         if (id != null) {
             this.houseAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, quadrature, yearMade, yardArea, numRooms, numFloors, hasBasement, heating);
         } else {
             HouseAd houseAd = this.houseAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
-                    type, condition, categoryId, userId, quadrature, yearMade, yardArea, numRooms, numFloors,
+                    type, condition, categoryId, user.getId(), quadrature, yearMade, yardArea, numRooms, numFloors,
                     hasBasement, heating).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(houseAd);

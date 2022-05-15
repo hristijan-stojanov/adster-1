@@ -24,10 +24,9 @@
                                 <div class="row">
                                     <h1 class="col-12 text-center" th:text="${ad.getTitle()}"></h1>
                                     <div class="col">
-                                        <i class="fa-solid fa-location-dot"></i> <span class="h5"
-                                                                                       th:text="${ad.getCity().getName()}"></span>
-                                        <h5 class="mt-1">Price: <span class="h5"
-                                                                      th:text="${ad.getPrice()}"></span><span> <i
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span class="h5" th:text="${ad.getCity().getName()}"></span>
+                                        <h5 class="mt-1">Price: <span class="h5"th:text="${ad.getPrice()}"></span><span> <i
                                                 class="fa-solid fa-euro-sign"></i></span></h5>
                                     </div>
                                     <div class="col text-right">

@@ -37,7 +37,7 @@
                     </li>
                 </ul>
 
-                <form class="form-inline my-5 my-lg-0 row justify-content-center align-items-center"
+                <form class="form-inline my-5 my-lg-0 row justify-content-center align-items-center" th:if="${#httpServletRequest.requestURI} == '/ads' or ${#httpServletRequest.requestURI} == '/'"
                       th:action="@{${categoryName} + '/filter'}">
                     <div class="select-group select-group-sm mr-1 input-group-sm">
                         <select name="categoryId" class="form-control">

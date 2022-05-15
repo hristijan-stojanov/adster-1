@@ -181,8 +181,9 @@ public class AdController {
             model.addAttribute("error", error);
         }
 
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        List<Ad> ads = userService.findAllAdvertisedAdsByUser(userId);
+        User user = userService.getUserFromType(authentication.getPrincipal());
+
+        List<Ad> ads = userService.findAllAdvertisedAdsByUser(user.getId());
 
         paginationTemplate(page, size, model, ads);
 

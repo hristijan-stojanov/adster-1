@@ -27,4 +27,6 @@ public interface UserService extends UserDetailsService {
 
     Optional<User> save(User user);
 
+    User getUserFromType(Object userType);
+
 }

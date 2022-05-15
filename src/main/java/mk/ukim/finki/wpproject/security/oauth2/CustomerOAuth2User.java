@@ -32,4 +32,9 @@ public class CustomerOAuth2User implements OAuth2User {
     public String getEmail() {
         return oAuth2User.getAttribute("email");
     }
+
+    @Override
+    public String toString() {
+        return "CustomerOAuth2User";
+    }
 }

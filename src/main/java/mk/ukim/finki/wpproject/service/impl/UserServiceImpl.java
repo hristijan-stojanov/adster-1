@@ -8,6 +8,7 @@ import mk.ukim.finki.wpproject.model.exceptions.PasswordsDoNotMatchException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UsernameAlreadyExistsException;
 import mk.ukim.finki.wpproject.repository.UserRepository;
+import mk.ukim.finki.wpproject.security.oauth2.CustomerOAuth2User;
 import mk.ukim.finki.wpproject.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -102,5 +103,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> save(User user) {
         return Optional.of(userRepository.save(user));
+    }
+
+    @Override
+    public User getUserFromType(Object userType) {
+        User user = null;
+
+        if (userType.toString().equals("CustomerOAuth2User")) {
+            CustomerOAuth2User customerOAuth2User = (CustomerOAuth2User) userType;
+
+            user = this.register(customerOAuth2User.getName(), customerOAuth2User.getEmail());
+        }
+        else {
+            Long userId = ((User) userType).getId();
+            user = this.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        }
+
+        return user;
     }
 }

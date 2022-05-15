@@ -81,7 +81,7 @@ public class AdController {
             model.addAttribute("categoryName", "OtherAd");
         }
 
-        model.addAttribute("bodyContent", "testAds");
+        model.addAttribute("bodyContent", "mainPage");
         return "master";
     }
 

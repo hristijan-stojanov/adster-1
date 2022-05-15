@@ -1,13 +1,6 @@
 <!--&#45;&#45; MAIN PAGE &#45;&#45;-->
 
 <div th:onload="${#session.setAttribute('commentContent', '')}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-
-    <section class="jumbotron text-center">
-        <div class="container">
-            <h3 class="jumbotron-heading">ALL ADS</h3>
-        </div>
-    </section>
-
     <div class="container">
         <div class="row">
             <div class="col-12" th:if="${adsSize > 0}">

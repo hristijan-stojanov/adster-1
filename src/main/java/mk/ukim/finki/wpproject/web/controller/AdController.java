@@ -72,7 +72,7 @@ public class AdController {
 
         paginationTemplate(page, size, model, filteredAds);
 
-        if (categoryId != null) {
+        if (categoryId != null && !this.adService.redirectAdBasedOnCategory(categoryId).equals("OtherAd")) {
             model.addAttribute("filterContent", "fragments/filters/" + this.adService.redirectAdBasedOnCategory(categoryId) + "Filter");
             model.addAttribute("categoryName", this.adService.redirectAdBasedOnCategory(categoryId));
         }

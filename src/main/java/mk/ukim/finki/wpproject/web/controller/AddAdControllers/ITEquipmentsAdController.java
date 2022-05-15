@@ -101,12 +101,12 @@ public class ITEquipmentsAdController {
 
         if (id != null) {
             this.itEquipmentAdService.edit(id, title, description, isExchangePossible, isDeliveryPossible, price,
-                        cityId, type, condition, categoryId, brand, processor, processorModel, typeMemory, memorySize,
+                    cityId, type, condition, categoryId, brand, processor, processorModel, typeMemory, memorySize,
                     ramMemorySize);
         } else {
             ITEquipmentAd itEquipmentAd = this.itEquipmentAdService.save(title, description, isExchangePossible, isDeliveryPossible, price,
                     cityId, type, condition, categoryId, userId, brand, processor, processorModel, typeMemory, memorySize,
-                    ramMemorySize).orElseThrow(RuntimeException :: new);
+                    ramMemorySize).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(itEquipmentAd);
             this.userService.save(user);
@@ -147,7 +147,8 @@ public class ITEquipmentsAdController {
     }
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam(required = false) String title,
+    public String getFilteredAds(@RequestParam(required = false) AdType type,
+                                 @RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
                                  @RequestParam(required = false) Double priceFrom,
@@ -163,7 +164,7 @@ public class ITEquipmentsAdController {
                                  @RequestParam(required = false) Integer ramMemorySizeTo,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = itEquipmentAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, itBrand,
+        List<Ad> filteredAds = itEquipmentAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, itBrand,
                 model, processorBrand, processorModel, typeMemory, memorySizeFrom, memorySizeTo, ramMemorySizeFrom, ramMemorySizeTo);
 
         request.getSession().setAttribute("filteredAds", filteredAds);

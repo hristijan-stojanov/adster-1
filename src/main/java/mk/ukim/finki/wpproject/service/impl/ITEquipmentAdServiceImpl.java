@@ -66,8 +66,8 @@ public class ITEquipmentAdServiceImpl implements ITEquipmentAdService {
 
 
         ITEquipmentAd itEquipmentAd = new ITEquipmentAd(title, description, isExchangePossible, isDeliveryPossible,
-                                                        price, city, type, condition, category, user, brand,
-                                                        processor, processorModel, typeMemory, memorySize, ramMemorySize);
+                price, city, type, condition, category, user, brand,
+                processor, processorModel, typeMemory, memorySize, ramMemorySize);
 
         return this.save(itEquipmentAd);
     }
@@ -107,12 +107,12 @@ public class ITEquipmentAdServiceImpl implements ITEquipmentAdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, ITBrand itBrand,
+    public List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, ITBrand itBrand,
                                String model, ProcessorBrand processorBrand, String processorModel, TypeMemory typeMemory,
                                Integer memorySizeFrom, Integer memorySizeTo, Integer ramMemorySizeFrom, Integer ramMemorySizeTo) {
 
         List<Ad> filteredList = adRepository.findAll();
-        filteredList.retainAll(adService.filterList(title, cityId, categoryId, priceFrom, priceTo));
+        filteredList.retainAll(adService.filterList(type, title, cityId, categoryId, priceFrom, priceTo));
 
 
         if (itBrand != null && !itBrand.toString().isEmpty()) {
@@ -136,7 +136,7 @@ public class ITEquipmentAdServiceImpl implements ITEquipmentAdService {
 
 
         if (memorySizeFrom != null && memorySizeTo != null)
-            filteredList.retainAll(itEquipmentAdRepository.findAllByMemorySizeGreaterThanEqualAndMemorySizeLessThanEqual(memorySizeFrom,memorySizeTo));
+            filteredList.retainAll(itEquipmentAdRepository.findAllByMemorySizeGreaterThanEqualAndMemorySizeLessThanEqual(memorySizeFrom, memorySizeTo));
         else if (memorySizeTo != null)
             filteredList.retainAll(itEquipmentAdRepository.findAllByMemorySizeLessThanEqual(memorySizeTo));
         else if (memorySizeFrom != null)
@@ -144,7 +144,7 @@ public class ITEquipmentAdServiceImpl implements ITEquipmentAdService {
 
 
         if (ramMemorySizeFrom != null && ramMemorySizeTo != null)
-            filteredList.retainAll(itEquipmentAdRepository.findAllByRamMemorySizeGreaterThanEqualAndRamMemorySizeLessThanEqual(ramMemorySizeFrom,ramMemorySizeTo));
+            filteredList.retainAll(itEquipmentAdRepository.findAllByRamMemorySizeGreaterThanEqualAndRamMemorySizeLessThanEqual(ramMemorySizeFrom, ramMemorySizeTo));
         else if (ramMemorySizeTo != null)
             filteredList.retainAll(itEquipmentAdRepository.findAllByRamMemorySizeLessThanEqual(ramMemorySizeTo));
         else if (ramMemorySizeFrom != null)

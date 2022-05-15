@@ -29,7 +29,7 @@ public interface HouseAdService {
 
     void deleteById(Long adId);
 
-    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo,
+    List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo,
                         Integer yearMadeFrom, Integer yearMadeTo, Integer yardAreaFrom, Integer yardAreaTo, Integer numRoomsFrom, Integer numRoomsTo,
                         Integer numFloorsFrom, Integer numFloorsTo, Boolean hasBasement, Heating heating);
 

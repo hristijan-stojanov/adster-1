@@ -110,12 +110,12 @@ public class ApartmentAdServiceImpl implements ApartmentAdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo,
+    public List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo,
                                Integer yearMadeFrom, Integer yearMadeTo, Integer numRoomsFrom, Integer numRoomsTo, Integer floorFrom, Integer floorTo,
                                Boolean hasBasement, Boolean hasElevator, Boolean hasParkingSpot, Heating heating) {
 
         List<Ad> filteredList = adRepository.findAll();
-        filteredList.retainAll(realEstateAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo));
+        filteredList.retainAll(realEstateAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo));
 
 //        filteredList.retainAll(adService.filterList(title, cityId, categoryId, priceFrom, priceTo));
 

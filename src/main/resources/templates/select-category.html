@@ -1,20 +1,21 @@
 <div xmlns:th="http://www.thymeleaf.org">
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">ВЕ МОЛИМЕ ИЗБЕРЕТЕ ВО КОЈА КАТЕГОРИЈА ПРИПАЃА ПРОДУКТОТ КОЈ ШТО САКАТЕ ДА ГО
+            <h1 class="jumbotron-heading">ВЕ МОЛИМЕ ИЗБЕРЕТЕ ВО КОЈА КАТЕГОРИЈА ПРИПАЃА ОГЛАСОТ КОЈ ШТО САКАТЕ ДА ГО
                 ОГЛАСИТЕ</h1>
         </div>
     </section>
 
-    <div class="container mb-4">
-        <div class="row">
+    <div class="container mb-4 ">
+        <div class="row justify-content-center w-50 m-auto">
             <div class="col-12" th:if="${categories.size() > 0}">
-                <div th:each="category : ${categories}" >
+                <div th:each="category : ${categories}">
                     <a th:href="@{'/add/{id}' (id=${category.getId()})}"
-                       class="btn-info btn-lg " th:text="${category.getName()}"></a>
-                    <br> <br>
+                       class="btn btn-info btn-lg btn-block" th:text="${category.getName()}"></a>
+                    <br>
                 </div>
             </div>
         </div>
+    </div>
 
 

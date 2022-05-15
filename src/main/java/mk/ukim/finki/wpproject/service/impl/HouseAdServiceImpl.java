@@ -68,8 +68,8 @@ public class HouseAdServiceImpl implements HouseAdService {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         HouseAd houseAd = new HouseAd(title, description, isExchangePossible, isDeliveryPossible, price,
-                                        city, type, condition, category, user, quadrature, yearMade, yardArea,
-                                        numRooms, numFloors, hasBasement, heating);
+                city, type, condition, category, user, quadrature, yearMade, yardArea,
+                numRooms, numFloors, hasBasement, heating);
 
         return this.save(houseAd);
     }
@@ -106,13 +106,13 @@ public class HouseAdServiceImpl implements HouseAdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo,
+    public List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo,
                                Integer yearMadeFrom, Integer yearMadeTo, Integer yardAreaFrom, Integer yardAreaTo, Integer numRoomsFrom, Integer numRoomsTo,
                                Integer numFloorsFrom, Integer numFloorsTo, Boolean hasBasement, Heating heating) {
 
 
         List<Ad> filteredList = adRepository.findAll();
-        filteredList.retainAll(realEstateAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo));
+        filteredList.retainAll(realEstateAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo));
 
         if (yearMadeFrom != null && yearMadeTo != null)
             filteredList.retainAll(houseAdRepository.findAllByYearMadeGreaterThanAndYearMadeLessThan(yearMadeFrom, yearMadeTo));

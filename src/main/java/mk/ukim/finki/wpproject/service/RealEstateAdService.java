@@ -26,6 +26,6 @@ public interface RealEstateAdService {
 
     void deleteById(Long adId);
 
-    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo);
+    List<Ad> filterList(AdType type,String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo);
 
 }

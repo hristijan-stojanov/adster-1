@@ -130,7 +130,8 @@ public class RealEstateAdController {
     }
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam(required = false) String title,
+    public String getFilteredAds(@RequestParam(required = false) AdType type,
+                                 @RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
                                  @RequestParam(required = false) Double priceFrom,
@@ -139,7 +140,7 @@ public class RealEstateAdController {
                                  @RequestParam(required = false) Integer quadratureTo,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = realEstateAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo);
+        List<Ad> filteredAds = realEstateAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo);
 
         request.getSession().setAttribute("filteredAds", filteredAds);
 

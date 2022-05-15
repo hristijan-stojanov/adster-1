@@ -67,8 +67,8 @@ public class VehicleAdServiceImpl implements VehicleAdService {
 
 
         VehicleAd vehicleAd = new VehicleAd(title, description, isExchangePossible, isDeliveryPossible,
-                                            price, city, type, condition, category, user, brand, yearMade,
-                                            color, milesTraveled, fuel, enginePower, gearbox, registration);
+                price, city, type, condition, category, user, brand, yearMade,
+                color, milesTraveled, fuel, enginePower, gearbox, registration);
 
         return this.save(vehicleAd);
     }
@@ -106,19 +106,19 @@ public class VehicleAdServiceImpl implements VehicleAdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, CarBrand carBrand,
+    public List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, CarBrand carBrand,
                                Integer yearMadeFrom, Integer yearMadeTo, Integer enginePowerFrom, Integer enginePowerTo,
                                Double milesTraveledFrom, Double milesTraveledTo, Fuel fuel, Color color, Gearbox gearbox, Registration registration) {
 
         List<Ad> filteredList = adRepository.findAll();
-        filteredList.retainAll(adService.filterList(title, cityId, categoryId, priceFrom, priceTo));
+        filteredList.retainAll(adService.filterList(type, title, cityId, categoryId, priceFrom, priceTo));
 
         if (carBrand != null && !carBrand.toString().isEmpty()) {
             filteredList.retainAll(vehicleAdRepository.findAllByBrand(carBrand));
         }
 
         if (yearMadeFrom != null && yearMadeTo != null)
-            filteredList.retainAll(vehicleAdRepository.findAllByYearMadeGreaterThanEqualAndYearMadeLessThanEqual(yearMadeFrom,yearMadeTo));
+            filteredList.retainAll(vehicleAdRepository.findAllByYearMadeGreaterThanEqualAndYearMadeLessThanEqual(yearMadeFrom, yearMadeTo));
         else if (yearMadeTo != null)
             filteredList.retainAll(vehicleAdRepository.findAllByYearMadeLessThanEqual(yearMadeTo));
         else if (yearMadeFrom != null)
@@ -126,7 +126,7 @@ public class VehicleAdServiceImpl implements VehicleAdService {
 
 
         if (enginePowerFrom != null && enginePowerTo != null)
-            filteredList.retainAll(vehicleAdRepository.findAllByEnginePowerGreaterThanAndEnginePowerLessThanEqual(enginePowerFrom,enginePowerTo));
+            filteredList.retainAll(vehicleAdRepository.findAllByEnginePowerGreaterThanAndEnginePowerLessThanEqual(enginePowerFrom, enginePowerTo));
         else if (enginePowerTo != null)
             filteredList.retainAll(vehicleAdRepository.findAllByEnginePowerLessThan(enginePowerTo));
         else if (enginePowerFrom != null)
@@ -134,7 +134,7 @@ public class VehicleAdServiceImpl implements VehicleAdService {
 
 
         if (milesTraveledFrom != null && milesTraveledTo != null)
-            filteredList.retainAll(vehicleAdRepository.findAllByMilesTraveledGreaterThanEqualAndMilesTraveledLessThanEqual(milesTraveledFrom,milesTraveledTo));
+            filteredList.retainAll(vehicleAdRepository.findAllByMilesTraveledGreaterThanEqualAndMilesTraveledLessThanEqual(milesTraveledFrom, milesTraveledTo));
         else if (milesTraveledTo != null)
             filteredList.retainAll(vehicleAdRepository.findAllByMilesTraveledLessThanEqual(milesTraveledTo));
         else if (milesTraveledFrom != null)

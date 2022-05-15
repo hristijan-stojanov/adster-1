@@ -34,6 +34,6 @@ public interface ClothesAdService {
 
     void deleteById(Long id);
 
-    List<Ad> filterList(String title, String cityId, Long categoryId, TypeClothing typeClothing, Size size, Color color);
+    List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, TypeClothing typeClothing, Size size, Color color);
 
 }

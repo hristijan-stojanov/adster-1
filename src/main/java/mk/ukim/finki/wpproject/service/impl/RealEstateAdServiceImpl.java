@@ -96,7 +96,7 @@ public class RealEstateAdServiceImpl implements RealEstateAdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo) {
+    public List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo) {
         List<Ad> filteredList = adRepository.findAll();
 
 //        if (title != null && !title.isEmpty()){
@@ -111,7 +111,7 @@ public class RealEstateAdServiceImpl implements RealEstateAdService {
 //            filteredList.retainAll(this.adRepository.findAllByCategory(category));
 //        }
 
-        filteredList.retainAll(adService.filterList(title, cityId, categoryId, priceFrom, priceTo));
+        filteredList.retainAll(adService.filterList(type, title, cityId, categoryId, priceFrom, priceTo));
 
         if (quadratureFrom != null && quadratureTo != null)
             filteredList.retainAll(realEstateAdRepository.findAllByQuadratureGreaterThanEqualAndQuadratureLessThanEqual(quadratureFrom, quadratureTo));

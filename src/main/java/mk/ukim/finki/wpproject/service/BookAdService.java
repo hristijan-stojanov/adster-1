@@ -32,5 +32,5 @@ public interface BookAdService {
 
     void deleteById(Long id);
 
-    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, String author, Genre genre);
+    List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, String author, Genre genre);
 }

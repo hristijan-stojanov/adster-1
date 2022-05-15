@@ -92,7 +92,7 @@ public class AdServiceImpl implements AdService {
     }
 
 
-    public Page<Ad> findPaginated(Pageable pageable, List<Ad>filteredAds) {
+    public Page<Ad> findPaginated(Pageable pageable, List<Ad> filteredAds) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
@@ -144,17 +144,21 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo) {
+    public List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo) {
         List<Ad> filteredList = adRepository.findAll();
 
-        if (title != null && !title.isEmpty()){
+        if (type != null && !type.toString().isEmpty()){
+            filteredList.retainAll(this.adRepository.findAllByType(type));
+        }
+
+        if (title != null && !title.isEmpty()) {
             filteredList.retainAll(this.adRepository.findByTitleContainsIgnoreCase(title));
         }
-        if (cityId != null && !cityId.isEmpty()){
+        if (cityId != null && !cityId.isEmpty()) {
             City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
             filteredList.retainAll(this.adRepository.findAllByCity(city));
         }
-        if (categoryId != null && !categoryId.toString().isEmpty()){
+        if (categoryId != null && !categoryId.toString().isEmpty()) {
             Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
             filteredList.retainAll(this.adRepository.findAllByCategory(category));
         }

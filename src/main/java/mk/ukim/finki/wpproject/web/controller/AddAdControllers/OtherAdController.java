@@ -133,7 +133,8 @@ public class OtherAdController {
     }
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam(required = false) String title,
+    public String getFilteredAds(@RequestParam(required = false) AdType type,
+                                 @RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
                                  @RequestParam(required = false) Double priceFrom,
@@ -145,7 +146,7 @@ public class OtherAdController {
 //
 //        filteredAds.retainAll(additionalFilteredAds);
 
-        List<Ad> filteredAds = adService.filterList(title, cityId, categoryId, priceFrom, priceTo);
+        List<Ad> filteredAds = adService.filterList(type, title, cityId, categoryId, priceFrom, priceTo);
 
         request.getSession().setAttribute("filteredAds", filteredAds);
 

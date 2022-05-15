@@ -38,7 +38,7 @@ public class VehicleAdController {
     }
 
     @GetMapping("/{id}")
-    public String showVehicleAd(@PathVariable Long id, Model model){
+    public String showVehicleAd(@PathVariable Long id, Model model) {
 
         VehicleAd vehicleAd = this.vehicleAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", vehicleAd);
@@ -52,7 +52,7 @@ public class VehicleAdController {
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()){
+        if (this.categoryService.findById(categoryId).isPresent()) {
 
             Category category = this.categoryService.findById(categoryId).get();
             List<City> cityList = this.cityService.findAll();
@@ -64,15 +64,15 @@ public class VehicleAdController {
             List<Gearbox> gearboxList = Arrays.asList(Gearbox.values());
             List<Registration> registrationList = Arrays.asList(Registration.values());
 
-            model.addAttribute("category_1",category);
+            model.addAttribute("category_1", category);
             model.addAttribute("cityList", cityList);
-            model.addAttribute("adTypeList",adTypeList);
-            model.addAttribute("conditionList",conditionList);
-            model.addAttribute("carBrandList",carBrandList);
-            model.addAttribute("colorList",colorList);
-            model.addAttribute("fuelList",fuelList);
-            model.addAttribute("gearboxList",gearboxList);
-            model.addAttribute("registrationList",registrationList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("carBrandList", carBrandList);
+            model.addAttribute("colorList", colorList);
+            model.addAttribute("fuelList", fuelList);
+            model.addAttribute("gearboxList", gearboxList);
+            model.addAttribute("registrationList", registrationList);
 
             model.addAttribute("bodyContent", "addAdsTemplates/addVehicleAd");
             return "master";
@@ -113,7 +113,7 @@ public class VehicleAdController {
         } else {
             VehicleAd vehicleAd = this.vehicleAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, userId, brand, yearMade, color, milesTraveled, fuel, enginePower, gearbox,
-                    registration).orElseThrow(RuntimeException :: new);
+                    registration).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(vehicleAd);
             this.userService.save(user);
@@ -141,13 +141,13 @@ public class VehicleAdController {
             model.addAttribute("vehicleAd", vehicleAd);
             model.addAttribute("category_1", category);
             model.addAttribute("cityList", cityList);
-            model.addAttribute("adTypeList",adTypeList);
-            model.addAttribute("conditionList",conditionList);
-            model.addAttribute("carBrandList",carBrandList);
-            model.addAttribute("colorList",colorList);
-            model.addAttribute("fuelList",fuelList);
-            model.addAttribute("gearboxList",gearboxList);
-            model.addAttribute("registrationList",registrationList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("carBrandList", carBrandList);
+            model.addAttribute("colorList", colorList);
+            model.addAttribute("fuelList", fuelList);
+            model.addAttribute("gearboxList", gearboxList);
+            model.addAttribute("registrationList", registrationList);
 
             model.addAttribute("bodyContent", "addAdsTemplates/addVehicleAd");
 
@@ -158,7 +158,8 @@ public class VehicleAdController {
     }
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam(required = false) String title,
+    public String getFilteredAds(@RequestParam(required = false) AdType type,
+                                 @RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
                                  @RequestParam(required = false) Double priceFrom,
@@ -176,7 +177,7 @@ public class VehicleAdController {
                                  @RequestParam(required = false) Registration registration,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = vehicleAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, carBrand,
+        List<Ad> filteredAds = vehicleAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, carBrand,
                 yearMadeFrom, yearMadeTo, enginePowerFrom, enginePowerTo, milesTraveledFrom, milesTraveledTo,
                 fuel, color, gearbox, registration);
 

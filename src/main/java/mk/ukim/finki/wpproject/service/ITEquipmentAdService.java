@@ -12,7 +12,7 @@ public interface ITEquipmentAdService {
 
     Optional<ITEquipmentAd> findById(Long id);
 
-    Optional<ITEquipmentAd> save (ITEquipmentAd houseAd);
+    Optional<ITEquipmentAd> save(ITEquipmentAd houseAd);
 
     Optional<ITEquipmentAd> save(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
                                  Double price, String cityName, AdType type, Condition condition, Long categoryId, Long userId,
@@ -20,14 +20,14 @@ public interface ITEquipmentAdService {
                                  int memorySize, int ramMemorySize);
 
     Optional<ITEquipmentAd> edit(Long houseAdId, String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
-                           Double price, String cityName, AdType type, Condition condition, Long categoryId,
+                                 Double price, String cityName, AdType type, Condition condition, Long categoryId,
                                  ITBrand brand, ProcessorBrand processor, String processorModel, TypeMemory typeMemory,
                                  int memorySize, int ramMemorySize);
 
     void deleteById(Long adId);
 
-    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, ITBrand itBrand,
-                        String model, ProcessorBrand processorBrand, String processorModel,TypeMemory typeMemory, Integer memorySizeFrom, Integer memorySizeTo,
+    List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, ITBrand itBrand,
+                        String model, ProcessorBrand processorBrand, String processorModel, TypeMemory typeMemory, Integer memorySizeFrom, Integer memorySizeTo,
                         Integer ramMemorySizeFrom, Integer ramMemorySizeTo);
 
 }

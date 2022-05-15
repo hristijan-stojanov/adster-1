@@ -94,8 +94,8 @@ public class ClothesAdController {
             @RequestParam("files") List<MultipartFile> images,
             Authentication authentication
     ) {
-          Long userId = ((User) authentication.getPrincipal()).getId();
-          User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
 //        Integer intNumSize = null;
 //        if (numSize != null && !numSize.isEmpty())
@@ -146,15 +146,18 @@ public class ClothesAdController {
     }
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam(required = false) String title,
+    public String getFilteredAds(@RequestParam(required = false) AdType type,
+                                 @RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
+                                 @RequestParam(required = false) Double priceFrom,
+                                 @RequestParam(required = false) Double priceTo,
                                  @RequestParam(required = false) TypeClothing typeClothing,
                                  @RequestParam(required = false) Size size,
                                  @RequestParam(required = false) Color color,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = clothesAdService.filterList(title, cityId, categoryId, typeClothing, size, color);
+        List<Ad> filteredAds = clothesAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, typeClothing, size, color);
 
         request.getSession().setAttribute("filteredAds", filteredAds);
 

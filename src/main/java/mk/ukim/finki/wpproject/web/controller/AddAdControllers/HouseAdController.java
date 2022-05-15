@@ -40,7 +40,7 @@ public class HouseAdController {
     }
 
     @GetMapping("/{id}")
-    public String showHouseAd(@PathVariable Long id, Model model){
+    public String showHouseAd(@PathVariable Long id, Model model) {
 
         HouseAd houseAd = this.houseAdService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         model.addAttribute("ad", houseAd);
@@ -54,18 +54,18 @@ public class HouseAdController {
     @GetMapping("/add-form/{categoryId}")
     public String AddApartmentAdPage(@PathVariable Long categoryId, Model model) {
 
-        if (this.categoryService.findById(categoryId).isPresent()){
+        if (this.categoryService.findById(categoryId).isPresent()) {
             Category category = this.categoryService.findById(categoryId).get();
             List<City> cityList = this.cityService.findAll();
             List<AdType> adTypeList = Arrays.asList(AdType.values());
             List<Condition> conditionList = Arrays.asList(Condition.values());
             List<Heating> heatingList = Arrays.asList(Heating.values());
 
-            model.addAttribute("category_1",category);
+            model.addAttribute("category_1", category);
             model.addAttribute("cityList", cityList);
-            model.addAttribute("adTypeList",adTypeList);
-            model.addAttribute("conditionList",conditionList);
-            model.addAttribute("heatingList",heatingList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("heatingList", heatingList);
 
             model.addAttribute("bodyContent", "addAdsTemplates/addHouseAd");
             return "master";
@@ -104,7 +104,7 @@ public class HouseAdController {
         } else {
             HouseAd houseAd = this.houseAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, userId, quadrature, yearMade, yardArea, numRooms, numFloors,
-                    hasBasement, heating).orElseThrow(RuntimeException :: new);
+                    hasBasement, heating).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(houseAd);
             this.userService.save(user);
@@ -128,9 +128,9 @@ public class HouseAdController {
             model.addAttribute("category_1", category);
             model.addAttribute("houseAd", houseAd);
             model.addAttribute("cityList", cityList);
-            model.addAttribute("adTypeList",adTypeList);
-            model.addAttribute("conditionList",conditionList);
-            model.addAttribute("heatingList",heatingList);
+            model.addAttribute("adTypeList", adTypeList);
+            model.addAttribute("conditionList", conditionList);
+            model.addAttribute("heatingList", heatingList);
 
             model.addAttribute("bodyContent", "addAdsTemplates/addHouseAd");
 
@@ -141,7 +141,8 @@ public class HouseAdController {
 
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam(required = false) String title,
+    public String getFilteredAds(@RequestParam(required = false) AdType type,
+                                 @RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
                                  @RequestParam(required = false) Double priceFrom,
@@ -160,7 +161,7 @@ public class HouseAdController {
                                  @RequestParam(required = false) Heating heating,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = houseAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo,
+        List<Ad> filteredAds = houseAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo,
                 yearMadeFrom, yearMadeTo, yardAreaFrom, yardAreaTo, numRoomsFrom, numRoomsTo, numFloorsFrom, numFloorsTo, hasBasement, heating);
 
         request.getSession().setAttribute("filteredAds", filteredAds);

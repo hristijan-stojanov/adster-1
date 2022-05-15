@@ -5,13 +5,14 @@ import mk.ukim.finki.wpproject.model.ads.VehicleAd;
 import mk.ukim.finki.wpproject.model.enums.*;
 
 import java.util.*;
+
 public interface VehicleAdService {
 
-    List<VehicleAd> findAll ();
+    List<VehicleAd> findAll();
 
     Optional<VehicleAd> findById(Long id);
 
-    Optional<VehicleAd> save (VehicleAd vehicleAd);
+    Optional<VehicleAd> save(VehicleAd vehicleAd);
 
     Optional<VehicleAd> save(String title, String description, boolean isExchangePossible, boolean isDeliveryPossible,
                              Double price, String cityName, AdType type, Condition condition, Long categoryId, Long userId,
@@ -25,7 +26,7 @@ public interface VehicleAdService {
 
     void deleteById(Long adId);
 
-    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, CarBrand carBrand, Integer yearMadeFrom,
+    List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, CarBrand carBrand, Integer yearMadeFrom,
                         Integer yearMadeTo, Integer enginePowerFrom, Integer enginePowerTo, Double milesTraveledFrom, Double milesTraveledTo,
                         Fuel fuel, Color color, Gearbox gearbox, Registration registration);
 

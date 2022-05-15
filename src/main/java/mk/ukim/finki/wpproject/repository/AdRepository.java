@@ -15,6 +15,8 @@ import java.util.List;
 @Repository
 public interface AdRepository extends JpaRepository<Ad, Long> {
 
+    List<Ad> findAllByType (AdType type);
+
     List<Ad> findByTitleContainsIgnoreCase(String title);
 //    @Query(value = "select *, 0 as clazz_ from ads a where a.title ilike :title", nativeQuery = true)
 //    List<Ad> findAllByTitleLikeQuery(@Param("title") String title);

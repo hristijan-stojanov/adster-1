@@ -138,7 +138,8 @@ public class BookAdController {
     }
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam(required = false) String title,
+    public String getFilteredAds(@RequestParam(required = false) AdType type,
+                                 @RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
                                  @RequestParam(required = false) Double priceFrom,
@@ -147,7 +148,7 @@ public class BookAdController {
                                  @RequestParam(required = false) Genre genre,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = bookAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, author, genre);
+        List<Ad> filteredAds = bookAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, author, genre);
 
         request.getSession().setAttribute("filteredAds", filteredAds);
 

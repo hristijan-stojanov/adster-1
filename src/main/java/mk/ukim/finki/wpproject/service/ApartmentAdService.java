@@ -34,9 +34,9 @@ public interface ApartmentAdService {
 
     void deleteById(Long id);
 
-    List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom , Integer quadratureTo
-                        , Integer yearMadeFrom, Integer yearMadeTo,Integer numRoomsFrom, Integer numRoomsTo, Integer floorFrom, Integer floorTo
-                        , Boolean hasBasement, Boolean hasElevator, Boolean hasParkingSpot, Heating heating);
+    List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, Integer quadratureFrom, Integer quadratureTo
+            , Integer yearMadeFrom, Integer yearMadeTo, Integer numRoomsFrom, Integer numRoomsTo, Integer floorFrom, Integer floorTo
+            , Boolean hasBasement, Boolean hasElevator, Boolean hasParkingSpot, Heating heating);
 
     // save create update delete findAll
 }

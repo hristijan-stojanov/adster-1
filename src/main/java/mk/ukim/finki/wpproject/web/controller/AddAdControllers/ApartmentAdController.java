@@ -82,7 +82,7 @@ public class ApartmentAdController {
             @RequestParam String title,
             @RequestParam String description,
             @RequestParam boolean isExchangePossible,
-            @RequestParam(required = false) boolean isDeliveryPossible ,
+            @RequestParam(required = false) boolean isDeliveryPossible,
             @RequestParam Double price,
             @RequestParam String cityId,
             @RequestParam AdType type,
@@ -110,7 +110,7 @@ public class ApartmentAdController {
         } else {
             ApartmentAd apartmentAd = this.apartmentAdService.save(title, description, isExchangePossible, isDeliveryPossible, price, cityId,
                     type, condition, categoryId, user.getId(), quadrature, yearMade, numRooms, numFloors, floor, hasBasement,
-                    hasElevator, hasParkingSpot, heating).orElseThrow(RuntimeException :: new);
+                    hasElevator, hasParkingSpot, heating).orElseThrow(RuntimeException::new);
 
             user.getAdvertisedAds().add(apartmentAd);
             this.userService.save(user);
@@ -120,7 +120,7 @@ public class ApartmentAdController {
         return "redirect:/ads";
     }
 
-     @GetMapping("/edit-form/{id}")
+    @GetMapping("/edit-form/{id}")
     public String editApartmentAd(@PathVariable Long id, Model model) {
         if (this.apartmentAdService.findById(id).isPresent()) {
 
@@ -146,7 +146,8 @@ public class ApartmentAdController {
     }
 
     @GetMapping("/filter")
-    public String getFilteredAds(@RequestParam(required = false) String title,
+    public String getFilteredAds(@RequestParam(required = false) AdType type,
+                                 @RequestParam(required = false) String title,
                                  @RequestParam(required = false) String cityId,
                                  @RequestParam(required = false) Long categoryId,
                                  @RequestParam(required = false) Double priceFrom,
@@ -165,7 +166,7 @@ public class ApartmentAdController {
                                  @RequestParam(required = false) Heating heating,
                                  HttpServletRequest request) {
 
-        List<Ad> filteredAds = apartmentAdService.filterList(title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo,
+        List<Ad> filteredAds = apartmentAdService.filterList(type, title, cityId, categoryId, priceFrom, priceTo, quadratureFrom, quadratureTo,
                 yearMadeFrom, yearMadeTo, numRoomsFrom, numRoomsTo, floorFrom, floorTo, hasBasement, hasElevator, hasParkingSpot, heating);
 
         request.getSession().setAttribute("filteredAds", filteredAds);

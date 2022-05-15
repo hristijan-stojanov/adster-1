@@ -97,10 +97,10 @@ public class BookAdServiceImpl implements BookAdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, String author, Genre genre) {
+    public List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, String author, Genre genre) {
 
         List<Ad> filteredList = adRepository.findAll();
-        filteredList.retainAll(adService.filterList(title, cityId, categoryId, priceFrom, priceTo));
+        filteredList.retainAll(adService.filterList(type, title, cityId, categoryId, priceFrom, priceTo));
 
         if (author != null && !author.isEmpty()) {
             filteredList.retainAll(bookAdRepository.findAllByAuthorContainsIgnoreCase(author));

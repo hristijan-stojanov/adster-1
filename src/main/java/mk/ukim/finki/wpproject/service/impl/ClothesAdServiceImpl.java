@@ -11,6 +11,7 @@ import mk.ukim.finki.wpproject.model.exceptions.CategoryNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.CityNotFoundException;
 import mk.ukim.finki.wpproject.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.wpproject.repository.*;
+import mk.ukim.finki.wpproject.service.AdService;
 import mk.ukim.finki.wpproject.service.ClothesAdService;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +21,16 @@ import java.util.Optional;
 @Service
 public class ClothesAdServiceImpl implements ClothesAdService {
 
+    private final AdService adService;
     private final AdRepository adRepository;
     private final ClothesAdRepository clothesAdRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
 
-    public ClothesAdServiceImpl(AdRepository adRepositoryl, ClothesAdRepository clothesAdRepository, CategoryRepository categoryRepository,
+    public ClothesAdServiceImpl(AdService adService, AdRepository adRepositoryl, ClothesAdRepository clothesAdRepository, CategoryRepository categoryRepository,
                                 UserRepository userRepository, CityRepository cityRepository) {
+        this.adService = adService;
         this.adRepository = adRepositoryl;
         this.clothesAdRepository = clothesAdRepository;
         this.categoryRepository = categoryRepository;
@@ -94,20 +97,11 @@ public class ClothesAdServiceImpl implements ClothesAdService {
     }
 
     @Override
-    public List<Ad> filterList(String title, String cityId, Long categoryId, TypeClothing typeClothing, Size size, Color color) {
-        List<Ad> filteredList = adRepository.findAll();
+    public List<Ad> filterList(AdType type, String title, String cityId, Long categoryId, Double priceFrom, Double priceTo, TypeClothing typeClothing, Size size, Color color) {
 
-        if (title != null && !title.isEmpty()) {
-            filteredList.retainAll(this.adRepository.findByTitleContainsIgnoreCase(title));
-        }
-        if (cityId != null && !cityId.isEmpty()) {
-            City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
-            filteredList.retainAll(this.adRepository.findAllByCity(city));
-        }
-        if (categoryId != null && !categoryId.toString().isEmpty()) {
-            Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-            filteredList.retainAll(this.adRepository.findAllByCategory(category));
-        }
+        List<Ad> filteredList = adRepository.findAll();
+        filteredList.retainAll(adService.filterList(type, title, cityId, categoryId, priceFrom, priceTo));
+
         if (typeClothing != null && !typeClothing.toString().isEmpty()) {
             filteredList.retainAll(clothesAdRepository.findAllByTypeClothing(typeClothing));
         }

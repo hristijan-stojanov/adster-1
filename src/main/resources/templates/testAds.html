@@ -1,6 +1,6 @@
 <!--&#45;&#45; MAIN PAGE &#45;&#45;-->
 
-<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:onload="${#session.setAttribute('commentContent', '')}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
     <section class="jumbotron text-center">
         <div class="container">

@@ -84,7 +84,8 @@
                                     <td>City</td>
                                     <td th:text="${ad.getCity().getName()}"></td>
                                 </tr>
-                                <span th:if="${additionalContent} != null"><div th:replace="'showAdsTemplates/'+${additionalContent}"></div></span>
+                                <span th:if="${additionalContent} != null"><div
+                                        th:replace="'showAdsTemplates/'+${additionalContent}"></div></span>
                                 </tbody>
                             </table>
                         </div>
@@ -97,14 +98,30 @@
                                     <div class="card-body">
                                         <h4 class="card-title">Recent Comments</h4>
                                         <h6 class="card-subtitle">Latest Comments section by users</h6>
-                                        <h7 sec:authorize="!isAuthenticated()" class="text-danger">Login to comment on this ad</h7>
+                                        <h7 sec:authorize="!isAuthenticated()" class="text-danger">Login to comment on
+                                            this ad
+                                        </h7>
                                     </div>
                                     <div class="comment-widgets m-b-20">
                                         <div th:each="comment : ${comments}" class="d-flex flex-row comment-row mb-3">
-                                            <div class="container-fluid">
-                                                <h5 th:text="${comment.getUser().getUsername()}"></h5>
-                                                <div class="comment-footer">
+                                            <div class="container-fluid row">
+                                                <h5 class="col-12" th:text="${comment.getUser().getUsername()}"></h5>
+                                                <div class="col">
                                                     <span th:text="${#temporals.format(comment.getTimeCreated(), 'dd-MM-yyyy HH:mm')}"></span>
+                                                </div>
+                                                <div sec:authorize="hasRole('ROLE_USER')" class="col text-right">
+                                                    <div th:if="${#authentication.getPrincipal().getId()} == ${comment.getUser().getId()}">
+                                                        <a th:href="@{'/comment/edit/{id}' (id=${ad.getId()}, commentId=${comment.getId()})}"
+                                                           style="justify-content: right"
+                                                           class="btn btn-outline-primary btn-sm">
+                                                            <i class="fa-solid fa-pen-to-square"></i> <span> Edit</span>
+                                                        </a>
+                                                        <a th:href="@{'/comment/delete/{id}' (id=${ad.getId()}, commentId=${comment.getId()})}"
+                                                           style="justify-content: right"
+                                                           class="btn btn-sm btn-outline-danger">
+                                                            <i class="fa fa-trash"></i> <span> Delete</span>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                                 <div class="container">
                                                     <p th:text="${comment.getContent()}"></p>
@@ -115,16 +132,18 @@
                                             <div class="comment-text active w-100 m-2">
                                                 <div class="comment-btns ml-2 mt-2">
                                                     <div class="container">
-                                                        <form th:action="@{'/ads/saveComment/{id}' (id=${ad.getId()})}"
+                                                        <form th:action="@{'/comment/save/{id}' (id=${ad.getId()})}"
                                                               th:method="post"
                                                               sec:authorize="isAuthenticated()">
                                                             <div class="comment-area">
-                                                                <textarea name="content" class="form-control"
+                                                                <textarea id="commentContentText" name="content" class="form-control"
                                                                           placeholder="what is your view?"
-                                                                          rows="4"></textarea>
+                                                                          rows="4"
+                                                                          th:autofocus="!${session.commentContent.isEmpty()}"
+                                                                          th:text="${session.commentContent}"></textarea>
                                                             </div>
                                                             <div class="mt-1">
-                                                                <button class="btn btn-success send btn-md">
+                                                                <button class="btn btn-success send btn-md" th:onclick="${#session.setAttribute('commentContent', '')}">
                                                                     Send <i class="fa fa-long-arrow-right ml-1"></i>
                                                                 </button>
                                                             </div>
@@ -143,3 +162,8 @@
         </div>
     </div>
 </div>
+<script>
+    focusMethod = function getFocus() {
+        document.getElementById("commentContentText").focus();
+    }
+</script>

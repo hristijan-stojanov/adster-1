@@ -21,14 +21,12 @@ public class AdController {
 
     private final AdService adService;
     private final CategoryService categoryService;
-    private final CommentService commentService;
     private final UserService userService;
     private final CityService cityService;
 
-    public AdController(AdService adService, CategoryService categoryService, CommentService commentService, UserService userService, CityService cityService) {
+    public AdController(AdService adService, CategoryService categoryService, UserService userService, CityService cityService) {
         this.adService = adService;
         this.categoryService = categoryService;
-        this.commentService = commentService;
         this.userService = userService;
         this.cityService = cityService;
     }
@@ -170,23 +168,6 @@ public class AdController {
             user.getSavedAds().add(ad);
         userService.save(user).orElseThrow(RuntimeException::new);
         return "redirect:/savedAds";
-    }
-
-    @PostMapping("/saveComment/{id}")
-    public String saveCommentToAd(@PathVariable Long id, @RequestParam String content, Authentication authentication) {
-        System.out.println(content);
-        Ad ad = adService.findById(id).orElseThrow(() -> new AdNotFoundException(id));
-
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-
-        Comment comment = new Comment(content, user);
-        commentService.save(comment);
-
-        ad.getComments().add(comment);
-        adService.save(ad);
-
-        return "redirect:/{id}";
     }
 
     @GetMapping("/myAds")

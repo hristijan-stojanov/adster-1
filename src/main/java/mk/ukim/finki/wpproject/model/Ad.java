@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
@@ -42,19 +43,19 @@ public class Ad implements Serializable {
     @Enumerated(EnumType.STRING)
     private Condition condition;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<adImage> images;
-
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
-
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private City city;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User advertisedByUser;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "savedAds")
@@ -79,5 +80,26 @@ public class Ad implements Serializable {
         this.comments = new ArrayList<>();
         this.advertisedByUser = advertisedByUser;
     }
+    @Override
+    public String toString() {
+        return "Ad{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", isExchangePossible=" + isExchangePossible +
+                ", isDeliveryPossible=" + isDeliveryPossible +
+                ", price=" + price +
+                ", dateCreated=" + dateCreated +
+                ", type=" + type +
+                ", condition=" + condition +
+                ", images=" + images +
+                ", category=" + (category != null ? category.getName() : null) +
+                ", city=" + (city != null ? city.getName() : null) +
+                ", comments=" + comments +
+                ", advertisedByUser=" + (advertisedByUser != null ? advertisedByUser.getUsername() : null) +
+                '}';
+    }
+
+
 
 }

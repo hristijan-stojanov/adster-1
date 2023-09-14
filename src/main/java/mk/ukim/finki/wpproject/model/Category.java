@@ -1,5 +1,6 @@
 package mk.ukim.finki.wpproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,14 +16,14 @@ public class Category {
     private Long id;
 
     private String name;
-
-    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
     private List<Ad> ads;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Category parentCategory;
-
-    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Category> subCategories;
 
     public Category() {
@@ -48,4 +49,13 @@ public class Category {
 
         return sb.substring(0, sb.length() - 2);
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
 }

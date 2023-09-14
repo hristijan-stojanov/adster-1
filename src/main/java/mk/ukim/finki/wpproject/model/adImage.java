@@ -23,4 +23,13 @@ public class adImage {
         this.name = name;
         this.location = location;
     }
+    @Override
+    public String toString() {
+        return "adImage{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
+
 }

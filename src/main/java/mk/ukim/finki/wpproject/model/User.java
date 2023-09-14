@@ -66,6 +66,8 @@ public class User implements UserDetails {
         return Collections.singletonList(role);
     }
 
+
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -86,8 +88,18 @@ public class User implements UserDetails {
         return true;
     }
 
+
     @Override
     public String toString() {
-        return "User";
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                // Останатите атрибути кои сакате да ги прикажете
+                '}';
     }
 }

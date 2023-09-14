@@ -29,4 +29,14 @@ public class Comment {
         this.content = content;
         this.user = user;
     }
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", timeCreated=" + timeCreated +
+                ", content='" + content + '\'' +
+                ", user=" + (user != null ? user.getUsername() : null) +
+                '}';
+    }
+
 }

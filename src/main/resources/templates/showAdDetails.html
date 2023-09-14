@@ -10,7 +10,7 @@
                         <div class="carousel-inner">
                             <div class="carousel-item" th:each="image : ${ad.getImages()}"
                                  th:classappend="${image == ad.getImages().get(0)} ? active : ''" style="width: auto">
-                                <img class="d-block w-100" th:src="@{'/images/' + ${image.getName()}}" alt="Image"
+                                <img class="d-block w-100" th:src="@{'C:\Users\PC\Desktop\adster\./src/main/resources/static/images/' + ${image.getName()}}" alt="Image"
                                      height="500px"
                                      style="max-width: 100%; object-fit: contain;">
                             </div>

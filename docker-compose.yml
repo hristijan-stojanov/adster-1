@@ -1,22 +1,40 @@
-version: "3"
+version: '3'
 services:
-  #  Create a service named db.
-  wp-db:
-    #   Use the Docker Image postgres. This will pull the newest release.
-    image: "postgres"
-    #   Give the container the name my_postgres. You can changes to something else.
-    container_name: "adster"
-    #   Setup the username, password, and database name. You can changes these values.
+  db:
+    image: postgres
+    container_name: postgres-db
     environment:
-      - POSTGRES_USER=adsterrr
-      - POSTGRES_PASSWORD=adsterrr123
-      - POSTGRES_DB=wp-project
-    #   Maps port 5432 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
-    #   Set a volume some that database is not lost after shutting down the container.
-    #   I used the name postgres-data but you can changed it to something else.
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data  
+    networks:
+      - mynet
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kiii-proekt
+    depends_on:
+      - db   
+    ports:
+      - "9090:9090"  
+    networks:
+      - mynet
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
 volumes:
   postgres-data:
+
+networks:
+  mynet:
+    driver: bridge

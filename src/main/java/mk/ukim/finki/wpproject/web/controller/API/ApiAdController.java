@@ -10,10 +10,13 @@ import mk.ukim.finki.wpproject.model.enums.AdType;
 import mk.ukim.finki.wpproject.model.enums.Condition;
 import mk.ukim.finki.wpproject.model.enums.Role;
 import mk.ukim.finki.wpproject.model.exceptions.AdNotFoundException;
+import mk.ukim.finki.wpproject.model.exceptions.InvalidUserCredentialsException;
 import mk.ukim.finki.wpproject.service.AdService;
 import mk.ukim.finki.wpproject.service.CategoryService;
 import mk.ukim.finki.wpproject.service.CityService;
 import mk.ukim.finki.wpproject.service.UserService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -171,6 +174,53 @@ public class ApiAdController {
         user.getAdvertisedAds().remove(ad);
         userService.save(user).orElseThrow(RuntimeException::new);
         return ResponseEntity.ok("Status is OK");
+    }
+    @GetMapping("/search")
+    public List<AdDto> search(@RequestBody String requestBody)
+    {
+
+        try{
+            System.out.println(requestBody);
+            JSONObject jsonObject = new JSONObject(requestBody);
+            Long id = null;
+            String type = jsonObject.getString("selectedAdType");
+            String title = jsonObject.getString("title");
+            String cityName = jsonObject.getString("selectedLocation");
+           /// String categoryId = jsonObject.getString("categoryId");
+            String priceFrom = jsonObject.getString("priceFrom");
+            String priceTo = jsonObject.getString("priceTo");
+            List<Ad> myAds = adService.filterList(AdType.Selling,title,"Strumica",Long.parseLong("1"),Double.parseDouble(priceFrom)
+            ,Double.parseDouble(priceTo));
+            List<AdDto> listMyAdsAdDto = new ArrayList<>();
+            for(Ad ad : myAds)
+            {
+                AdDto adDto = new  AdDto(ad.getId(),
+                        ad.getTitle(),
+                        ad.getDescription(),
+                        ad.isExchangePossible(),
+                        ad.isDeliveryPossible(),
+                        ad.getPrice(),
+                        ad.getDateCreated(),
+                        ad.getType(),
+                        ad.getCondition(),
+                        ad.getImages(),
+                        ad.getCategory().getName(),
+                        ad.getCity().getName(),
+                        ad.getCity().getLat(),
+                        ad.getCity().getLon(),
+                        ad.getComments(),
+                        Long.valueOf(12345678910L));
+                listMyAdsAdDto.add(adDto);
+            }
+            return  listMyAdsAdDto;
+
+
+        }
+        catch (InvalidUserCredentialsException | JSONException exception) {
+            System.out.println("InvalidUserCredentialsException");
+
+        }
+        return null;
     }
 
 
